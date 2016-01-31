@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+
+import re
+from urllib import request
+from reppy.cache import RobotsCache #нужно сначала установить reppy
+import xml.etree.ElementTree as ET
+
+site_url = 'http://' +'www.livejournal.com'
+robots = RobotsCache()
+sitemap = robots.sitemaps(site_url)
+
+
 '''
 TODO:
 
@@ -8,8 +19,6 @@ TODO:
 - Написать ORM класс дл я отправки ссылок в таблицу Pages
 - Отправить ссылки в БД
 - Написать функцию(класс) для скачивания страницы
-
-  Скрипты пишем в два фала Script1 и Script2 потом сравним и смерджим.
 '''
 
 
