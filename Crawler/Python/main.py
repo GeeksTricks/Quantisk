@@ -2,13 +2,13 @@
 
 import re
 from urllib import request
-from urllib import robotparser
+from reppy.cache import RobotsCache #нужно сначала установить reppy
 import xml.etree.ElementTree as ET
 
 site_url = 'http://' +'www.livejournal.com'
-robotparser = robotparser.RobotFileParser()
-robotparser.set_url(site_url + '/robots.txt')
-robotparser.read()
+robots = RobotsCache()
+sitemap = robots.sitemaps(site_url)
+
 
 '''
 TODO:
