@@ -1,0 +1,4 @@
+*.pyc
+fabfile.py
+AI-Python/local_settings.py
+AI-Python/media/
