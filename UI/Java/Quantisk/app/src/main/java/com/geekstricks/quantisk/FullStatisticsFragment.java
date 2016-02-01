@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-public class OneFragment extends Fragment {
+public class FullStatisticsFragment extends Fragment {
 
     private Spinner personSpinner;
     private Spinner siteSpinner;
@@ -17,7 +17,7 @@ public class OneFragment extends Fragment {
     private String[] persons;
     private String[] sites;
 
-    public OneFragment() {
+    public FullStatisticsFragment() {
         // Required empty public constructor
     }
 
@@ -30,7 +30,7 @@ public class OneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_one, container, false);
+        View view = inflater.inflate(R.layout.fragment_full_statistics, container, false);
         initArrays();
         initItems(view);
         return view;
