@@ -1,0 +1,4 @@
+*.pyc
+fabfile.py
+Quantisk/local_settings.py
+Quantisk/media/
