@@ -28,10 +28,15 @@ public class OneFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_one, container, false);
+        init(view);
+        return view;
+    }
+
+    private void init(View view) {
         personSpinner = (Spinner) view.findViewById(R.id.spinner_person);
         siteSpinner = (Spinner) view.findViewById(R.id.spinner_site);
         resultsLV = (ListView) view.findViewById(R.id.results_lv);
-        return view;
     }
+
 
 }
