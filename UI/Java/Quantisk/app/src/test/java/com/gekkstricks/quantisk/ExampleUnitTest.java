@@ -1,4 +1,4 @@
-package com.gekkstricks.quantisk;
+package com.geekstricks.quantisk;
 
 import org.junit.Test;
 
