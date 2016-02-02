@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TwoFragment extends Fragment{
+public class DailyStatisticsFragment extends Fragment{
 
-    public TwoFragment() {
+    public DailyStatisticsFragment() {
         // Required empty public constructor
     }
 
