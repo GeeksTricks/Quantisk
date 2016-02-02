@@ -13,18 +13,24 @@
         android:id="@+id/spinners_ll">
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/spinner_person"
             android:layout_weight="1"
-            android:background="@color/windowBackground" />
+            android:background="@color/colorPrimary"
+            android:padding="5dp"
+            android:contextClickable="true"
+            android:textAlignment="center" />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/spinner_site"
             android:layout_weight="1"
-            android:background="@color/windowBackground" />
+            android:background="@color/colorPrimary"
+            android:padding="5dp"
+            android:dropDownSelector="@color/colorAccent"
+            android:textAlignment="center" />
     </LinearLayout>
 
     <ListView

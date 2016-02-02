@@ -37,8 +37,8 @@ public class FullStatisticsFragment extends Fragment {
     }
 
     private void initArrays() {
-        persons = new String[]{"Leonardo DiCaprio"};
-        sites = new String[]{"twitter.com"};
+        persons = new String[]{"Leonardo DiCaprio", "Quentin Tarantino", "Trent Reznor"};
+        sites = new String[]{"twitter.com", "gossip.com"};
     }
 
     private void initItems(View view) {

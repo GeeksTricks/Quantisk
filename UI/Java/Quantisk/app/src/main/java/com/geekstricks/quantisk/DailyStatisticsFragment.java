@@ -5,8 +5,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
 
 public class DailyStatisticsFragment extends Fragment{
+
+    private Spinner personSpinner;
+    private Spinner siteSpinner;
+    private ListView resultsLV;
+    private String[] persons;
+    private String[] sites;
 
     public DailyStatisticsFragment() {
         // Required empty public constructor
@@ -21,7 +30,30 @@ public class DailyStatisticsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_daily_statistics, container, false);
+        View view = inflater.inflate(R.layout.fragment_full_statistics, container, false);
+        initArrays();
+        initItems(view);
+        return view;
+    }
+
+    private void initArrays() {
+        persons = new String[]{"Leonardo DiCaprio", "Quentin Tarantino", "Trent Reznor"};
+        sites = new String[]{"twitter.com", "gossip.com"};
+    }
+
+    private void initItems(View view) {
+        personSpinner = (Spinner) view.findViewById(R.id.spinner_person);
+        siteSpinner = (Spinner) view.findViewById(R.id.spinner_site);
+        resultsLV = (ListView) view.findViewById(R.id.results_lv);
+
+        ArrayAdapter<String> personAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, persons);
+        personSpinner.setAdapter(personAdapter);
+
+        ArrayAdapter<String> siteAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, sites);
+        siteSpinner.setAdapter(siteAdapter);
+
     }
 
 }
