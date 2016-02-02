@@ -11,12 +11,12 @@ import xml.etree.ElementTree as ET
 
 class RobotsParser():
     def __init__(self):
-        self.site = ''
+        self.sitemap = ''
 
     def parse(self, site):
         # Функция которая получает ссылку на sitemap
         robots = RobotsCache()
-        self.site = robots.sitemaps(site)
+        self.sitemap = robots.sitemaps(site)
 
 class SitemapParser():
     def __init__(self):
@@ -41,6 +41,11 @@ class SitemapParser():
         namespaces = {'ns': self.gen_ns(root.tag)}
         for child in root:
             self.urls.append(child.find('ns:loc', namespaces=namespaces).text)
+
+class HtmlParser():
+    def __init__(self):
+        pass
+        
 
 
 
