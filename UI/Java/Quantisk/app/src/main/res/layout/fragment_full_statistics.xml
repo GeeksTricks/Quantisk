@@ -26,7 +26,7 @@
     </LinearLayout>
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/results_lv"
         android:layout_below="@+id/spinners_ll"
