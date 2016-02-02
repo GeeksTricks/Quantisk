@@ -2,37 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.androidhive.materialtabs.fragments.OneFragment"
-    android:nestedScrollingEnabled="false">
+    tools:context="com.geekstricks.quantisk.DailyStatisticsFragment">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/spinners_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/spinners_ll">
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
 
         <Spinner
+            android:id="@+id/spinner_person"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_person"
             android:layout_weight="1"
             android:background="@color/windowBackground" />
 
         <Spinner
+            android:id="@+id/spinner_site"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_site"
             android:layout_weight="1"
             android:background="@color/windowBackground" />
     </LinearLayout>
 
     <ListView
+        android:id="@+id/results_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/results_lv"
-        android:layout_below="@+id/spinners_ll"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinners_ll" />
 
 </RelativeLayout>
