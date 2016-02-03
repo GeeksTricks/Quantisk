@@ -53,7 +53,7 @@ class Pages(Base):
     last_scan_date = Column(DateTime)
 
     def __repr__(self):
-        return "<Url '{}', SiteID '{}', FounDateTime '{}', LastScanDate '{}'>" \
+        return "<Url '{}', SiteID '{}', FounDateTime '{}', LastScanDate '{}'>"\
             .format(self.Url, self.SiteID, self.FounDateTime,
                     self.LastScanDate)
 
