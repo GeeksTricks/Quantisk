@@ -21,10 +21,10 @@ class Downloader():
         except error.HTTPError:
             print('Неполучилось скачать sitemap.')
             
-    def download_html(self, id, link):
+    def download_html(self, id_link, link):
         # ID мы должны получить из базы
         # используем для имени файла
-        html_file = id + str(re.findall(r'.*\/.+(\..{2,4})$', link)[0])
+        html_file = id_link + str(re.findall(r'.*\/.+(\..{2,4})$', link)[0])
         try:
             with request.urlopen(link) as response,\
                  open(html_file, 'wb') as out_file:
