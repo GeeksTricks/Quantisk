@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.util.Arrays;
+
 public class FullStatisticsFragment extends Fragment {
 
     private Spinner personSpinner;
@@ -54,7 +56,7 @@ public class FullStatisticsFragment extends Fragment {
                 android.R.layout.simple_spinner_item, sites);
         siteSpinner.setAdapter(siteAdapter);
 
+        MultiSpinner multiSpinner = (MultiSpinner) view.findViewById(R.id.multi_spinner);
+        multiSpinner.setItems(Arrays.asList(sites), "Sites", (MultiSpinner.MultiSpinnerListener) view.getContext());
     }
-
-
 }
