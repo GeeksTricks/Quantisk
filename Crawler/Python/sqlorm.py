@@ -26,10 +26,11 @@ class Wordpairs(Base):
     keyword_1 = Column(String(2048))
     keyword_2 = Column(String(2048))
     distance = Column(Integer)
-    person_id = Persons.id
+    person_id = Column(ForeignKey('persons.id'))
 
     def __repr__(self):
-        pass
+        return "<KeyWord1 '{}', KeyWord2 '{}', Distance '{}', PersonID '{}'>"\
+                .format(self.KeyWord1, self.KeyWord2, self.Distance, self.PersonID)
 
 class Sites(Base):
 
@@ -39,7 +40,7 @@ class Sites(Base):
     name = Column(String(256))
 
     def __repr__(self):
-        pass
+        return "<Site '{}'>".format(self.name)
 
 class Pages(Base):
 
@@ -47,12 +48,13 @@ class Pages(Base):
 
     id = Column(Integer, primary_key=True)
     url = Column(String(2048))
-    site_id = Sites.id
+    site_id = Column(ForeignKey('sites.id'))
     found_date_time = Column(DateTime)
     last_scan_date = Column(DateTime)
 
     def __repr__(self):
-        pass
+        return "<Url '{}', SiteID '{}', FounDateTime '{}', LastScanDate '{}'>"\
+                .format(self.Url, self.SiteID, self.FounDateTime, self.LastScanDate)
 
 
 
@@ -61,11 +63,12 @@ class PersonsPageRank(Base):
     __tablename__ = 'PersonsPageRank'
 
     rank = Column(Integer, primary_key=True)
-    page_id = Pages.id
-    person_id = Persons.id
+    page_id = Column(ForeignKey('pages.id'))
+    person_id = Column(ForeignKey('persons.id'))
 
     def __repr__(self):
-        pass
+        return "<Rank '{}', PageID '{}', PersonID '{}'>"\
+                .format(self.Rank, self.PageID, self.PersonID)
 
 # Создаем таблицы по структуре из наших классов
 Base.metadata.create_all(engine)
