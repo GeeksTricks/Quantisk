@@ -84,4 +84,16 @@ person_putin = Persons(name='Putin')
 session.add(person_putin)
 session.commit()
 
+person_medvedev = Persons(name='Medvedev')
+session.add(person_medvedev)
+session.commit()
+
+person_navalniy = Persons(name='Navalniy')
+session.add(person_navalniy)
+session.commit()
+
 '''
+
+# Пример сбора данных из таблицы Persons, упорядоченных по ID
+for instance in session.query(Persons).order_by(Persons.id):
+    print(instance.name)
