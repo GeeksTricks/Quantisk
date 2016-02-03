@@ -1,11 +1,13 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
+# Указываем где хранится база
 engine = create_engine('sqlite:///./GeeksDB.db', echo=True)
 Base = declarative_base()
 
-
+# Создаем класс для каждой таблицы
 class Persons(Base):
 
     __tablename__ = 'Persons'
@@ -15,7 +17,6 @@ class Persons(Base):
 
     def __repr__(self):
         return "<Person '{}'>".format(self.name)
-
 
 class Wordpairs(Base):
 
@@ -66,5 +67,18 @@ class PersonsPageRank(Base):
     def __repr__(self):
         pass
 
-
+# Создаем таблицы по структуре из наших классов
 Base.metadata.create_all(engine)
+
+# Создаем сессию, чтобы добавлять и считывать данные в и из таблиц
+Session = sessionmaker(bind=engine)
+session = Session()
+
+'''
+Пример добавления Путина в таблицу Persons
+
+person_putin = Persons(name='Putin')
+session.add(person_putin)
+session.commit()
+
+'''
