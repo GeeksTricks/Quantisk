@@ -31,16 +31,6 @@
             android:contextClickable="true"
             android:textAlignment="center" />
 
-        <!--<com.geektricks.quantisk.MultiSpinner-->
-            <!--android:id="@+id/multi_spinner"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:padding="5dp"-->
-            <!--android:dropDownSelector="@color/colorAccent"-->
-            <!--android:textAlignment="center"-->
-            <!--android:visibility="gone" />-->
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
