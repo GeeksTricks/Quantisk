@@ -14,3 +14,7 @@ pagess_table = Table('pages', metadata,
 
 
 metadata.create_all(engine)
+
+""" TODO
+1. Добавить ограничение VARCHAR
+2. Преобразовать в класс для каждой таблицы
