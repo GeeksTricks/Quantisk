@@ -49,11 +49,11 @@ public class FullStatisticsFragment extends Fragment {
         resultsLV = (ListView) view.findViewById(R.id.results_lv);
 
         ArrayAdapter<String> personAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, persons);
+                android.R.layout.simple_list_item_1, persons);
         personSpinner.setAdapter(personAdapter);
 
         ArrayAdapter<String> siteAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, sites);
+                android.R.layout.simple_list_item_2, sites);
         siteSpinner.setAdapter(siteAdapter);
 
 //        MultiSpinner multiSpinner = (MultiSpinner) view.findViewById(R.id.multi_spinner);
