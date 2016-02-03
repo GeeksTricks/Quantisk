@@ -56,7 +56,7 @@ public class FullStatisticsFragment extends Fragment {
                 android.R.layout.simple_spinner_item, sites);
         siteSpinner.setAdapter(siteAdapter);
 
-        MultiSpinner multiSpinner = (MultiSpinner) view.findViewById(R.id.multi_spinner);
-        multiSpinner.setItems(Arrays.asList(sites), "Sites", (MultiSpinner.MultiSpinnerListener) view.getContext());
+//        MultiSpinner multiSpinner = (MultiSpinner) view.findViewById(R.id.multi_spinner);
+//        multiSpinner.setItems(Arrays.asList(sites), "Sites", (MultiSpinner.MultiSpinnerListener) getContext());
     }
 }
