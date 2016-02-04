@@ -11,7 +11,7 @@ session = Session()
 
 def GetQueryForParse():
     result_set = []
-    for row in session.query(Wordpairs.keyword_1, \
+    for row in session.query(Wordpairs.keyword_1,
                              Wordpairs.keyword_2, Wordpairs.distance,
                              Wordpairs.person_id).all():
         result_set.append(row)

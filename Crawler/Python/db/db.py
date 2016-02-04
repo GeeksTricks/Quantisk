@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
 Base = declarative_base()
 
+
 # Создаем класс для каждой таблицы
 class Persons(Base):
     __tablename__ = 'persons'
@@ -16,6 +17,7 @@ class Persons(Base):
     def __init__(self, name):
         self.name = name
 
+
 class Wordpairs(Base):
     __tablename__ = 'wordpairs'
 
@@ -27,7 +29,8 @@ class Wordpairs(Base):
 
     def __repr__(self):
         return "<KeyWord1 '{}', KeyWord2 '{}', Distance '{}', PersonID '{}'>" \
-            .format(self.keyword_1, self.keyword_2, self.distance, self.person_id)
+            .format(self.keyword_1, self.keyword_2, self.distance,
+                    self.person_id)
 
     def __init__(self, keyword_1, keyword_2, distance, person_id):
         self.keyword_1 = keyword_1
@@ -47,6 +50,7 @@ class Sites(Base):
 
     def __init__(self, name):
         self.name = name
+
 
 class Pages(Base):
     __tablename__ = 'pages'
@@ -68,6 +72,7 @@ class Pages(Base):
         self.found_date_time = found_date_time
         self.last_scan_date = last_scan_date
 
+
 class PersonsPageRank(Base):
     __tablename__ = 'PersonsPageRank'
 
@@ -84,5 +89,3 @@ class PersonsPageRank(Base):
         self.rank = rank
         self.page_id = page_id
         self.person_id = person_id
-
-
