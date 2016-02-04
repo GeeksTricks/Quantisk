@@ -1,6 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
+Base = declarative_base()
+
 # Создаем класс для каждой таблицы
 class Persons(Base):
     __tablename__ = 'persons'
