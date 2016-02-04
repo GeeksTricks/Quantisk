@@ -3,3 +3,5 @@
 # Например /images/user.jpg, /images/company/logo.png
 # НЕ БУДУТ проигнорированы файлы и папки /prod/images/user.jpg
 /__pycache__/*
+python.nja
+*.db
