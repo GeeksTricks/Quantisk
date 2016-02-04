@@ -25,7 +25,7 @@ def GetSite():
     return result_set
 
 
-def PushIntoPages(link, siteid):
+def PushUrlsIntoPages(link, siteid):
     bullet = Pages(url=link, site_id=siteid,
                    found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(
                        datetime.now()))
