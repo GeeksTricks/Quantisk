@@ -1,5 +1,7 @@
 package su.allabergen.quantisk;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
@@ -10,6 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SignUpScreen extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,6 +29,13 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
     TextView changeModeTextView;
     RelativeLayout signUpRelativeLayout;
 
+    SharedPreferences sharedPreferences;
+
+    private static Set<String> tempUsername = new LinkedHashSet<>();
+    private static Set<String> tempPassword = new LinkedHashSet<>();
+    private static List<String> tempList = new ArrayList<>();
+    private static List<String> tempList2 = new ArrayList<>();
+
     boolean isSignUp = true;
 
     @Override
@@ -30,9 +45,64 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
 
         setLogo();
         initVariables();
-        changeModeTextView.setOnClickListener(this);
-        logo.setOnClickListener(this);
-        signUpRelativeLayout.setOnClickListener(this);
+        setOnClick();
+    }
+
+    public void signUpOnClick(View view) {
+        String uname = usernameField.getText().toString();
+        String upassword = passwordField.getText().toString();
+
+        if (isSignUp) {
+            saveUserAccount(uname, upassword);
+        } else {
+            checkAccount(uname, upassword);
+        }
+    }
+
+    private void checkAccount(String uname, String upassword) {
+        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
+        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
+            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
+            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
+        }
+
+        tempList.addAll(tempUsername);
+        tempList2.addAll(tempPassword);
+
+        boolean isOK = false;
+        for (int i = 0; i < tempList.size(); i++) {
+            if (tempList.get(i).equals(uname) && tempList2.get(i).equals(upassword)) {
+                isOK = true;
+                break;
+            } else {
+                isOK = false;
+            }
+        }
+
+        if (isOK) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Incorrect username or password.\nPlease, try again!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    private void saveUserAccount(String uname, String upassword) {
+        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
+        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
+            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
+            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
+        }
+        sharedPreferences.edit().remove("USERNAME").apply();
+        sharedPreferences.edit().remove("PASSWORD").apply();
+        tempUsername.add(uname);
+        tempPassword.add(upassword);
+        sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
+        sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
+
+        Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
     }
 
     private void setLogo() {
@@ -56,8 +126,10 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         signUpRelativeLayout = (RelativeLayout) findViewById(R.id.signUpRelativeLayout);
     }
 
-    public void signUpOnClick(View view) {
-
+    private void setOnClick() {
+        changeModeTextView.setOnClickListener(this);
+        logo.setOnClickListener(this);
+        signUpRelativeLayout.setOnClickListener(this);
     }
 
     @Override
