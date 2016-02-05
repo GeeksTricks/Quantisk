@@ -24,7 +24,6 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
     ImageView logo;
     EditText usernameField;
     EditText passwordField;
-    EditText emailField;
     Button signUpBtn;
     TextView changeModeTextView;
     RelativeLayout signUpRelativeLayout;
@@ -131,7 +130,6 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         logo = (ImageView) findViewById(R.id.logo);
         usernameField = (EditText) findViewById(R.id.usernameField);
         passwordField = (EditText) findViewById(R.id.passwordField);
-        emailField = (EditText) findViewById(R.id.emailField);
         signUpBtn = (Button) findViewById(R.id.signUpBtn);
         changeModeTextView = (TextView) findViewById(R.id.changeModeTextView);
         signUpRelativeLayout = (RelativeLayout) findViewById(R.id.signUpRelativeLayout);
@@ -148,12 +146,10 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.changeModeTextView) {
             if (isSignUp) {
                 isSignUp = false;
-                emailField.setVisibility(View.INVISIBLE);
                 signUpBtn.setText("Log In");
                 changeModeTextView.setText("Sign Up");
             } else {
                 isSignUp = true;
-                emailField.setVisibility(View.VISIBLE);
                 signUpBtn.setText("Sign Up");
                 changeModeTextView.setText("Log In");
             }

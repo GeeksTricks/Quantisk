@@ -47,20 +47,6 @@
         android:hint="password"
         android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/emailField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordField"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:ems="10"
-        android:fontFamily="sans-serif-thin"
-        android:hint="email"
-        android:inputType="textEmailAddress"
-        android:visibility="visible" />
-
     <TextView
         android:id="@+id/changeModeTextView"
         android:layout_width="wrap_content"
