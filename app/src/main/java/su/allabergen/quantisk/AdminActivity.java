@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.GregorianCalendar;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner statSpinner;
     private Spinner siteSpinner;
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 
