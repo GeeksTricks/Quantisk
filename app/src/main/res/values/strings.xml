@@ -29,5 +29,7 @@
 
     <string name="title_activity_common_stat">CommonStatActivity</string>
     <string name="title_activity_daily_stat">DailyStatActivity</string>
-    <string name="title_activity_sign_up_screen">Sign Up</string>
+    <string name="title_activity_sign_up_screen">Quantisk</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
