@@ -224,6 +224,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem register = menu.findItem(R.id.action_settings);
+        Intent intent = getIntent();
+        String userPriv = intent.getStringExtra("USER_PRIV");
+        if (userPriv.equals("admin")) {
+            register.setVisible(true);
+        } else {
+            register.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 

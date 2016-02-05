@@ -80,6 +80,8 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
 
         if (isOK || (uname.equals("admin") && upassword.equals("admin"))) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            String userPriv = uname.equals("admin") ? "admin" : "user";
+            intent.putExtra("USER_PRIV", userPriv);
             startActivity(intent);
             finish();
         } else {
