@@ -1,46 +1,49 @@
 #!flask/bin/python
-
-from flask import Flask, request, jsonify, make_response
-from flask_restful import Resource, Api
+from flask import request
+from flask_restful import Resource
 from collections import namedtuple
+from .models import Persons, Wordpairs, Sites, db
 
-
-
-app = Flask(__name__)
-api = Api(app)
-app.config['RESTFUL_JSON'] = {'ensure_ascii': False}
 
 Person = namedtuple('Person', ['id', 'name'])
 WordPair = namedtuple('WordPair', ['id', 'keyword1', 'keyword2', 'distance', 'person_id'])
 Site = namedtuple('Site', ['id', 'name'])
 
-class PersonRepo:
+class Repo:
+
     def __init__(self):
         pass
 
+
+class PersonRepo(Repo):
+
     def get_by_id(self, id):
-        return Person(id, 'Placeholder')
+        p = Persons.query.get(id)
+        return Person(p.id, p.name)
 
     def get_all(self):
-        return [Person(1, 'Placeholder'), Person(2, 'GGhghg'), Person(3, 'Дикаприо')]
+        p_list = Persons.query.all()
+        return [Person(p.id, p.name) for p in p_list]
 
     def set(self, id, name):
-        pass
+        p = Persons.query.get(id)
+        p.name = name
+        db.session.commit()
 
     def add(self, name):
         """
         :param name:
         :return: id of created object
         """
-        return 8
+        # p = Persons(name)
+        # db.session.add(p)
+        pass
 
     def delete(self, id):
         pass
 
 
-class WordPairRepo:
-    def __init__(self):
-        pass
+class WordPairRepo(Repo):
 
     def get_by_id(self, id):
         return WordPair(id, 'Дикаприо', 'Оскар', 2, 5)
@@ -69,9 +72,7 @@ class WordPairRepo:
         pass
 
 
-class SiteRepo:
-    def __init__(self):
-        pass
+class SiteRepo(Repo):
 
     def get_by_id(self, id):
         return Site(id, 'placeholder.com')
@@ -193,13 +194,5 @@ class SiteListResource(Resource):
         return vars(site)
 
 
-api.add_resource(PersonsListResource, '/persons/')
-api.add_resource(PersonResource, '/persons/<id>/')
-api.add_resource(WordPairListResource, '/wordpairs/')
-api.add_resource(WordPairResource, '/wordpairs/<id>/')
-api.add_resource(SiteListResource, '/sites/')
-api.add_resource(SiteResource, '/sites/<id>/')
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
