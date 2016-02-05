@@ -18,8 +18,6 @@ class Downloader():
             print('Неполучилось скачать sitemap.')
 
     def download_html(self, link):
-        # ID мы должны получить из базы
-        # используем для имени файла
         html_file = str(re.findall(r'.*\/.+(\..{2,4})$', link)[0])
         try:
             with request.urlopen(link) as response,\
