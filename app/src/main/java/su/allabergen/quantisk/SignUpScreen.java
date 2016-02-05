@@ -55,11 +55,11 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         if (isSignUp) {
             saveUserAccount(uname, upassword);
         } else {
-            checkAccount(uname, upassword);
+            checkUserAccount(uname, upassword);
         }
     }
 
-    private void checkAccount(String uname, String upassword) {
+    private void checkUserAccount(String uname, String upassword) {
         sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
         if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
             tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
@@ -95,14 +95,25 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
             tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
         }
-        sharedPreferences.edit().remove("USERNAME").apply();
-        sharedPreferences.edit().remove("PASSWORD").apply();
-        tempUsername.add(uname);
-        tempPassword.add(upassword);
-        sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
-        sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
 
-        Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
+        if (checkForSimilarity(uname, upassword)) {
+            sharedPreferences.edit().remove("USERNAME").apply();
+            sharedPreferences.edit().remove("PASSWORD").apply();
+            tempUsername.add(uname);
+            tempPassword.add(upassword);
+            sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
+            sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
+
+            Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkForSimilarity(String uname, String upassword) {
+        if (tempUsername.contains(uname) && tempPassword.contains(upassword)) {
+            Toast.makeText(this, "Account already taken", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void setLogo() {
