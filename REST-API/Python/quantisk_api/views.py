@@ -2,7 +2,7 @@
 from flask import request
 from flask_restful import Resource
 from collections import namedtuple
-from .models import Persons, Wordpairs, Sites, db
+from .models import PersonModel, WordpairModel, SiteModel, db
 
 
 Person = namedtuple('Person', ['id', 'name'])
@@ -18,76 +18,86 @@ class Repo:
 class PersonRepo(Repo):
 
     def get_by_id(self, id):
-        p = Persons.query.get(id)
+        p = PersonModel.query.get(id)
         return Person(p.id, p.name)
 
     def get_all(self):
-        p_list = Persons.query.all()
+        p_list = PersonModel.query.all()
         return [Person(p.id, p.name) for p in p_list]
 
     def set(self, id, name):
-        p = Persons.query.get(id)
+        p = PersonModel.query.get(id)
         p.name = name
         db.session.commit()
 
     def add(self, name):
-        """
-        :param name:
-        :return: id of created object
-        """
-        # p = Persons(name)
-        # db.session.add(p)
-        pass
+        p = PersonModel(name)
+        db.session.add(p)
+        db.session.commit()
+        return p.id
 
     def delete(self, id):
-        pass
+        PersonModel.query.filter_by(id=id).delete()
+        db.session.commit()
 
 
 class WordPairRepo(Repo):
 
     def get_by_id(self, id):
-        return WordPair(id, 'Дикаприо', 'Оскар', 2, 5)
+        wp = WordpairModel.query.get(id)
+        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
 
     def get_by_person_id(self, person_id):
-        return [
-            WordPair(1, 'Дикаприо', 'Оскар', 2, person_id),
-            WordPair(2, 'Дикаприо', 'Оскар1', 2, person_id),
-            WordPair(3, 'Дикаприо', 'Оскар2', 2, person_id),
-        ]
+        wp_list = WordpairModel.query.filter_by(person_id=person_id)
+        return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, person_id) for wp in wp_list]
 
     def get_all(self):
-        return [
-            WordPair(1, 'Дикаприо', 'Оскар', 2, 1),
-            WordPair(2, 'Дикаприо', 'Оскар1', 2, 2),
-            WordPair(3, 'Дикаприо', 'Оскар2', 2, 3),
-        ]
+        wp_list = WordpairModel.query.all()
+        return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id) for wp in wp_list]
 
     def add(self, keyword1, keyword2, distance, person_id):
-        return 3
+        wp = WordpairModel(keyword1, keyword2, distance, person_id)
+        db.session.add(wp)
+        db.session.commit()
+        return wp.id
 
     def set(self, id, keyword1, keyword2, distance, person_id):
-        pass
+        wp = WordpairModel.query.get(id)
+        wp.keyword1 = keyword1
+        wp.keyword2 = keyword2
+        wp.distance = distance
+        wp.person_id = person_id
+        db.session.commit()
 
     def delete(self, id):
-        pass
+        WordpairModel.query.filter_by(id=id).delete()
+        db.session.commit()
 
 
 class SiteRepo(Repo):
 
     def get_by_id(self, id):
-        return Site(id, 'placeholder.com')
+        s = SiteModel.query.get(id)
+        return Site(s.id, s.name)
 
     def get_all(self):
-        return [Site(1, 'placeholder.ru'), Site(2, 'ohg.hg'), Site(3, 'Дикаприо.рф')]
+        s_list = SiteModel.query.all()
+        return [Site(s.id, s.name) for s in s_list]
 
     def set(self, id, name):
-        pass
+        s = SiteModel.query.get(id)
+        s.name = name
+        db.session.commit()
 
     def add(self, name):
-        return 9
+        s = SiteModel(name)
+        db.session.add(s)
+        db.session.commit()
+        return s.id
 
     def delete(self, id):
-        pass
+        SiteModel.query.filter_by(id=id).delete()
+        db.session.commit()
 
 
 person_repo = PersonRepo()
@@ -113,7 +123,7 @@ class PersonResource(Resource):
         return 204
 
 
-class PersonsListResource(Resource):
+class PersonListResource(Resource):
 
     def get(self):
         persons = person_repo.get_all()
@@ -135,11 +145,11 @@ class WordPairResource(Resource):
 
     def put(self, id):
         body = request.get_json()
-        wordpair1 = body['wordpair1']
-        wordpair2 = body['wordpair2']
+        keyword1 = body['keyword1']
+        keyword2 = body['keyword2']
         distance = body['distance']
         person_id = body['person_id']
-        wordpair_repo.set(id, wordpair1, wordpair2, distance, person_id)
+        wordpair_repo.set(id, keyword1, keyword2, distance, person_id)
         wordpair = wordpair_repo.get_by_id(id)
         return vars(wordpair)
 
@@ -155,11 +165,11 @@ class WordPairListResource(Resource):
 
     def post(self):
         body = request.get_json()
-        wordpair1 = body['wordpair1']
-        wordpair2 = body['wordpair2']
+        keyword1 = body['keyword1']
+        keyword2 = body['keyword2']
         distance = body['distance']
         person_id = body['person_id']
-        wordpair_repo.add(wordpair1, wordpair2, distance, person_id)
+        id = wordpair_repo.add(keyword1, keyword2, distance, person_id)
         wordpair = wordpair_repo.get_by_id(id)
         return vars(wordpair)
 

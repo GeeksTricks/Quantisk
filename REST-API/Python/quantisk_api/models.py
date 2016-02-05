@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Persons(db.Model):
+class PersonModel(db.Model):
 
     __tablename__ = 'Persons'
     
@@ -16,7 +16,7 @@ class Persons(db.Model):
         return '<Person {0}>'.format(self.name)
 
 
-class Wordpairs(db.Model):
+class WordpairModel(db.Model):
 
     __tablename__ = 'Wordpairs'
 
@@ -41,7 +41,7 @@ class Wordpairs(db.Model):
         )
 
 
-class Sites(db.Model):
+class SiteModel(db.Model):
 
     __tablename__ = 'Sites'
 
@@ -55,13 +55,13 @@ class Sites(db.Model):
         return '<Site {0}>'.format(self.name)
 
 
-# class Pages(db.Model):
+# class PagesModel(db.Model):
 #
 #     __tablename__ = 'Pages'
 #
 #     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
 #     url = db.Column(db.String(50), nullable=False)
-#     site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
+#     site_id = db.Column(db.Integer, db.ForeignKey('SiteModel.id'), nullable=False)
 #     found_date_time = db.Column(db.DateTime)
 #     last_scan_date = db.Column(db.DateTime)
 #
@@ -79,13 +79,13 @@ class Sites(db.Model):
 #             self.last_scan_date,
 #         )
 
-# class PersonPageRank(db.Model):
+# class PersonPageRankModel(db.Model):
 #
 #     __tablename__ = 'PersonPageRank'
 #
 #     rank = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-#     page_id = db.Column(db.Integer, db.ForeignKey('Pages.id'), nullable=False)
-#     person_id = db.Column(db.Integer, db.ForeignKey('Persons.id'), nullable=False)
+#     page_id = db.Column(db.Integer, db.ForeignKey('PageModel.id'), nullable=False)
+#     person_id = db.Column(db.Integer, db.ForeignKey('PersonModel.id'), nullable=False)
 #
 #     def __init__(self, rank, page_id, person_id):
 #         self.rank = rank

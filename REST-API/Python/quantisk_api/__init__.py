@@ -12,12 +12,12 @@ app.config['RESTFUL_JSON'] = {'ensure_ascii': False}
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(__file__) + '/GeeksDB.db'
 
 
-api.add_resource(PersonsListResource, '/persons/')
-api.add_resource(PersonResource, '/persons/<id>/')
+api.add_resource(PersonListResource, '/persons/')
+api.add_resource(PersonResource, '/persons/<int:id>/')
 api.add_resource(WordPairListResource, '/wordpairs/')
-api.add_resource(WordPairResource, '/wordpairs/<id>/')
+api.add_resource(WordPairResource, '/wordpairs/<int:id>/')
 api.add_resource(SiteListResource, '/sites/')
-api.add_resource(SiteResource, '/sites/<id>/')
+api.add_resource(SiteResource, '/sites/<int:id>/')
 
 
 
