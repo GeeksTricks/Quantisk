@@ -1,23 +1,21 @@
 package su.allabergen.quantisk;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -79,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.about) {
             return true;
         }
 
@@ -113,14 +111,16 @@ public class SettingsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "SITES";
                 case 1:
-                    return "SECTION 2";
+                    return "NAMES";
                 case 2:
-                    return "SECTION 3";
+                    return "USERS";
             }
             return null;
         }
+
+
     }
 
     /**
@@ -151,10 +151,40 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
+//            View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                View siteView = inflater.inflate(R.layout.fragment_site, container, false);
+                TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
+                Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
+                siteSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.sites, android.R.layout.simple_list_item_activated_1));
+                siteTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                return siteView;
+            }
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
+                View nameView = inflater.inflate(R.layout.fragment_name, container, false);
+                TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
+                Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
+                nameSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.names, android.R.layout.simple_list_item_activated_1));
+                nameTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                return nameView;
+            }
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+                View userView = inflater.inflate(R.layout.fragment_user, container, false);
+                TextView userTextView = (TextView) userView.findViewById(R.id.user_label);
+                Spinner userSpinner = (Spinner) userView.findViewById(R.id.userSpinner);
+                userSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, SignUpScreen.tempList));
+                userTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                return userView;
+            }
+
+            return null;
+
+//            return rootView;
         }
     }
 }
