@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -119,14 +121,25 @@ public class SettingsActivity extends AppCompatActivity {
             }
             return null;
         }
-
-
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+        Button addNameBtn;
+        Button removeNameBtn;
+        Button editNameBtn;
+        Button addSiteBtn;
+        Button removeSiteBtn;
+        Button editSiteBtn;
+        Button addUserBtn;
+        Button removeUserBtn;
+        Button editUserBtn;
+        View vSite;
+        View vName;
+        View vUser;
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -160,7 +173,8 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
                 Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
                 siteSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.sites, android.R.layout.simple_list_item_activated_1));
-                siteTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                siteTextView.setText("Modify sites");
+                initSiteBtn(siteView);
                 return siteView;
             }
 
@@ -169,7 +183,8 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
                 Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
                 nameSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.names, android.R.layout.simple_list_item_activated_1));
-                nameTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                nameTextView.setText("Modify names");
+                initNameBtn(nameView);
                 return nameView;
             }
 
@@ -178,13 +193,91 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView userTextView = (TextView) userView.findViewById(R.id.user_label);
                 Spinner userSpinner = (Spinner) userView.findViewById(R.id.userSpinner);
                 userSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, SignUpScreen.tempList));
-                userTextView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + "\nModify sites");
+                userTextView.setText("Modify users");
+                initUserBtn(userView);
                 return userView;
             }
 
             return null;
+        }
 
-//            return rootView;
+        private void initSiteBtn(View siteView) {
+            vSite = siteView;
+            addSiteBtn = (Button) siteView.findViewById(R.id.addSiteBtn);
+            removeSiteBtn = (Button) siteView.findViewById(R.id.removeSiteBtn);
+            editSiteBtn = (Button) siteView.findViewById(R.id.editSiteBtn);
+            addSiteBtn.setOnClickListener(this);
+            removeSiteBtn.setOnClickListener(this);
+            editSiteBtn.setOnClickListener(this);
+        }
+
+        private void initNameBtn(View nameView) {
+            vName = nameView;
+            addNameBtn = (Button) nameView.findViewById(R.id.addNameBtn);
+            removeNameBtn = (Button) nameView.findViewById(R.id.removeNameBtn);
+            editNameBtn = (Button) nameView.findViewById(R.id.editNameBtn);
+            addNameBtn.setOnClickListener(this);
+            removeNameBtn.setOnClickListener(this);
+            editNameBtn.setOnClickListener(this);
+        }
+
+        private void initUserBtn(View userView) {
+            vUser = userView;
+            addUserBtn = (Button) userView.findViewById(R.id.addUserBtn);
+            removeUserBtn = (Button) userView.findViewById(R.id.removeUserBtn);
+            editUserBtn = (Button) userView.findViewById(R.id.editUserBtn);
+            addUserBtn.setOnClickListener(this);
+            removeUserBtn.setOnClickListener(this);
+            editUserBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            String currFrag = "";
+            View view = null;
+
+            switch (v.getId()) {
+                case R.id.addSiteBtn :
+                    currFrag = "addSiteBtn";
+                    view = vSite;
+                    break;
+                case R.id.addNameBtn :
+                    currFrag = "addNameBtn";
+                    view = vName;
+                    break;
+                case R.id.addUserBtn :
+                    currFrag = "addUserBtn";
+                    view = vUser;
+                    break;
+                case R.id.removeSiteBtn :
+                    currFrag = "removeSiteBtn";
+                    view = vSite;
+                    break;
+                case R.id.removeNameBtn :
+                    currFrag = "removeNameBtn";
+                    view = vName;
+                    break;
+                case R.id.removeUserBtn :
+                    currFrag = "removeUserBtn";
+                    view = vUser;
+                    break;
+                case R.id.editSiteBtn :
+                    currFrag = "editSiteBtn";
+                    view = vSite;
+                    break;
+                case R.id.editNameBtn :
+                    currFrag = "editNameBtn";
+                    view = vName;
+                    break;
+                case R.id.editUserBtn :
+                    currFrag = "editUserBtn";
+                    view = vUser;
+                    break;
+            }
+
+            AddDialog dialog = new AddDialog(currFrag, view);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            dialog.show(ft, "Add Dialog");
         }
     }
 }
