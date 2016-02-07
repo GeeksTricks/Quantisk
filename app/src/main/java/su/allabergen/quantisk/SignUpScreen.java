@@ -32,7 +32,7 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
 
     private static Set<String> tempUsername = new LinkedHashSet<>();
     private static Set<String> tempPassword = new LinkedHashSet<>();
-    private static List<String> tempList = new ArrayList<>();
+    public static List<String> tempList = new ArrayList<>();
     private static List<String> tempList2 = new ArrayList<>();
 
     boolean isSignUp = true;
@@ -79,7 +79,7 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         }
 
         if (isOK) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
             startActivity(intent);
             finish();
         } else if (uname.equals("admin") && upassword.equals("admin")) {
