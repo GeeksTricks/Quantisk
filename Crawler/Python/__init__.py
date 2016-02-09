@@ -10,6 +10,7 @@ parser_html = parser.HtmlParser()
 download = downloader.Downloader()
 data = DataLayer()
 
+# Получаем список ссылок
 def get_url_list(link_list):
     url_list = []
     for link in link_list:
@@ -18,6 +19,7 @@ def get_url_list(link_list):
         url_list.extend(urls)
     return url_list
 
+# Парсим html файл и добавляем в сессию ранк, если таковой есть
 def get_runk_add_to_table(html_file, query_list, id_url):
     for query in query_list:
         count = parser_html.parse_html(html_file, query.keyword_1,
