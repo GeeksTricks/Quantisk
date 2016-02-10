@@ -59,18 +59,18 @@ class Pages(Base):
     url = Column(String(2048))
     site_id = Column(ForeignKey('sites.id'))
     found_date_time = Column(DateTime)
-    last_scan_date = Column(DateTime)
+    last_scan_date = Column(DateTime, default=None)
 
     def __repr__(self):
         return "<Url '{}', SiteID '{}', FounDateTime '{}', LastScanDate '{}'>"\
             .format(self.url, self.site_id, self.found_date_time,
                     self.last_scan_date)
 
-    def __init__(self, url, site_id, found_date_time, last_scan_date):
+    def __init__(self, url, site_id, found_date_time):
         self.url = url
         self.site_id = site_id
         self.found_date_time = found_date_time
-        self.last_scan_date = last_scan_date
+        # self.last_scan_date = last_scan_date   , last_scan_date
 
 
 class PersonsPageRank(Base):

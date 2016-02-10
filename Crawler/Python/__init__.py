@@ -17,10 +17,13 @@ def get_url_list(link_list):
     for link in link_list:
         sitemap_file = download.download_html(link)
         urls = parser_sitemap.parse_sitemap(sitemap_file)
-        url_list.extend(urls)
+        link_list.extend(urls['sitemap'])
+        url_list.extend(urls['urls'])
     return url_list
 
 # Парсим html файл и добавляем в сессию ранк, если таковой есть
+
+
 def get_runk_add_to_table(html_file, query_list, id_url):
     for query in query_list:
         count = parser_html.parse_html(html_file, query.keyword_1,
@@ -44,8 +47,10 @@ urls = data.get_not_scan_urls()
 queries = data.get_query_for_parse()
 
 for url in urls:
+    print(url)
     html_file = download.download_html(url.url)
     get_runk_add_to_table(html_file, queries, url.id)
+    data.push_data_to_db()
 
 # Отправляем полученные данные в базу
 data.push_data_to_db()

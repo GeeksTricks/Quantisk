@@ -29,8 +29,7 @@ class DataLayer():
 
     def get_not_scan_urls(self):
         # получаем весь список ссылок с пустой датой сканирвоания
-        result_set =  self.session.query(Pages.id, Pages.url).filter(
-            Pages.last_scan_date is None).all()
+        result_set = self.session.query(Pages.id, Pages.url).filter(Pages.last_scan_date == None).all()
         return result_set
 
     def get_query_for_parse(self):
