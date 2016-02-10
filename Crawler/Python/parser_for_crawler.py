@@ -33,7 +33,7 @@ class SitemapParser():
         else:
             return ''
 
-    def parse_sitemap(self, sitemapfile):
+    '''def parse_sitemap(self, sitemapfile):
         # получаем дерево xml
         # получаем корневой(родительский) элемент
         # получаем пространство имен для этого xml
@@ -45,7 +45,26 @@ class SitemapParser():
         urls = []
         for child in root:
             urls.append(child.find('ns:loc', namespaces=namespaces).text)
-        return urls
+        return urls'''
+    def parse_sitemap(self, sitemapfile):
+        # получаем дерево xml
+        # получаем корневой(родительский) элемент
+        # получаем пространство имен для этого xml
+        # потом ищем нужный нам тег('loc')
+        # вытаскиваем из него запись и печатаем или передаемкуда нибудь
+        tree = ET.parse(sitemapfile)
+        root = tree.getroot()
+        namespaces = {'ns': self._gen_ns(root.tag)}
+        urls = []
+        sitemaps = []
+        for child in root:
+            url = child.find('ns:loc', namespaces=namespaces).text
+            url_type = str(re.findall(r'.+\.(.{2,4})', url)[0])
+            if url_type == 'xml':
+                sitemaps.append(url)
+            else:
+                urls.append(url)
+        return {'sitemap' : sitemaps, 'urls': urls}
 
 
 class HtmlParser():
