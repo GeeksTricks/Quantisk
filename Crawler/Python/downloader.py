@@ -1,10 +1,10 @@
-#!/usr/bin/env python
 from urllib import request
 from urllib import error
 import shutil
 import re
 
 # TODO: добавить логирование операций и возможных ошибок
+
 
 class Downloader():
     def download_sitemap(self, link):

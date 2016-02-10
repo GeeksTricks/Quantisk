@@ -1,14 +1,15 @@
 from data_layer import DataLayer
 
 import downloader
-import parser
+import parser_for_crawler
 
 # создаем экземпляры классов Загрузчика и Парсеров сайтмапа и роботс
-parser_robots = parser.RobotsParser()
-parser_sitemap = parser.SitemapParser()
-parser_html = parser.HtmlParser()
-download = downloader.Downloader()
 data = DataLayer()
+download = downloader.Downloader()
+parser_robots = parser_for_crawler.RobotsParser()
+parser_sitemap = parser_for_crawler.SitemapParser()
+parser_html = parser_for_crawler.HtmlParser()
+
 
 # Получаем список ссылок
 def get_url_list(link_list):

@@ -11,8 +11,8 @@ from datetime import datetime
 class DataLayer():
     def __init__(self):
         self.engine = create_engine(
-            'mysql+pymysql://crawler:probation2016@178.218.115.116:64004'
-            '/GeeksTricks',
+            'mysql+pymysql://Crawler:probation2016@178.218.115.116:64004'
+            '/GeeksTricks?charset=utf8',
             echo=True)
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
@@ -43,8 +43,7 @@ class DataLayer():
     def add_page_to_table(self, url_list, id_site):
         for url in url_list:
             bullet = Pages(url=url, site_id=id_site,
-                           found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(
-                               datetime.now()))
+                           found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
             self.session.add(bullet)
 
     def add_rank_to_table(self, count, id_url, id_persons):
