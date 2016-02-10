@@ -8,7 +8,7 @@ import re
 
 class Downloader():
     def download_sitemap(self, link):
-        sitemap = str(re.findall(r'.*\/(.+\..{2,4})$', link)[0])
+        sitemap = str(re.findall(r'.*\/(.+\..{2,4})', link)[0])
         try:
             with request.urlopen(link) as response,\
                  open(sitemap, 'wb') as out_file:
@@ -18,7 +18,7 @@ class Downloader():
             print('Неполучилось скачать sitemap.')
             
     def download_html(self, link):
-        html_file = str(re.findall(r'.*\/.+(\..{2,4})$', link)[0])
+        html_file = 'pages'
         try:
             with request.urlopen(link) as response,\
                  open(html_file, 'wb') as out_file:
