@@ -54,8 +54,16 @@ class DataLayer():
     def set_last_scan_date(self, id_url):
         scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
         self.session.query(Pages).filter_by(id=id_url).update({'last_scan_date': scan_date})
-        #bullet = Pages(id=id_url, last_scan_date=scan_date)
-        #self.session.add(bullet)
 
     def push_data_to_db(self):
         self.session.commit()
+
+    def check_exists(self, url_list):
+        urls = []
+        for url in url_list:
+            request = self.session.query(Pages.url).filter(Pages.url == url).all()
+            if request:
+                pass
+            else:
+                urls.append(url)
+        return urls

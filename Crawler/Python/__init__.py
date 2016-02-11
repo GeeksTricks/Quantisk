@@ -13,13 +13,15 @@ parser_html = parser_for_crawler.HtmlParser()
 
 def get_url_list(link_list):
     # Получаем список ссылок
-    url_list = []
+    all_url_list = []
     for link in link_list:
         sitemap_file = download.download_html(link)
         urls = parser_sitemap.parse_sitemap(sitemap_file)
         link_list.extend(urls['sitemap'])
-        url_list.extend(urls['urls'])
-    return url_list
+        all_url_list.extend(urls['urls'])
+    sort_url_list = data.check_exists(all_url_list)
+    print(sort_url_list)
+    return sort_url_list
 
 
 def get_runk_add_to_table(html_file, query_list, id_url):
@@ -46,7 +48,7 @@ urls = data.get_not_scan_urls()
 queries = data.get_query_for_parse()
 
 for url in urls:
-    print(url)
+    print(url)     # отладка
     html_file = download.download_html(url.url)
     get_runk_add_to_table(html_file, queries, url.id)
     # Отправляем полученные данные в базу

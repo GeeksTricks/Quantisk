@@ -7,12 +7,6 @@ import xml.etree.ElementTree as ET
 # нужна библиотека "pip install beautifulsoup4" и к ней еще нужна lxml
 from bs4 import BeautifulSoup
 
-# TODO: а в идеале всетаки надо было использовать GRAB
-# по Роадмапу у нас есть цели асинхронного парсинга, так что пока надо плотно
-# присмтриваться к этому делу, есть еще библиотека scrappy
-# насколько я понял она тоже для разбора сайтов, тоже можно посмотреть.
-# с версии 3 надо будет использовать ее
-
 # TODO: добавить логирование операций и возможных ошибок
 
 
@@ -33,19 +27,6 @@ class SitemapParser():
         else:
             return ''
 
-    '''def parse_sitemap(self, sitemapfile):
-        # получаем дерево xml
-        # получаем корневой(родительский) элемент
-        # получаем пространство имен для этого xml
-        # потом ищем нужный нам тег('loc')
-        # вытаскиваем из него запись и печатаем или передаемкуда нибудь
-        tree = ET.parse(sitemapfile)
-        root = tree.getroot()
-        namespaces = {'ns': self._gen_ns(root.tag)}
-        urls = []
-        for child in root:
-            urls.append(child.find('ns:loc', namespaces=namespaces).text)
-        return urls'''
     def parse_sitemap(self, sitemapfile):
         # получаем дерево xml
         # получаем корневой(родительский) элемент
