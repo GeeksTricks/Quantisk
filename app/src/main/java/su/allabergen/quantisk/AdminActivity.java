@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class AdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -37,6 +39,9 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private int monthTo;
     private int dayTo;
 
+    public static List<String> siteList;
+    public static List<String> nameList;
+
     public Toolbar toolbar;
 
     @Override
@@ -47,6 +52,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         setSupportActionBar(toolbar);
 
         initVariables();
+        spinnerLists();
         createSpinners();
     }
 
@@ -60,16 +66,32 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         dateTo = (TextView) findViewById(R.id.dateTo);
     }
 
+    private void spinnerLists() {
+        String[] siteArray = getResources().getStringArray(R.array.sites);
+//        siteList = Arrays.asList(siteArray);
+        siteList = new ArrayList<>();
+        for (int i = 0; i < siteArray.length; i++) {
+            siteList.add(siteArray[i]);
+        }
+
+        String[] nameArray = getResources().getStringArray(R.array.names);
+//        nameList = Arrays.asList(nameArray);
+        nameList = new ArrayList<>();
+        for (int i = 0; i < nameArray.length; i++) {
+            nameList.add(nameArray[i]);
+        }
+    }
+
     private void createSpinners() {
         ArrayAdapter statAdapter = ArrayAdapter.createFromResource(this, R.array.stats, android.R.layout.simple_list_item_activated_1);
         statSpinner.setAdapter(statAdapter);
         statSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter siteAdapter = ArrayAdapter.createFromResource(this, R.array.sites, android.R.layout.simple_list_item_activated_1);
+        ArrayAdapter<String> siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter nameAdapter = ArrayAdapter.createFromResource(this, R.array.names, android.R.layout.simple_list_item_activated_1);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
         nameSpinner.setAdapter(nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
     }
