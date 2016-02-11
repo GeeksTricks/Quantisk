@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class PersonModel(db.Model):
 
     __tablename__ = 'Persons'
@@ -55,47 +56,48 @@ class SiteModel(db.Model):
         return '<Site {0}>'.format(self.name)
 
 
-# class PagesModel(db.Model):
-#
-#     __tablename__ = 'Pages'
-#
-#     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-#     url = db.Column(db.String(50), nullable=False)
-#     site_id = db.Column(db.Integer, db.ForeignKey('SiteModel.id'), nullable=False)
-#     found_date_time = db.Column(db.DateTime)
-#     last_scan_date = db.Column(db.DateTime)
-#
-#     def __init__(self, url, site_id, found_date_time, last_scan_date):
-#         self.url = url
-#         self.site_id = site_id
-#         self.found_date_time = found_date_time
-#         self.last_scan_date = last_scan_date
-#
-#     def __repr__(self):
-#         return '<SiteID: {0}, URL: {1}, Found: {2}, LastScanned: {3}>'.format(
-#             self.site_id,
-#             self.url,
-#             self.found_date_time,
-#             self.last_scan_date,
-#         )
+class PageModel(db.Model):
 
-# class PersonPageRankModel(db.Model):
-#
-#     __tablename__ = 'PersonPageRank'
-#
-#     rank = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-#     page_id = db.Column(db.Integer, db.ForeignKey('PageModel.id'), nullable=False)
-#     person_id = db.Column(db.Integer, db.ForeignKey('PersonModel.id'), nullable=False)
-#
-#     def __init__(self, rank, page_id, person_id):
-#         self.rank = rank
-#         self.page_id = page_id
-#         self.person_id = person_id
-#
-#     def __repr__(self):
-#         return '<PageID: {0}, PersonID: {1}, Rank: {2}>'.format(
-#             self.page_id,
-#             self.person_id,
-#             self.rank,
-#         )
-#
+    __tablename__ = 'Pages'
+
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    url = db.Column(db.String(50), nullable=False)
+    site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
+    found_date_time = db.Column(db.DateTime)
+    last_scan_date = db.Column(db.DateTime)
+
+    def __init__(self, url, site_id, found_date_time, last_scan_date):
+        self.url = url
+        self.site_id = site_id
+        self.found_date_time = found_date_time
+        self.last_scan_date = last_scan_date
+
+    def __repr__(self):
+        return '<ID: {}, SiteID: {}, URL: {}, Found: {}, LastScanned: {}>'.format(
+            self.id,
+            self.site_id,
+            self.url,
+            self.found_date_time,
+            self.last_scan_date,
+        )
+
+
+class RankModel(db.Model):
+
+    __tablename__ = 'PersonPageRank'
+
+    rank = db.Column(db.Integer, nullable=False)
+    page_id = db.Column(db.Integer, db.ForeignKey('Pages.id'), primary_key=True, nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('Persons.id'), primary_key=True, nullable=False)
+
+    def __init__(self, rank, page_id, person_id):
+        self.rank = rank
+        self.page_id = page_id
+        self.person_id = person_id
+
+    def __repr__(self):
+        return '<PageID: {0}, PersonID: {1}, Rank: {2}>'.format(
+            self.page_id,
+            self.person_id,
+            self.rank,
+        )
