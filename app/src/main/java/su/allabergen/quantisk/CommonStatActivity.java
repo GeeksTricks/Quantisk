@@ -29,8 +29,11 @@ public class CommonStatActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String restUrl = "http://androidexample.com/media/webservice/JsonReturn.php";
-        new RestOperation(CommonStatActivity.this).execute(restUrl);
+//        String restUrl = "http://androidexample.com/media/webservice/JsonReturn.php";
+//        new RestOperation(CommonStatActivity.this).execute(restUrl);
+
+        String restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
+        new WebService().execute(restUrl);
 
         Bundle extras = getIntent().getExtras();
         String name = extras.getString("NAME");
