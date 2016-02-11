@@ -66,10 +66,10 @@ class Pages(Base):
             .format(self.url, self.site_id, self.found_date_time,
                     self.last_scan_date)
 
-    def __init__(self, url, site_id, found_date_time):
-        self.url = url
-        self.site_id = site_id
-        self.found_date_time = found_date_time
+    # def __init__(self, site_id):
+        # self.url = url url,
+        # self.site_id = site_id
+        # self.found_date_time = found_date_time , found_date_time
         # self.last_scan_date = last_scan_date   , last_scan_date
 
 

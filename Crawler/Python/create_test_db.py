@@ -10,8 +10,8 @@ from datetime import datetime
 engine = create_engine('mysql+pymysql://Crawler:probation2016@178.218.115.116:64004/GeeksTricks?charset=utf8',echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
-
 '''
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 

@@ -51,5 +51,11 @@ class DataLayer():
                                              person_id=id_persons)
             self.session.add(bullet)
 
+    def set_last_scan_date(self, id_url):
+        scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
+        self.session.query(Pages).filter_by(id=id_url).update({'last_scan_date': scan_date})
+        #bullet = Pages(id=id_url, last_scan_date=scan_date)
+        #self.session.add(bullet)
+
     def push_data_to_db(self):
         self.session.commit()
