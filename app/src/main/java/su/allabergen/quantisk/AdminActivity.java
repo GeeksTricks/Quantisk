@@ -40,7 +40,9 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private int dayTo;
 
     public static List<String> siteList;
-    public static List<String> nameList;
+    public static List<String> nameList = new ArrayList<>();
+    private WebService webService;
+    private String restUrl;
 
     public Toolbar toolbar;
 
@@ -52,6 +54,11 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         setSupportActionBar(toolbar);
 
         initVariables();
+
+        restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
+        webService = new WebService();
+        webService.execute(restUrl);
+
         spinnerLists();
         createSpinners();
     }
@@ -68,18 +75,21 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private void spinnerLists() {
         String[] siteArray = getResources().getStringArray(R.array.sites);
-//        siteList = Arrays.asList(siteArray);
         siteList = new ArrayList<>();
         for (int i = 0; i < siteArray.length; i++) {
             siteList.add(siteArray[i]);
         }
 
-        String[] nameArray = getResources().getStringArray(R.array.names);
-//        nameList = Arrays.asList(nameArray);
-        nameList = new ArrayList<>();
-        for (int i = 0; i < nameArray.length; i++) {
-            nameList.add(nameArray[i]);
-        }
+        nameList.add("person 1");
+        nameList.add("person 2");
+        nameList.add("person 3");
+        nameList.add("person 4");
+
+//        String[] nameArray = getResources().getStringArray(R.array.names);
+//        nameList = new ArrayList<>();
+//        for (int i = 0; i < nameArray.length; i++) {
+//            nameList.add(nameArray[i]);
+//        }
     }
 
     private void createSpinners() {
@@ -91,7 +101,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, R.layout.custom_list, nameList);
         nameSpinner.setAdapter(nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
     }

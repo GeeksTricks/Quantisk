@@ -12,11 +12,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Rabat on 12.02.2016.
  */
 public class WebService extends AsyncTask<String, Void, String> {
+
+    public static List<String> namesFromWebService = new ArrayList<>();
 
     @Override
     protected String doInBackground(String... urls) {
@@ -74,8 +78,9 @@ public class WebService extends AsyncTask<String, Void, String> {
             JSONArray jsonArray = new JSONArray(s);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonPart = jsonArray.getJSONObject(i);
-                Log.i("id", String.valueOf(jsonPart.getInt("id")));
-                Log.i("name", jsonPart.getString("name"));
+//                nameList.add(jsonPart.getString("name"));
+//                Log.i("id", String.valueOf(jsonPart.getInt("id")));
+//                Log.i("name", jsonPart.getString("name"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

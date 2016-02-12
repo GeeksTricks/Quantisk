@@ -57,14 +57,6 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerLists();
     }
 
-    private void spinnerLists() {
-        String[] siteArray = getResources().getStringArray(R.array.sites);
-        siteList = Arrays.asList(siteArray);
-
-        String[] nameArray = getResources().getStringArray(R.array.names);
-        nameList = Arrays.asList(nameArray);
-    }
-
     private void initVariables() {
         statSpinner = (Spinner) findViewById(R.id.statSpinner);
         siteSpinner = (Spinner) findViewById(R.id.siteSpinner);
@@ -73,6 +65,14 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         dateFrom = (TextView) findViewById(R.id.dateFrom);
         dateTo = (TextView) findViewById(R.id.dateTo);
+    }
+
+    private void spinnerLists() {
+        String[] siteArray = getResources().getStringArray(R.array.sites);
+        siteList = Arrays.asList(siteArray);
+
+        String[] nameArray = getResources().getStringArray(R.array.names);
+        nameList = Arrays.asList(nameArray);
     }
 
     private void createSpinners() {
