@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import static su.allabergen.quantisk.AdminActivity.*;
+
 public class SettingsActivity extends AppCompatActivity {
 
     /**
@@ -182,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
                 View nameView = inflater.inflate(R.layout.fragment_name, container, false);
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
                 Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
-                nameSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.names, android.R.layout.simple_list_item_activated_1));
+                nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, nameList));
                 nameTextView.setText("Modify names");
                 initNameBtn(nameView);
                 return nameView;
