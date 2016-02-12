@@ -1,6 +1,7 @@
-from .models import PersonModel, WordpairModel, SiteModel, PageModel, RankModel, db
+from .models import PersonModel, WordpairModel, SiteModel, PageModel, RankModel, UserModel, db
 from sqlalchemy.sql import func
 from collections import namedtuple
+from werkzeug.security import generate_password_hash
 
 
 Person = namedtuple('Person', ['id', 'name'])
@@ -9,9 +10,9 @@ Site = namedtuple('Site', ['id', 'name'])
 Page = namedtuple('Page', ['id', 'url', 'site_id', 'found_date_time', 'last_scan_date'])
 TotalRank = namedtuple('Rank', ['rank', 'site_id', 'person_id'])
 DailyRank = namedtuple('DailyRank', ['rank', 'day', 'site_id', 'person_id'])
-User = namedtuple('User', ['id', 'login', 'pass_hash', 'password'])
+User = namedtuple('User', ['id', 'login', 'pass_hash'])
+# User = namedtuple('User', ['id', 'login', 'pass_hash', 'password', 'role'])
 
-user = User(1, 'admin', None, 'qwerty')
 
 class Repo:
 
@@ -22,10 +23,26 @@ class Repo:
 class UserRepo(Repo):
 
     def get_by_id(self, id):
-        return user
+        u = UserModel.query.get(id)
+        return User(u.id, u.login, u.pass_hash)
 
     def get_by_login(self, login):
-        return user
+        query = UserModel.query
+        u = query.filter_by(login=login).first()
+        if u is None:
+            return None
+        return User(u.id, u.login, u.pass_hash)
+
+    def get_user_role(self, id):
+        pass
+
+# метод для тестов
+    def add_user(self, login, password):
+        p_hash = generate_password_hash(password)
+        u = UserModel(login, p_hash)
+        db.session.add(u)
+        db.session.commit()
+        return u.id
 
 
 class PersonRepo(Repo):

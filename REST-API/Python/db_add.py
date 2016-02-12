@@ -1,4 +1,4 @@
-from quantisk_api.repositories import rank_repo, page_repo, site_repo, wordpair_repo, person_repo
+from quantisk_api.repositories import rank_repo, page_repo, site_repo, wordpair_repo, person_repo, user_repo
 import dateutil.parser as dp
 
 for i in range(10):
@@ -25,5 +25,8 @@ for i in range(1,101):
     rank_repo.add_rank(1, page_id=i, person_id=3)
 for i in range(30,70):
     rank_repo.add_rank(2, page_id=i, person_id=4)
+
+for i in range(1, 10):
+    user_repo.add_user('user' + str(i), 'qwerty' + str(i))
 
 

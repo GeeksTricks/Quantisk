@@ -13,7 +13,7 @@ app.config['RESTFUL_JSON'] = {'ensure_ascii': False}
 
 db_path = os.environ.get('OPENSHIFT_DATA_DIR', os.path.dirname(__file__)) 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path + '/GeeksDB.db'
-# app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = True
 
 db.create_all()
 

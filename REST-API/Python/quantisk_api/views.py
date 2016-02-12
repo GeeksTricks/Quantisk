@@ -1,12 +1,13 @@
-from flask import request, Response
+from flask import request
 from flask_restful import Resource
 from dateutil import parser
 from .repositories import person_repo, wordpair_repo, site_repo, rank_repo
 from .auth import auth
 
 
-
 class PersonResource(Resource):
+
+    method_decorators = [auth.login_required]
 
     def get(self, id):
         person = person_repo.get_by_id(id)
@@ -26,6 +27,8 @@ class PersonResource(Resource):
 
 class PersonListResource(Resource):
 
+    method_decorators = [auth.login_required]
+
     def get(self):
         persons = person_repo.get_all()
         return [person._asdict() for person in persons]
@@ -39,6 +42,8 @@ class PersonListResource(Resource):
 
 
 class WordPairResource(Resource):
+
+    method_decorators = [auth.login_required]
 
     def get(self, id):
         wordpair = wordpair_repo.get_by_id(id)
@@ -61,6 +66,8 @@ class WordPairResource(Resource):
 
 class WordPairListResource(Resource):
 
+    method_decorators = [auth.login_required]
+
     def get(self):
         wordpairs = wordpair_repo.get_all()
         return [wordpair._asdict() for wordpair in wordpairs]
@@ -78,12 +85,16 @@ class WordPairListResource(Resource):
 
 class WordPairsForPersonResource(Resource):
 
+    method_decorators = [auth.login_required]
+
     def get(self, person_id):
         wordpairs = wordpair_repo.get_by_person_id(person_id)
         return [wordpair._asdict() for wordpair in wordpairs]
 
 
 class SiteResource(Resource):
+
+    method_decorators = [auth.login_required]
 
     def get(self, id):
         site = site_repo.get_by_id(id)
@@ -103,6 +114,8 @@ class SiteResource(Resource):
 
 class SiteListResource(Resource):
 
+    method_decorators = [auth.login_required]
+
     def get(self):
         sites = site_repo.get_all()
         return [site._asdict() for site in sites]
@@ -117,12 +130,16 @@ class SiteListResource(Resource):
 
 class TotalRankResource(Resource):
 
+    method_decorators = [auth.login_required]
+
     def get(self, site_id):
         ranks = rank_repo.get_total(site_id)
         return [rank._asdict() for rank in ranks]
 
 
 class DailyRankResource(Resource):
+
+    method_decorators = [auth.login_required]
 
     def get(self):
         body = request.args
