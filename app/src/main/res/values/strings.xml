@@ -20,11 +20,11 @@
 
     <string-array name="names">
         <item>Leonardo</item>
-        <item>Will</item>
+        <!--<item>Will</item>
         <item>Tom</item>
         <item>Mike</item>
         <item>Rob</item>
-        <item>Bob</item>
+        <item>Bob</item>-->
     </string-array>
 
     <string name="title_activity_common_stat">CommonStatActivity</string>

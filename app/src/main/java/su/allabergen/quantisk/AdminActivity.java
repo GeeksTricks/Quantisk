@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -41,23 +52,21 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     public static List<String> siteList;
     public static List<String> nameList = new ArrayList<>();
-    private WebService webService;
-    private String restUrl;
-
-    public Toolbar toolbar;
+    private ArrayAdapter<String> nameAdapter;
+    private WebService task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initVariables();
 
-        restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
-        webService = new WebService();
-        webService.execute(restUrl);
+        String restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
+        task = new WebService();
+        task.execute(restUrl);
 
         spinnerLists();
         createSpinners();
@@ -80,11 +89,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             siteList.add(siteArray[i]);
         }
 
-        nameList.add("person 1");
-        nameList.add("person 2");
-        nameList.add("person 3");
-        nameList.add("person 4");
-
 //        String[] nameArray = getResources().getStringArray(R.array.names);
 //        nameList = new ArrayList<>();
 //        for (int i = 0; i < nameArray.length; i++) {
@@ -101,9 +105,89 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, R.layout.custom_list, nameList);
+        Log.i("nameList", nameList.toString());
+
+        nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
         nameSpinner.setAdapter(nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
+    }
+
+    private void updateListView() {
+        try {
+            nameList.addAll(task.getNamesFromWebService());
+            nameAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class WebService extends AsyncTask<String, Void, Void> {
+
+        private List<String> namesFromWebService = new ArrayList<>();
+
+        @Override
+        protected Void doInBackground(String... urls) {
+            String result = "";
+            URL url;
+            HttpURLConnection connection = null;
+            InputStream is = null;
+            InputStreamReader reader = null;
+
+            try {
+                url = new URL(urls[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                is = connection.getInputStream();
+                reader = new InputStreamReader(is);
+                int data = reader.read();
+
+                while (data != -1) {
+                    char current = (char) data;
+                    result += current;
+                    data = reader.read();
+                }
+
+                JSONArray jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonPart = jsonArray.getJSONObject(i);
+                    namesFromWebService.add(jsonPart.getString("name"));
+                }
+
+                Log.i("result", result);
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            updateListView();
+        }
+
+        protected List<String> getNamesFromWebService() {
+            return namesFromWebService;
+        }
     }
 
     @Override
