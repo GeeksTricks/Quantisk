@@ -2,6 +2,8 @@ package su.allabergen.quantisk;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -65,7 +67,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         initVariables();
 
         String restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
-        task = new WebService();
+        task = new WebService(this);
         task.execute(restUrl);
 
         spinnerLists();
@@ -123,7 +125,20 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     public class WebService extends AsyncTask<String, Void, Void> {
 
-        private List<String> namesFromWebService = new ArrayList<>();
+        private List<String> namesFromWebService;
+        private ProgressDialog progressDialog;
+
+        public WebService(Context context) {
+            namesFromWebService = new ArrayList<>();
+            progressDialog = new ProgressDialog(context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setTitle("Please, wait...");
+            progressDialog.show();
+        }
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -182,6 +197,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            progressDialog.dismiss();
             updateListView();
         }
 

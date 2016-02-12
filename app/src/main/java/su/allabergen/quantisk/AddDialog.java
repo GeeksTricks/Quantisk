@@ -39,7 +39,7 @@ public class AddDialog extends DialogFragment {
                         if (currFrag.equals("addSiteBtn")) {
                             AdminActivity.siteList.add(addEditText.getText().toString());
                         } else if (currFrag.equals("addNameBtn")) {
-//                            new PostWebService(getActivity(), addEditText.getText().toString()).execute("http://api-quantisk.rhcloud.com/v1/persons/");
+                            new PostWebService(getActivity(), addEditText.getText().toString()).execute("http://api-quantisk.rhcloud.com/v1/persons/");
                         }
                     }
                 })
