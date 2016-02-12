@@ -18,7 +18,12 @@ import java.util.List;
 /**
  * Created by Rabat on 12.02.2016.
  */
-public class WebService extends AsyncTask<String, Void, String> {
+
+//public class WebServiceTask {
+//
+//}
+
+public class WebServiceTask extends AsyncTask<String, Void, String> {
 
     public static List<String> namesFromWebService = new ArrayList<>();
 
