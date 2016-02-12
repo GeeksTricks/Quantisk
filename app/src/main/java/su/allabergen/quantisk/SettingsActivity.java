@@ -174,7 +174,7 @@ public class SettingsActivity extends AppCompatActivity {
                 View siteView = inflater.inflate(R.layout.fragment_site, container, false);
                 TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
                 Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
-                siteSpinner.setAdapter(ArrayAdapter.createFromResource(getActivity(), R.array.sites, android.R.layout.simple_list_item_activated_1));
+                siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, siteList));
                 siteTextView.setText("Modify sites");
                 initSiteBtn(siteView);
                 return siteView;

@@ -52,9 +52,10 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private int monthTo;
     private int dayTo;
 
-    public static List<String> siteList;
+    public static List<String> siteList = new ArrayList<>();
     public static List<String> nameList = new ArrayList<>();
     private ArrayAdapter<String> nameAdapter;
+    private ArrayAdapter<String> siteAdapter;
     private WebService task;
 
     @Override
@@ -66,9 +67,12 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
         initVariables();
 
-        String restUrl = "http://api-quantisk.rhcloud.com/v1/persons/";
+        String urlName = "http://api-quantisk.rhcloud.com/v1/persons/";
+        String urlSite = "http://api-quantisk.rhcloud.com/v1/sites/";
         task = new WebService(this);
-        task.execute(restUrl);
+        task.execute(urlName, urlSite);
+//        task = new WebService(this);
+//        task.execute(urlSite);
 
         spinnerLists();
         createSpinners();
@@ -85,11 +89,11 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void spinnerLists() {
-        String[] siteArray = getResources().getStringArray(R.array.sites);
-        siteList = new ArrayList<>();
-        for (int i = 0; i < siteArray.length; i++) {
-            siteList.add(siteArray[i]);
-        }
+//        String[] siteArray = getResources().getStringArray(R.array.sites);
+//        siteList = new ArrayList<>();
+//        for (int i = 0; i < siteArray.length; i++) {
+//            siteList.add(siteArray[i]);
+//        }
 
 //        String[] nameArray = getResources().getStringArray(R.array.names);
 //        nameList = new ArrayList<>();
@@ -103,11 +107,10 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         statSpinner.setAdapter(statAdapter);
         statSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
+
+        siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
-
-        Log.i("nameList", nameList.toString());
 
         nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
         nameSpinner.setAdapter(nameAdapter);
@@ -116,8 +119,10 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private void updateListView() {
         try {
-            nameList.addAll(task.getNamesFromWebService());
+            nameList.addAll(task.getPersonFromWebService());
             nameAdapter.notifyDataSetChanged();
+            siteList.addAll(task.getSiteFromWebService());
+            siteAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,49 +130,71 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     public class WebService extends AsyncTask<String, Void, Void> {
 
-        private List<String> namesFromWebService;
+        private List<String> personFromWebService;
+        private List<String> siteFromWebService;
         private ProgressDialog progressDialog;
 
         public WebService(Context context) {
-            namesFromWebService = new ArrayList<>();
+            personFromWebService = new ArrayList<>();
+            siteFromWebService = new ArrayList<>();
             progressDialog = new ProgressDialog(context);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.setTitle("Please, wait...");
             progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(String... urls) {
             String result = "";
+            String result2 = "";
             URL url;
+            URL url2;
             HttpURLConnection connection = null;
+            HttpURLConnection connection2 = null;
             InputStream is = null;
+            InputStream is2 = null;
             InputStreamReader reader = null;
+            InputStreamReader reader2 = null;
 
             try {
                 url = new URL(urls[0]);
+                url2 = new URL(urls[1]);
                 connection = (HttpURLConnection) url.openConnection();
+                connection2 = (HttpURLConnection) url2.openConnection();
                 is = connection.getInputStream();
+                is2 = connection2.getInputStream();
                 reader = new InputStreamReader(is);
+                reader2 = new InputStreamReader(is2);
                 int data = reader.read();
+                int data2 = reader2.read();
 
                 while (data != -1) {
                     char current = (char) data;
                     result += current;
                     data = reader.read();
                 }
+                while (data2 != -1) {
+                    char current = (char) data2;
+                    result2 += current;
+                    data2 = reader2.read();
+                }
 
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonPart = jsonArray.getJSONObject(i);
-                    namesFromWebService.add(jsonPart.getString("name"));
+                    personFromWebService.add(jsonPart.getString("name"));
+                }
+                JSONArray jsonArray2 = new JSONArray(result2);
+                for (int i = 0; i < jsonArray2.length(); i++) {
+                    JSONObject jsonPart = jsonArray2.getJSONObject(i);
+                    siteFromWebService.add(jsonPart.getString("name"));
                 }
 
                 Log.i("result", result);
+                Log.i("result", result2);
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -199,10 +226,16 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             updateListView();
+            personFromWebService.clear();
+            siteFromWebService.clear();
         }
 
-        protected List<String> getNamesFromWebService() {
-            return namesFromWebService;
+        protected List<String> getPersonFromWebService() {
+            return personFromWebService;
+        }
+
+        protected List<String> getSiteFromWebService() {
+            return siteFromWebService;
         }
     }
 

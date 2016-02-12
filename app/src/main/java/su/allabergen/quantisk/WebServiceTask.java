@@ -43,7 +43,7 @@
 //    public List<String> getService() {
 //        service = new WebService();
 //        service.execute(url);
-//        return service.getNamesFromWebService();
+//        return service.getPersonFromWebService();
 //    }
 //
 //    public void updateListView() {
@@ -120,7 +120,7 @@
 //            updateListView();
 //        }
 //
-//        protected List<String> getNamesFromWebService() {
+//        protected List<String> getPersonFromWebService() {
 //            return namesFromWebService;
 //        }
 //    }
