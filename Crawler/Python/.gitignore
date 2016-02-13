@@ -6,3 +6,4 @@
 python.nja
 *.db
 /.idea/*
+/pages
