@@ -10,21 +10,15 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     login = db.Column(db.String(256), unique=True, nullable=False)
     pass_hash = db.Column(db.String(256), nullable=False)
-    # role_id = db.Column(db.String(50), db.ForeignKey('Roles.id'))
+    role = db.Column(db.Integer)
 
-    def __init__(self, login, pass_hash):
+    def __init__(self, login, pass_hash, role):
         self.login = login
         self.pass_hash = pass_hash
+        self.role_id = role
 
     def __repr__(self):
-        return '<Login: {0} Password hash: {1}'.format(self.login, self.pass_hash)
-
-# class RoleModel(db.Model):
-#
-#     __tablename__ = 'Roles'
-#
-#     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-#     role = db.Column(db.String(50), nullable=False)
+        return '<ID : {0} Login: {1} Password hash: {2}'.format(self.id, self.login, self.pass_hash)
 
 
 class PersonModel(db.Model):
@@ -85,7 +79,7 @@ class PageModel(db.Model):
     __tablename__ = 'Pages'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    url = db.Column(db.String(2048), nullable=False)
+    url = db.Column(db.String(2048), unique=True, nullable=False)
     site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
     found_date_time = db.Column(db.DateTime)
     last_scan_date = db.Column(db.DateTime)
@@ -120,8 +114,4 @@ class RankModel(db.Model):
         self.person_id = person_id
 
     def __repr__(self):
-        return '<PageID: {0}, PersonID: {1}, Rank: {2}>'.format(
-            self.page_id,
-            self.person_id,
-            self.rank,
-        )
+        return '<PageID: {0}, PersonID: {1}, Rank: {2}>'.format(self.page_id, self.person_id, self.rank)
