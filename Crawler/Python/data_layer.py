@@ -19,41 +19,45 @@ class DataLayer():
 
     def get_site(self):
         # получаем весь список сайтов
-        result_set =  self.session.query(Sites.id, Sites.name).all()
+        result_set = self.session.query(Sites.id, Sites.name).all()
         return result_set
 
     def get_persons(self):
         # получаем весь список Личностей
-        result_set =  self.session.query(Persons.id, Persons.name).all()
+        result_set = self.session.query(Persons.id, Persons.name).all()
         return result_set
 
     def get_not_scan_urls(self):
         # получаем весь список ссылок с пустой датой сканирвоания
-        result_set = self.session.query(Pages.id, Pages.url).filter(Pages.last_scan_date == None).all()
+        result_set = self.session.query(Pages.id, Pages.url).filter(
+            Pages.last_scan_date == None).all()
         return result_set
 
     def get_query_for_parse(self):
         # получаем весь список ссылок параметров для парсера
-        result_set =  self.session.query(Wordpairs.keyword_1,
-                                   Wordpairs.keyword_2, Wordpairs.distance,
-                                   Wordpairs.person_id).all()
+        result_set = self.session.query(Wordpairs.keyword_1,
+                                        Wordpairs.keyword_2,
+                                        Wordpairs.distance,
+                                        Wordpairs.person_id).all()
         return result_set
 
     def add_page_to_table(self, url_list, id_site):
         for url in url_list:
             bullet = Pages(url=url, site_id=id_site,
-                           found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+                           found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(
+                               datetime.now()))
             self.session.add(bullet)
 
     def add_rank_to_table(self, count, id_url, id_persons):
         if count:
             bullet = PersonsPageRank(rank=count, page_id=id_url,
-                                             person_id=id_persons)
+                                     person_id=id_persons)
             self.session.add(bullet)
 
     def set_last_scan_date(self, id_url):
         scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
-        self.session.query(Pages).filter_by(id=id_url).update({'last_scan_date': scan_date})
+        self.session.query(Pages).filter_by(id=id_url).update(
+            {'last_scan_date': scan_date})
 
     def push_data_to_db(self):
         self.session.commit()
@@ -61,7 +65,8 @@ class DataLayer():
     def check_exists(self, url_list):
         urls = []
         for url in url_list:
-            request = self.session.query(Pages.url).filter(Pages.url == url).all()
+            request = self.session.query(Pages.url).filter(
+                Pages.url == url).all()
             if request:
                 pass
             else:
