@@ -1,7 +1,10 @@
+#!/usr/bin/python3
+
 from data_layer import DataLayer
 
 import downloader
 import parser_for_crawler
+import time
 
 # создаем экземпляры классов Загрузчика и Парсеров сайтмапа и роботс
 data = DataLayer()
@@ -30,22 +33,28 @@ def get_runk_add_to_table(html_file, query_list, id_url):
         data.set_last_scan_date(id_url)
         data.add_rank_to_table(count, id_url, query.person_id)
 
-# получаем сайты из талицы Sites
-sites = data.get_site()
 
-for site in sites:
-    sitemaps_urls = parser_robots.parse(site.name)
-    url_list = get_url_list(sitemaps_urls)
-    data.add_page_to_table(url_list, site.id)
-    # Отправляем полученные данные в базу
+def main():
+    while True:
+        # получаем сайты из талицы Sites
+        sites = data.get_site()
 
-# Получаем список страниц из таблицы Pages которые еще не сканировали
-urls = data.get_not_scan_urls()
-# Получаем список параметров запроса для парсера
-queries = data.get_query_for_parse()
+        for site in sites:
+            sitemaps_urls = parser_robots.parse(site.name)
+            url_list = get_url_list(sitemaps_urls)
+            data.add_page_to_table(url_list, site.id)
 
-for url in urls:
-    print(url)     # отладка
-    html_file = download.download_html(url.url)
-    get_runk_add_to_table(html_file, queries, url.id)
-    # Отправляем полученные данные в базу
+        # Получаем список страниц из таблицы Pages которые еще не сканировали
+        urls = data.get_not_scan_urls()
+        # Получаем список параметров запроса для парсера
+        queries = data.get_query_for_parse()
+
+        for url in urls:
+            print(url)     # отладка
+            html_file = download.download_html(url.url)
+            get_runk_add_to_table(html_file, queries, url.id)
+
+        time.sleep(400)
+
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from db import Sites
 from db import Wordpairs
 from db import Pages

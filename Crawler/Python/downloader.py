@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from urllib import request
 from urllib import error
 import shutil
