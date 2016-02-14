@@ -34,7 +34,8 @@ class DataLayer():
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
             or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(
-                days=1) > datetime.now())).all()
+                days=1) < datetime.now())).all()
+        print(len(result_set))
         return result_set
 
     def get_query_for_parse(self):
