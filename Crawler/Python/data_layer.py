@@ -33,8 +33,13 @@ class DataLayer():
         # получаем весь список ссылок с пустой датой сканирвоания
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
+<<<<<<< Updated upstream
             or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(
                 days=1) > datetime.now())).all()
+=======
+            or_(Pages.last_scan_date == None, Pages.last_scan_date+timedelta(days=1)>datetime.now())).all()
+        print(len(result_set))
+>>>>>>> Stashed changes
         return result_set
 
     def get_query_for_parse(self):
@@ -46,16 +51,19 @@ class DataLayer():
         return result_set
 
     def add_page_to_table(self, url_list, id_site):
-        for url in url_list:
-            q = self.session.query(Pages).filter(url == Pages.url)
-            if self.session.query(Pages).filter(q.exists()).count():
-                print(url + ' уже есть')
+        clear_urls = set(url_list)
+        urls_from_base = []
+        for url in self.session.query(Pages.url).all():
+            urls_from_base.append(*url)
+        for url in clear_urls:
+            if url in urls_from_base:
+                print(url + " уже есть в базе")
+                pass
             else:
-                bullet = Pages(url=url, site_id=id_site,
-                               found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(
-                                   datetime.now()))
+                print(url + " добавлено в сеесию")
+                bullet = Pages(url=url, site_id=id_site, found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(datetime.now()))
                 self.session.add(bullet)
-                self.session.commit()
+        self.session.commit()
 
     def add_rank_to_table(self, count, id_url, id_persons):
         if count:

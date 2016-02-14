@@ -54,7 +54,7 @@ def main():
             html_file = download.download_html(url.url)
             get_runk_add_to_table(html_file, queries, url.id)
 
-        time.sleep(400)
+        time.sleep(1400)
 
 if __name__ == "__main__":
     main()
