@@ -43,32 +43,25 @@ class DataLayer():
 
     def add_page_to_table(self, url_list, id_site):
         for url in url_list:
-            bullet = Pages(url=url, site_id=id_site,
-                           found_date_time='{0:%Y-%m-%d %H:%M:%S}'.format(
-                               datetime.now()))
-            self.session.add(bullet)
+            q = self.session.query(Pages).filter(url == Pages.url)
+            if self.session.query(Pages).filter(q.exists()).count():
+                print(url + ' уже есть')
+            else:
+                bullet = Pages(url=url, site_id=id_site,
+                               found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(
+                                   datetime.now()))
+                self.session.add(bullet)
+                self.session.commit()
+
 
     def add_rank_to_table(self, count, id_url, id_persons):
         if count:
             bullet = PersonsPageRank(rank=count, page_id=id_url,
                                      person_id=id_persons)
             self.session.add(bullet)
+            self.session.commit()
 
     def set_last_scan_date(self, id_url):
         scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
         self.session.query(Pages).filter_by(id=id_url).update(
             {'last_scan_date': scan_date})
-
-    def push_data_to_db(self):
-        self.session.commit()
-
-    def check_exists(self, url_list):
-        urls = []
-        for url in url_list:
-            request = self.session.query(Pages.url).filter(
-                Pages.url == url).all()
-            if request:
-                pass
-            else:
-                urls.append(url)
-        return urls

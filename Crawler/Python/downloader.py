@@ -26,6 +26,7 @@ class Downloader():
             return html_file
         except error.HTTPError:
             print('Неполучилось скачать html.')
+            pass
 
 
 

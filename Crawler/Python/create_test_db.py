@@ -10,8 +10,8 @@ from datetime import datetime
 engine = create_engine('mysql+pymysql://Crawler:probation2016@178.218.115.116:64004/GeeksTricks?charset=utf8',echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
-'''
 
+'''
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
@@ -70,7 +70,7 @@ class Pages(Base):
     __tablename__ = 'pages'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    url = Column(String(2048))
+    url = Column(String(255), unique=True, index=True)
     site_id = Column(ForeignKey('sites.id'))
     found_date_time = Column(DateTime)
     last_scan_date = Column(DateTime, default=None)
@@ -123,4 +123,5 @@ query = Wordpairs(keyword_1='Путин', keyword_2='на', distance=1, person_i
 session.add(query)
 session.commit()
 '''
+
 

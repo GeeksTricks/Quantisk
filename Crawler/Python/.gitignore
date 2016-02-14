@@ -7,3 +7,4 @@ python.nja
 *.db
 /.idea/*
 /pages
+test_polygon.py

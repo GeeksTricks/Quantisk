@@ -15,13 +15,11 @@ def get_url_list(link_list):
     # Получаем список ссылок
     all_url_list = []
     for link in link_list:
-        sitemap_file = download.download_html(link)
+        sitemap_file = download.download_sitemap(link)
         urls = parser_sitemap.parse_sitemap(sitemap_file)
         link_list.extend(urls['sitemap'])
         all_url_list.extend(urls['urls'])
-    sort_url_list = data.check_exists(all_url_list)
-    print(sort_url_list)
-    return sort_url_list
+    return all_url_list
 
 
 def get_runk_add_to_table(html_file, query_list, id_url):
@@ -40,7 +38,6 @@ for site in sites:
     url_list = get_url_list(sitemaps_urls)
     data.add_page_to_table(url_list, site.id)
     # Отправляем полученные данные в базу
-    data.push_data_to_db()
 
 # Получаем список страниц из таблицы Pages которые еще не сканировали
 urls = data.get_not_scan_urls()
@@ -52,8 +49,3 @@ for url in urls:
     html_file = download.download_html(url.url)
     get_runk_add_to_table(html_file, queries, url.id)
     # Отправляем полученные данные в базу
-    data.push_data_to_db()
-
-
-
-
