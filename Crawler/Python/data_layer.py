@@ -5,9 +5,9 @@ from db import Wordpairs
 from db import Pages
 from db import Persons
 from db import PersonsPageRank
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class DataLayer():
@@ -31,8 +31,9 @@ class DataLayer():
 
     def get_not_scan_urls(self):
         # получаем весь список ссылок с пустой датой сканирвоания
+        print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
-            Pages.last_scan_date == None).all()
+            or_(Pages.last_scan_date == None, Pages.last_scan_date+timedelta(days=1)>datetime.now())).all()
         return result_set
 
     def get_query_for_parse(self):
