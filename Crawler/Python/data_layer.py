@@ -33,7 +33,8 @@ class DataLayer():
         # получаем весь список ссылок с пустой датой сканирвоания
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
-            or_(Pages.last_scan_date == None, Pages.last_scan_date+timedelta(days=1)>datetime.now())).all()
+            or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(
+                days=1) > datetime.now())).all()
         return result_set
 
     def get_query_for_parse(self):
@@ -55,7 +56,6 @@ class DataLayer():
                                    datetime.now()))
                 self.session.add(bullet)
                 self.session.commit()
-
 
     def add_rank_to_table(self, count, id_url, id_persons):
         if count:
