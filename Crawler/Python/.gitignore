@@ -8,3 +8,4 @@ python.nja
 /.idea/*
 /pages
 test_polygon.py
+*.xml
