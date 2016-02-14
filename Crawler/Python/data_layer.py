@@ -33,13 +33,8 @@ class DataLayer():
         # получаем весь список ссылок с пустой датой сканирвоания
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
-<<<<<<< Updated upstream
             or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(
                 days=1) > datetime.now())).all()
-=======
-            or_(Pages.last_scan_date == None, Pages.last_scan_date+timedelta(days=1)>datetime.now())).all()
-        print(len(result_set))
->>>>>>> Stashed changes
         return result_set
 
     def get_query_for_parse(self):
@@ -61,7 +56,9 @@ class DataLayer():
                 pass
             else:
                 print(url + " добавлено в сеесию")
-                bullet = Pages(url=url, site_id=id_site, found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(datetime.now()))
+                bullet = Pages(url=url, site_id=id_site,
+                               found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(
+                                   datetime.now()))
                 self.session.add(bullet)
         self.session.commit()
 
