@@ -8,10 +8,10 @@ Base = declarative_base()
 
 # Создаем класс для каждой таблицы
 class Persons(Base):
-    __tablename__ = 'persons'
+    __tablename__ = 'Persons'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    name = Column(String(2048))
+    name = Column(String(2048), nullable=False)
 
     def __repr__(self):
         return "<Person '{}'>".format(self.name)
@@ -21,18 +21,21 @@ class Persons(Base):
 
 
 class Wordpairs(Base):
-    __tablename__ = 'wordpairs'
+    __tablename__ = 'Wordpairs'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    keyword_1 = Column(String(2048))
-    keyword_2 = Column(String(2048))
-    distance = Column(Integer)
-    person_id = Column(ForeignKey('persons.id'))
+    keyword_1 = Column(String(2048), nullable=False)
+    keyword_2 = Column(String(2048), nullable=False)
+    distance = Column(Integer, nullable=False)
+    person_id = Column(Integer, ForeignKey('Persons.id'), nullable=False)
 
     def __repr__(self):
-        return "<KeyWord1 '{}', KeyWord2 '{}', Distance '{}', PersonID '{}'>" \
-            .format(self.keyword_1, self.keyword_2, self.distance,
-                    self.person_id)
+        return "<KeyWord1 '{}', KeyWord2 '{}', Distance '{}', PersonID '{}'>".format(
+                    self.keyword_1,
+                    self.keyword_2,
+                    self.distance,
+                    self.person_id
+                    )
 
     def __init__(self, keyword_1, keyword_2, distance, person_id):
         self.keyword_1 = keyword_1
@@ -42,10 +45,10 @@ class Wordpairs(Base):
 
 
 class Sites(Base):
-    __tablename__ = 'sites'
+    __tablename__ = 'Sites'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    name = Column(String(256))
+    name = Column(String(256), nullable=False)
 
     def __repr__(self):
         return "<Site '{}'>".format(self.name)
@@ -55,39 +58,61 @@ class Sites(Base):
 
 
 class Pages(Base):
-    __tablename__ = 'pages'
+    __tablename__ = 'Pages'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    url = Column(String(2048))
-    site_id = Column(ForeignKey('sites.id'))
+    url = Column(String(255), unique=True, nullable=False)
+    site_id = Column(Integer, ForeignKey('Sites.id'), nullable=False)
     found_date_time = Column(DateTime)
     last_scan_date = Column(DateTime, default=None)
 
     def __repr__(self):
-        return "<Url '{}', SiteID '{}', FounDateTime '{}', LastScanDate '{}'>"\
-            .format(self.url, self.site_id, self.found_date_time,
-                    self.last_scan_date)
-
-    # def __init__(self, site_id):
-        # self.url = url url,
-        # self.site_id = site_id
-        # self.found_date_time = found_date_time , found_date_time
-        # self.last_scan_date = last_scan_date   , last_scan_date
+        return "<Url '{}', SiteID '{}', FoundDateTime '{}', LastScanDate '{}'>".format(
+                    self.url,
+                    self.site_id,
+                    self.found_date_time,
+                    self.last_scan_date
+                    )
 
 
 class PersonsPageRank(Base):
     __tablename__ = 'PersonsPageRank'
 
-    id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    rank = Column(Integer)
-    page_id = Column(ForeignKey('pages.id'))
-    person_id = Column(ForeignKey('persons.id'))
+    # id = Column(Integer, primary_key=True, unique=True, nullable=False)
+    rank = Column(Integer, nullable=False)
+    page_id = Column(Integer, ForeignKey('Pages.id'), primary_key=True, nullable=False)
+    person_id = Column(Integer, ForeignKey('Persons.id'), primary_key=True, nullable=False)
 
     def __repr__(self):
-        return "<Rank '{}', PageID '{}', PersonID '{}'>" \
-            .format(self.rank, self.page_id, self.person_id)
+        return "<Rank '{}', PageID '{}', PersonID '{}'>".format(
+                    self.rank,
+                    self.page_id,
+                    self.person_id
+                    )
 
     def __init__(self, rank, page_id, person_id):
         self.rank = rank
         self.page_id = page_id
         self.person_id = person_id
+
+
+class Users(Base):
+
+    __tablename__ = 'Users'
+
+    id = Column(Integer, primary_key=True, unique=True, nullable=False)
+    login = Column(String(255), unique=True, nullable=False)
+    pass_hash = Column(String(256), nullable=False)
+    role = Column(Integer)
+
+    def __init__(self, login, pass_hash, role):
+        self.login = login
+        self.pass_hash = pass_hash
+        self.role_id = role
+
+    def __repr__(self):
+        return '<ID : {0} Login: {1} Password hash: {2}'.format(
+            self.id,
+            self.login,
+            self.pass_hash
+            )

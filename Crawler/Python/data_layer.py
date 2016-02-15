@@ -14,7 +14,7 @@ class DataLayer():
     def __init__(self):
         self.engine = create_engine(
             'mysql+pymysql://Crawler:probation2016@178.218.115.116:64004'
-            '/GeeksTricks?charset=utf8',
+            '/GeeksTricks2?charset=utf8',
             echo=True)
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
