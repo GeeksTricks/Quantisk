@@ -11,7 +11,7 @@ site_id = site_repo.add('lenta.ru')
 for i in range(1,11):
     for j in range(1,11):
         page_repo.add(
-            '/posts/' + str(i),
+            '/posts/' + str(i) + str(j),
             site_id,
             dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
             dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
