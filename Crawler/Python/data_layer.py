@@ -64,11 +64,21 @@ class DataLayer():
         self.session.commit()
 
     def add_rank_to_table(self, count, id_url, id_persons):
+        # проверяем наличие результата
         if count:
-            bullet = PersonsPageRank(rank=count, page_id=id_url,
-                                     person_id=id_persons)
-            self.session.add(bullet)
-            self.session.commit()
+            # проверяем наличие данных по этому запросу
+            if self.session.query(PersonsPageRank).filter(PersonsPageRank.page_id==id_url).filter(PersonsPageRank.person_id==id_persons).all():
+                # если уже есть данные, то обновляем поле rank(пока без проверки на равенство с уже существующим)
+                self.session.query(PersonsPageRank).filter(PersonsPageRank.page_id==id_url).filter(PersonsPageRank.person_id==id_persons).update({'rank':count})
+            else:
+                # если нету записи то добавляем
+                bullet = PersonsPageRank(rank=count, page_id=id_url,
+                                         person_id=id_persons)
+                self.session.add(bullet)
+                self.session.commit()
+        # если нет результат то идем дальше
+        else:
+            pass
 
     def set_last_scan_date(self, id_url):
         scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
