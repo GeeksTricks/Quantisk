@@ -79,7 +79,7 @@ class PageModel(db.Model):
     __tablename__ = 'Pages'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    url = db.Column(db.String(2048), unique=True, nullable=False)
+    url = db.Column(db.String(512), unique=True, nullable=False)
     site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
     found_date_time = db.Column(db.DateTime)
     last_scan_date = db.Column(db.DateTime)
