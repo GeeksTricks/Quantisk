@@ -11,7 +11,6 @@ Page = namedtuple('Page', ['id', 'url', 'site_id', 'found_date_time', 'last_scan
 TotalRank = namedtuple('Rank', ['rank', 'site_id', 'person_id'])
 DailyRank = namedtuple('DailyRank', ['rank', 'day', 'site_id', 'person_id'])
 User = namedtuple('User', ['id', 'login', 'pass_hash'])
-# User = namedtuple('User', ['id', 'login', 'pass_hash', 'password', 'role'])
 
 
 class Repo:
@@ -24,6 +23,8 @@ class UserRepo(Repo):
 
     def get_by_id(self, id):
         u = UserModel.query.get(id)
+        if u is None:
+            return None
         return User(u.id, u.login, u.pass_hash)
 
     def get_by_login(self, login):
@@ -36,7 +37,7 @@ class UserRepo(Repo):
     def get_user_role(self, id):
         pass
 
-# ìåòîä äëÿ òåñòîâ
+    # Ğ¼ĞµÑ‚Ğ¾Ğ´ Ğ´Ğ»Ñ Ñ‚ĞµÑÑ‚Ğ¾Ğ²
     def add_user(self, login, password):
         p_hash = generate_password_hash(password)
         u = UserModel(login, p_hash)
@@ -49,14 +50,20 @@ class PersonRepo(Repo):
 
     def get_by_id(self, id):
         p = PersonModel.query.get(id)
+        if p is None:
+            return None
         return Person(p.id, p.name)
 
     def get_all(self):
         p_list = PersonModel.query.all()
+        if p_list is None:
+            return None
         return [Person(p.id, p.name) for p in p_list]
 
     def set(self, id, name):
         p = PersonModel.query.get(id)
+        if p is None:
+            return None
         p.name = name
         db.session.commit()
 
@@ -67,7 +74,10 @@ class PersonRepo(Repo):
         return p.id
 
     def delete(self, id):
-        PersonModel.query.filter_by(id=id).delete()
+        p = PersonModel.query.filter_by(id=id)
+        if p is None:
+            return None
+        p.delete()
         db.session.commit()
 
 
@@ -75,17 +85,22 @@ class WordPairRepo(Repo):
 
     def get_by_id(self, id):
         wp = WordpairModel.query.get(id)
+        if wp is None:
+            return None
         return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
 
     def get_by_person_id(self, person_id):
         query = WordpairModel.query
         query = query.filter_by(person_id=person_id)
+        if query is None:
+            return None
         wp_list = query.all()
         return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, person_id) for wp in wp_list]
 
-
     def get_all(self):
         wp_list = WordpairModel.query.all()
+        if wp_list is None:
+            return None
         return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id) for wp in wp_list]
 
     def add(self, keyword1, keyword2, distance, person_id):
@@ -96,6 +111,8 @@ class WordPairRepo(Repo):
 
     def set(self, id, keyword1, keyword2, distance, person_id):
         wp = WordpairModel.query.get(id)
+        if wp is None:
+            return None
         wp.keyword1 = keyword1
         wp.keyword2 = keyword2
         wp.distance = distance
@@ -103,7 +120,10 @@ class WordPairRepo(Repo):
         db.session.commit()
 
     def delete(self, id):
-        WordpairModel.query.filter_by(id=id).delete()
+        wp = WordpairModel.query.filter_by(id=id)
+        if wp is None:
+            return None
+        wp.delete()
         db.session.commit()
 
 
@@ -111,14 +131,20 @@ class SiteRepo(Repo):
 
     def get_by_id(self, id):
         s = SiteModel.query.get(id)
+        if s is None:
+            return None
         return Site(s.id, s.name)
 
     def get_all(self):
         s_list = SiteModel.query.all()
+        if s_list is None:
+            return None
         return [Site(s.id, s.name) for s in s_list]
 
     def set(self, id, name):
         s = SiteModel.query.get(id)
+        if s is None:
+            return None
         s.name = name
         db.session.commit()
 
@@ -129,7 +155,10 @@ class SiteRepo(Repo):
         return s.id
 
     def delete(self, id):
-        SiteModel.query.filter_by(id=id).delete()
+        s = SiteModel.query.filter_by(id=id)
+        if s is None:
+            return None
+        s.delete()
         db.session.commit()
 
 
@@ -141,6 +170,8 @@ class RankRepo(Repo):
         query = query.join(PageModel).filter_by(site_id=site_id)
         query = query.group_by(RankModel.person_id)
         res = query.all()
+        if res is None:
+            return None
         return [TotalRank(r.total_rank, site_id, r.person_id) for r in res]
 
 
@@ -154,6 +185,8 @@ class RankRepo(Repo):
         query = query.filter(day >= func.date(start_date))
         query = query.filter(day <= func.date(end_date))
         res = query.all()
+        if res is None:
+            return None
         return [DailyRank(r.rank, r.day, site_id, person_id) for r in res]
 
     def add_rank(self, rank, page_id, person_id):

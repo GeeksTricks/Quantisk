@@ -10,12 +10,12 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     login = db.Column(db.String(256), unique=True, nullable=False)
     pass_hash = db.Column(db.String(256), nullable=False)
-    role = db.Column(db.Integer)
+    # role = db.Column(db.Integer)
 
-    def __init__(self, login, pass_hash, role):
+    def __init__(self, login, pass_hash):
         self.login = login
         self.pass_hash = pass_hash
-        self.role_id = role
+        # self.role_id = role
 
     def __repr__(self):
         return '<ID : {0} Login: {1} Password hash: {2}'.format(self.id, self.login, self.pass_hash)
@@ -84,7 +84,7 @@ class PageModel(db.Model):
     found_date_time = db.Column(db.DateTime)
     last_scan_date = db.Column(db.DateTime)
 
-    def __init__(self, url, site_id, found_date_time, last_scan_date):
+    def __init__(self, url, site_id, found_date_time=None, last_scan_date=None):
         self.url = url
         self.site_id = site_id
         self.found_date_time = found_date_time

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, abort
 from flask_restful import Resource
 from dateutil import parser
 from .repositories import person_repo, wordpair_repo, site_repo, rank_repo
@@ -10,8 +10,10 @@ class PersonResource(Resource):
     method_decorators = [auth.login_required]
 
     def get(self, id):
-        person = person_repo.get_by_id(id)
-        return person._asdict()
+        p = person_repo.get_by_id(id)
+        if p is None:
+            abort(404)
+        return p._asdict()
 
     def put(self, id):
         body = request.get_json()
@@ -31,6 +33,8 @@ class PersonListResource(Resource):
 
     def get(self):
         persons = person_repo.get_all()
+        if persons is None:
+            abort(404)
         return [person._asdict() for person in persons]
 
     def post(self):
@@ -46,8 +50,10 @@ class WordPairResource(Resource):
     method_decorators = [auth.login_required]
 
     def get(self, id):
-        wordpair = wordpair_repo.get_by_id(id)
-        return wordpair._asdict()
+        wp = wordpair_repo.get_by_id(id)
+        if wp is None:
+            abort(404)
+        return wp._asdict()
 
     def put(self, id):
         body = request.get_json()
@@ -56,8 +62,10 @@ class WordPairResource(Resource):
         distance = body['distance']
         person_id = body['person_id']
         wordpair_repo.set(id, keyword1, keyword2, distance, person_id)
-        wordpair = wordpair_repo.get_by_id(id)
-        return wordpair._asdict()
+        wp = wordpair_repo.get_by_id(id)
+        if wp is None:
+            abort(404)
+        return wp._asdict()
 
     def delete(self, id):
         wordpair_repo.delete(id)
@@ -142,11 +150,11 @@ class DailyRankResource(Resource):
     method_decorators = [auth.login_required]
 
     def get(self):
-        body = request.args
-        person_id = int(body['person_id'])
-        site_id = int(body['site_id'])
-        start_date = parser.parse(body['start_date'])
-        end_date = parser.parse(body['end_date'])
+        args = request.args
+        person_id = int(args['person_id'])
+        site_id = int(args['site_id'])
+        start_date = parser.parse(args['start_date'])
+        end_date = parser.parse(args['end_date'])
         ranks = rank_repo.get_daily(person_id, site_id, start_date, end_date)
         return [rank._asdict() for rank in ranks]
 
