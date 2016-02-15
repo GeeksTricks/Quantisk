@@ -14,6 +14,11 @@ import SwiftyJSON
 
 class GTDBManager{
 //    #mark delete
+
+    //singlenton
+    static let sharedInstance = GTDBManager()
+    
+    
     //delete all pesons
     func deleteAllPersons()->(Bool){
         return true
@@ -24,6 +29,26 @@ class GTDBManager{
     }
     //get refresh pesons
     func refreshPersons()->(Bool){
+        
+        let URL = "http://api-quantisk.rhcloud.com/v1/persons/"
+        Alamofire.request(.GET, URL , parameters: nil).responseJSON {
+            response in
+            switch response.result {
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                    print(json)
+                    
+                    
+                    
+                }
+            case .Failure(let error):
+                print(error)
+            }
+            
+        }
+        
+        
         return true
     }
     //get refresh sites
@@ -35,11 +60,17 @@ class GTDBManager{
     
     //get all pesons
     func getAllPersons()->([String]){
-        return true
+        
+    
+
+        
+            var persons: [String] = ["Ivanov", "Petrov", "Sidorov"]
+        return persons
     }
     //get all sites
     func getAllSites()->([String]){
-        return true
+        var site:[String] = ["Lenta.ru","News.ru","Vesti.ru"]
+        return site
     }
     
     

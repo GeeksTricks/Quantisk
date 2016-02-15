@@ -12,6 +12,11 @@ import UIKit
 
 class GTSettingViewController: UIViewController {
     
+    @IBAction func updateSites(sender: AnyObject) {
+    }
+    @IBAction func updatePersons(sender: AnyObject) {
+        GTDBManager.sharedInstance.refreshPersons()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

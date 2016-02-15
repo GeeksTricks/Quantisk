@@ -5,7 +5,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target ‘Quantisk’ do
-pod 'Alamofire', '~> 3.0'
-pod 'SwiftyJSON', '~> 2.3'
+pod 'Alamofire'
+pod 'SwiftyJSON'
 pod 'RealmSwift'
 end

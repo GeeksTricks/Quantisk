@@ -8,9 +8,9 @@ PODS:
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.0)
+  - Alamofire
   - RealmSwift
-  - SwiftyJSON (~> 2.3)
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0

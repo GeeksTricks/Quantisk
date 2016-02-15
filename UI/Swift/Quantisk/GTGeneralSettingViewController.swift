@@ -34,8 +34,8 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
     
     
     let typeStat = ["Daily Statistics","General Statistics"]
-    let site:[String] = ["Lenta.ru","News.ru","Vesti.ru"]
-    var persons: [String] = ["Ivanov", "Petrov", "Sidorov"]
+    var site = GTDBManager.sharedInstance.getAllSites()
+    var persons = GTDBManager.sharedInstance.getAllPersons()
     
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

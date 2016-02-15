@@ -262,6 +262,9 @@
                                 <state key="normal" title="Update Sites">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="updateSites:" destination="ObU-yl-T8Z" eventType="touchUpInside" id="mh8-3T-AuY"/>
+                                </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6Sq-iw-CAE">
                                 <rect key="frame" x="285" y="79" width="20" height="20"/>
@@ -272,6 +275,9 @@
                                 <state key="normal" title="Update Persons">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="updatePersons:" destination="ObU-yl-T8Z" eventType="touchUpInside" id="EU3-vx-OiC"/>
+                                </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hft-lz-ZYx">
                                 <rect key="frame" x="285" y="118" width="20" height="20"/>

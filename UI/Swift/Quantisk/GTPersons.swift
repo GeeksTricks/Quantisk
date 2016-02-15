@@ -11,6 +11,7 @@ import RealmSwift
 
 
 
+
 class GTPersons: Object{
     
     dynamic var ID: Int = -1

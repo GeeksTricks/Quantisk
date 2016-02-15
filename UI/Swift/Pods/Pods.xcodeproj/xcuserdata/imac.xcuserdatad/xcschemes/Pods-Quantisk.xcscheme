@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C21C1FD5A4A11B089241031F'
+               BlueprintIdentifier = '1FEB17A03038F7C1D848EE0D'
                BlueprintName = 'Pods-Quantisk'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_Quantisk.framework'>
