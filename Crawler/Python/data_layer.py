@@ -67,9 +67,15 @@ class DataLayer():
         # проверяем наличие результата
         if count:
             # проверяем наличие данных по этому запросу
-            if self.session.query(PersonsPageRank).filter(PersonsPageRank.page_id==id_url).filter(PersonsPageRank.person_id==id_persons).all():
-                # если уже есть данные, то обновляем поле rank(пока без проверки на равенство с уже существующим)
-                self.session.query(PersonsPageRank).filter(PersonsPageRank.page_id==id_url).filter(PersonsPageRank.person_id==id_persons).update({'rank':count})
+            if self.session.query(PersonsPageRank).filter(
+                            PersonsPageRank.page_id == id_url).filter(
+                            PersonsPageRank.person_id == id_persons).all():
+                # если уже есть данные, то обновляем поле rank(пока без
+                # проверки на равенство с уже существующим)
+                self.session.query(PersonsPageRank).filter(
+                    PersonsPageRank.page_id == id_url).filter(
+                    PersonsPageRank.person_id == id_persons).update(
+                    {'rank': count})
             else:
                 # если нету записи то добавляем
                 bullet = PersonsPageRank(rank=count, page_id=id_url,
