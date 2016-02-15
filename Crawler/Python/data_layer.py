@@ -33,9 +33,8 @@ class DataLayer():
         # получаем весь список ссылок с пустой датой сканирвоания
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
-            or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(
-                days=1) < datetime.now())).all()
-        print(len(result_set))
+            or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(days=1) < datetime.now())).all()
+        print(str(len(result_set)) + ' столько ссылок выбралось из базы')
         return result_set
 
     def get_query_for_parse(self):
@@ -72,10 +71,7 @@ class DataLayer():
                             PersonsPageRank.person_id == id_persons).all():
                 # если уже есть данные, то обновляем поле rank(пока без
                 # проверки на равенство с уже существующим)
-                self.session.query(PersonsPageRank).filter(
-                    PersonsPageRank.page_id == id_url).filter(
-                    PersonsPageRank.person_id == id_persons).update(
-                    {'rank': count})
+                pass
             else:
                 # если нету записи то добавляем
                 bullet = PersonsPageRank(rank=count, page_id=id_url,
@@ -90,3 +86,4 @@ class DataLayer():
         scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
         self.session.query(Pages).filter_by(id=id_url).update(
             {'last_scan_date': scan_date})
+        self.session.commit()

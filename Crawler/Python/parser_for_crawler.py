@@ -54,10 +54,10 @@ class HtmlParser():
         text = soup.get_text()
         count = 0
         # строка для задания дистанции
-        reguldistance = r'\w+\s' * distance
+        reguldistance = '\w+\s' * distance
         # компилим регулярку для поиска по тексту
-        searchregul = re.compile(r'''{0}\s{1}{2}|{2}\s{1}{0}'''
-                                  .format(keyword1, reguldistance,
-                                          keyword2), re.IGNORECASE)
+        searchregul = re.compile('{0}\s{1}{2}\s|{2}\s{1}{0}\s'.format(
+                                            keyword1, reguldistance,
+                                            keyword2), re.IGNORECASE)
         count = len(re.findall(searchregul, text))
         return count
