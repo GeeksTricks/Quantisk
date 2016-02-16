@@ -205,7 +205,7 @@ class PageRepo(Repo):
         p = PageModel(url, site_id, found_date_time, last_scan_date)
         db.session.add(p)
         db.session.commit()
-        return Page(p.url, p.site_id, p.found_date_time, p.last_scan_date)
+        return Page(p.id, p.url, p.site_id, p.found_date_time, p.last_scan_date)
 
 person_repo = PersonRepo()
 wordpair_repo = WordPairRepo()
