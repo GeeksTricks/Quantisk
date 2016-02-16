@@ -5,148 +5,96 @@ from .repositories import person_repo, wordpair_repo, site_repo, rank_repo
 from .auth import auth
 
 
-class PersonResource(Resource):
-
+class SingleResource(Resource):
+    repo = None
     method_decorators = [auth.login_required]
 
     def get(self, id):
-        p = person_repo.get_by_id(id)
-        if p is None:
+        item = self.repo.get_by_id(id)
+        if item is None:
             abort(404)
-        return p._asdict()
+        return item._asdict()
 
     def put(self, id):
         body = request.get_json()
-        name = body['name']
-        person_repo.set(id, name)
-        person = person_repo.get_by_id(id)
-        return person._asdict()
+        item = self.repo.set(id, **body)
+        if item is None:
+            abort(404)
+        return item._asdict()
 
     def delete(self, id):
-        person_repo.delete(id)
-        return 204
+        if self.repo.delete(id) is None:
+            abort(404)
+        return None, 204
 
 
-class PersonListResource(Resource):
-
+class ListResource(Resource):
+    repo = None
     method_decorators = [auth.login_required]
 
     def get(self):
-        persons = person_repo.get_all()
-        if persons is None:
-            abort(404)
-        return [person._asdict() for person in persons]
+        return [i._asdict() for i in self.repo.get_all()]
 
     def post(self):
         body = request.get_json()
-        name = body['name']
-        id = person_repo.add(name)
-        person = person_repo.get_by_id(id)
-        return person._asdict()
+        try:
+            item = self.repo.add(**body)
+        except TypeError as e:
+            abort(400, e)
+        else:
+            return item._asdict()
 
 
-class WordPairResource(Resource):
-
-    method_decorators = [auth.login_required]
-
-    def get(self, id):
-        wp = wordpair_repo.get_by_id(id)
-        if wp is None:
-            abort(404)
-        return wp._asdict()
-
-    def put(self, id):
-        body = request.get_json()
-        keyword1 = body['keyword1']
-        keyword2 = body['keyword2']
-        distance = body['distance']
-        person_id = body['person_id']
-        wordpair_repo.set(id, keyword1, keyword2, distance, person_id)
-        wp = wordpair_repo.get_by_id(id)
-        if wp is None:
-            abort(404)
-        return wp._asdict()
-
-    def delete(self, id):
-        wordpair_repo.delete(id)
-        return 204
+class PersonResource(SingleResource):
+    repo = person_repo
 
 
-class WordPairListResource(Resource):
+class PersonListResource(ListResource):
+    repo = person_repo
 
-    method_decorators = [auth.login_required]
 
-    def get(self):
-        wordpairs = wordpair_repo.get_all()
-        return [wordpair._asdict() for wordpair in wordpairs]
+class WordPairResource(SingleResource):
+    repo = wordpair_repo
 
-    def post(self):
-        body = request.get_json()
-        keyword1 = body['keyword1']
-        keyword2 = body['keyword2']
-        distance = body['distance']
-        person_id = body['person_id']
-        id = wordpair_repo.add(keyword1, keyword2, distance, person_id)
-        wordpair = wordpair_repo.get_by_id(id)
-        return wordpair._asdict()
+
+class WordPairListResource(ListResource):
+    repo = wordpair_repo
+
+
+class SiteResource(SingleResource):
+    repo = site_repo
+
+
+class SiteListResource(ListResource):
+    repo = site_repo
 
 
 class WordPairsForPersonResource(Resource):
-
+    # Fixme
     method_decorators = [auth.login_required]
 
     def get(self, person_id):
         wordpairs = wordpair_repo.get_by_person_id(person_id)
+        if wordpairs is None:
+            abort(404)
         return [wordpair._asdict() for wordpair in wordpairs]
 
 
-class SiteResource(Resource):
-
-    method_decorators = [auth.login_required]
-
-    def get(self, id):
-        site = site_repo.get_by_id(id)
-        return site._asdict()
-
-    def put(self, id):
-        body = request.get_json()
-        name = body['name']
-        site_repo.set(id, name)
-        site = site_repo.get_by_id(id)
-        return site._asdict()
-
-    def delete(self, id):
-        site_repo.delete(id)
-        return 204
-
-
-class SiteListResource(Resource):
-
-    method_decorators = [auth.login_required]
-
-    def get(self):
-        sites = site_repo.get_all()
-        return [site._asdict() for site in sites]
-
-    def post(self):
-        body = request.get_json()
-        name = body['name']
-        id = site_repo.add(name)
-        site = site_repo.get_by_id(id)
-        return site._asdict()
-
-
 class TotalRankResource(Resource):
-
+    # Fixme
     method_decorators = [auth.login_required]
 
     def get(self, site_id):
         ranks = rank_repo.get_total(site_id)
+        from . import app
+        app.logger.debug(ranks[0])
+        if ranks is None:
+            abort(404)
         return [rank._asdict() for rank in ranks]
 
 
 class DailyRankResource(Resource):
-
+    # Fixme
     method_decorators = [auth.login_required]
 
     def get(self):
