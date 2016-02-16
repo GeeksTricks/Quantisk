@@ -43,7 +43,7 @@ class UserRepo(Repo):
         u = UserModel(login, p_hash)
         db.session.add(u)
         db.session.commit()
-        return u.id
+        return User(u.id, u.login, u.pass_hash)
 
 
 class PersonRepo(Repo):
@@ -66,19 +66,21 @@ class PersonRepo(Repo):
             return None
         p.name = name
         db.session.commit()
+        return Person(p.id, p.name)
 
     def add(self, name):
         p = PersonModel(name)
         db.session.add(p)
         db.session.commit()
-        return p.id
+        return Person(p.id, p.name)
 
     def delete(self, id):
-        p = PersonModel.query.filter_by(id=id)
+        p = PersonModel.query.get(id)
         if p is None:
             return None
-        p.delete()
+        db.session.delete(p)
         db.session.commit()
+        return Person(p.id, p.name)
 
 
 class WordPairRepo(Repo):
@@ -107,7 +109,7 @@ class WordPairRepo(Repo):
         wp = WordpairModel(keyword1, keyword2, distance, person_id)
         db.session.add(wp)
         db.session.commit()
-        return wp.id
+        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
 
     def set(self, id, keyword1, keyword2, distance, person_id):
         wp = WordpairModel.query.get(id)
@@ -118,13 +120,15 @@ class WordPairRepo(Repo):
         wp.distance = distance
         wp.person_id = person_id
         db.session.commit()
+        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
 
     def delete(self, id):
-        wp = WordpairModel.query.filter_by(id=id)
+        wp = WordpairModel.query.get(id)
         if wp is None:
             return None
-        wp.delete()
+        db.session.delete(wp)
         db.session.commit()
+        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
 
 
 class SiteRepo(Repo):
@@ -147,33 +151,35 @@ class SiteRepo(Repo):
             return None
         s.name = name
         db.session.commit()
+        return Site(s.id, s.name)
 
     def add(self, name):
         s = SiteModel(name)
         db.session.add(s)
         db.session.commit()
-        return s.id
+        return Site(s.id, s.name)
 
     def delete(self, id):
-        s = SiteModel.query.filter_by(id=id)
+        s = SiteModel.query.get(id)
         if s is None:
             return None
-        s.delete()
+        db.session.delete(s)
         db.session.commit()
+        return Site(s.id, s.name)
 
 
 class RankRepo(Repo):
 
     def get_total(self, site_id):
+        s = SiteModel.query.get(site_id)
+        if s is None:
+            return None
         rank = func.sum(RankModel.rank).label('total_rank')
         query = db.session.query(rank, RankModel.person_id)
         query = query.join(PageModel).filter_by(site_id=site_id)
         query = query.group_by(RankModel.person_id)
         res = query.all()
-        if res is None:
-            return None
-        return [TotalRank(r.total_rank, site_id, r.person_id) for r in res]
-
+        return [TotalRank(int(r.total_rank), site_id, r.person_id) for r in res]
 
     def get_daily(self, person_id, site_id, start_date, end_date):
         rank = func.sum(RankModel.rank).label('rank')
@@ -185,9 +191,7 @@ class RankRepo(Repo):
         query = query.filter(day >= func.date(start_date))
         query = query.filter(day <= func.date(end_date))
         res = query.all()
-        if res is None:
-            return None
-        return [DailyRank(r.rank, r.day, site_id, person_id) for r in res]
+        return [DailyRank(int(r.rank), r.day.isoformat(), site_id, person_id) for r in res]
 
     def add_rank(self, rank, page_id, person_id):
         r = RankModel(rank, page_id, person_id)
@@ -201,7 +205,7 @@ class PageRepo(Repo):
         p = PageModel(url, site_id, found_date_time, last_scan_date)
         db.session.add(p)
         db.session.commit()
-        return p.id
+        return Page(p.url, p.site_id, p.found_date_time, p.last_scan_date)
 
 person_repo = PersonRepo()
 wordpair_repo = WordPairRepo()
