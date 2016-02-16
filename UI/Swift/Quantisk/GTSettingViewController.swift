@@ -13,6 +13,7 @@ import UIKit
 class GTSettingViewController: UIViewController {
     
     @IBAction func updateSites(sender: AnyObject) {
+         GTDBManager.sharedInstance.refreshSites()
     }
     @IBAction func updatePersons(sender: AnyObject) {
         GTDBManager.sharedInstance.refreshPersons()

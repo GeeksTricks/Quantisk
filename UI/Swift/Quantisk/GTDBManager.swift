@@ -17,43 +17,84 @@ class GTDBManager{
 
     //singlenton
     static let sharedInstance = GTDBManager()
-    
+    let realm = try! Realm()
     
     //delete all pesons
-    func deleteAllPersons()->(Bool){
-        return true
+    func deleteAllPersons(){
+        let realm = try! Realm()
+        realm.deleteAll()
+    
     }
     //delete all sites
-    func deleteAllSites()->(Bool){
-        return true
+    func deleteAllSites(){
+        let realm = try! Realm()
+        realm.deleteAll()
     }
+    
+
     //get refresh pesons
     func refreshPersons()->(Bool){
+        // Get the default Realm
         
-        let URL = "http://api-quantisk.rhcloud.com/v1/persons/"
+             let URL = "https://user1:qwerty1@api-quantisk.rhcloud.com/v1/persons/"
         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
             response in
             switch response.result {
             case .Success:
                 if let value = response.result.value {
                     let json = JSON(value)
-                    print(json)
-                    
-                    
-                    
+                  
+                    for (_,subJson):(String, JSON) in json {
+                       print(subJson["id"].int!," ",subJson["name"].string!)
+                        let person = GTPersons()
+                        person.ID = subJson["id"].int!
+                        person.Name = subJson["name"].string!
+                        
+                        // Persist your data easily
+                        try! self.realm.write {
+                            self.realm.add(person)
+                        }
+                        
+                    }
+                   
                 }
             case .Failure(let error):
                 print(error)
             }
-            
-        }
-        
+       }
         
         return true
     }
     //get refresh sites
     func refreshSites()->(Bool){
+        
+        
+        let URL = "https://user1:qwerty1@api-quantisk.rhcloud.com/v1/sites/"
+        Alamofire.request(.GET, URL , parameters: nil).responseJSON {
+            response in
+            switch response.result {
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                    for (_,subJson):(String, JSON) in json {
+                        print(subJson["id"].int!," ",subJson["name"].string!)
+                        let site = GTSites()
+                        site.ID = subJson["id"].int!
+                        site.Name = subJson["name"].string!
+                        
+                        // Persist your data easily
+                        try! self.realm.write {
+                            self.realm.add(site)
+                        }
+                        
+                    }
+                }
+            case .Failure(let error):
+                print(error)
+            }
+        }
         return true
+
     }
     
     
@@ -63,14 +104,23 @@ class GTDBManager{
         
     
 
-        
-            var persons: [String] = ["Ivanov", "Petrov", "Sidorov"]
-        return persons
+        let persons = self.realm.objects(GTPersons)
+     
+        var persons_list: [String] = []
+        for var i = 0; i < persons.count; i++ {
+            persons_list.append(persons[i].Name)
+        }
+        return persons_list
     }
     //get all sites
     func getAllSites()->([String]){
-        var site:[String] = ["Lenta.ru","News.ru","Vesti.ru"]
-        return site
+        let sites = self.realm.objects(GTSites)
+        
+        var sites_list: [String] = []
+        for var i = 0; i < sites.count; i++ {
+            sites_list.append(sites[i].Name)
+        }
+        return sites_list
     }
     
     
