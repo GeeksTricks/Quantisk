@@ -164,6 +164,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
                 url2 = new URL(urls[1]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection2 = (HttpURLConnection) url2.openConnection();
+                connection.setRequestMethod("GET");
+                connection2.setRequestMethod("GET");
                 is = connection.getInputStream();
                 is2 = connection2.getInputStream();
                 reader = new InputStreamReader(is);
@@ -202,6 +204,9 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
                 if (connection != null) {
                     connection.disconnect();
                 }
+                if (connection2 != null) {
+                    connection2.disconnect();
+                }
                 try {
                     if (is != null) {
                         is.close();
@@ -210,8 +215,22 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
                     e.printStackTrace();
                 }
                 try {
+                    if (is2 != null) {
+                        is2.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
                     if (reader != null) {
                         reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (reader2 != null) {
+                        reader2.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
