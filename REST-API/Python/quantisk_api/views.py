@@ -86,8 +86,6 @@ class TotalRankResource(Resource):
 
     def get(self, site_id):
         ranks = rank_repo.get_total(site_id)
-        from . import app
-        app.logger.debug(ranks[0])
         if ranks is None:
             abort(404)
         return [rank._asdict() for rank in ranks]
