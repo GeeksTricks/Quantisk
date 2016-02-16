@@ -8,8 +8,8 @@ class UserModel(db.Model):
     __tablename__ = 'Users'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    login = db.Column(db.String(256), unique=True, nullable=False)
-    pass_hash = db.Column(db.String(256), nullable=False)
+    login = db.Column(db.String(255), unique=True, nullable=False)
+    pass_hash = db.Column(db.String(255), nullable=False)
     # role = db.Column(db.Integer)
 
     def __init__(self, login, pass_hash):
@@ -65,7 +65,7 @@ class SiteModel(db.Model):
     __tablename__ = 'Sites'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    name = db.Column(db.String(256), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -79,7 +79,7 @@ class PageModel(db.Model):
     __tablename__ = 'Pages'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    url = db.Column(db.String(512), unique=True, nullable=False)
+    url = db.Column(db.String(255), unique=True, nullable=False)
     site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
     found_date_time = db.Column(db.DateTime)
     last_scan_date = db.Column(db.DateTime)
