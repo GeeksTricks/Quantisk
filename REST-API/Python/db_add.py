@@ -2,17 +2,17 @@ from quantisk_api.repositories import rank_repo, page_repo, site_repo, wordpair_
 import dateutil.parser as dp
 
 for i in range(10):
-    person_id = person_repo.add('person' + str(i))
+    person = person_repo.add('персона' + str(i))
     for j in range(10):
-        wordpair_repo.add('word' + str(j), 'fff' + str(j), 2, person_id)
+        wordpair_repo.add('word' + str(j), 'fff' + str(j), 2, person.id)
 
-site_id = site_repo.add('lenta.ru')
+site = site_repo.add('lenta.ru')
 
 for i in range(1,11):
     for j in range(1,11):
         page_repo.add(
             '/posts/' + str(i) + str(j),
-            site_id,
+            site.id,
             dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
             dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
         )
