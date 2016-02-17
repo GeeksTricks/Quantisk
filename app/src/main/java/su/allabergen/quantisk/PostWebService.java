@@ -3,9 +3,10 @@ package su.allabergen.quantisk;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,51 +19,43 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import javax.net.ssl.HttpsURLConnection;
+
 /**
  * Created by Rabat on 07.02.2016.
  */
 public class PostWebService extends AsyncTask<String, Integer, Void> {
 
-    String urlToPost = "http://androidexample.com/media/webservice/JsonReturn.php";
-    String urlToPost2 = "/v1/dailyrank/?person_id=<person_id>&site_id=<site_id>&start_date=<start_date>&end_date=<end_date>";
+//    String urlToPost = "http://androidexample.com/media/webservice/JsonReturn.php";
+//    String urlToPost2 = "/v1/dailyrank/?person_id=<person_id>&site_id=<site_id>&start_date=<start_date>&end_date=<end_date>";
 
     ProgressDialog progressDialog;
-//    ProgressBar progressBar;
     Context context;
     URL url;
     HttpURLConnection connection = null;
     String content;
-    String error;
+    String error = null;
     String data = "";
     String nameToSend;
+    String username;
+    String password;
 
-    public PostWebService(Context context, String nameToSend) {
+    public PostWebService(Context context, String nameToSend, String username, String password) {
         this.context = context;
         this.nameToSend = nameToSend;
         progressDialog = new ProgressDialog(context);
-//        progressBar = new ProgressBar(context);
+        this.username = username;
+        this.password = password;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-//        progressDialog.setTitle("Please wait...");
         progressDialog.show();
-//        progressBar.setVisibility(View.VISIBLE);
-//        progressBar.setIndeterminate(true);
-//        progressBar.setMax(100);
 
         try {
-//            data += "&" + URLEncoder.encode("data", "UTF-8") + "=" + "hello";
-
-            data += "?" + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(nameToSend, "UTF-8");
+            data += URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(nameToSend, "UTF-8");
             Log.i("data", data);
-
-//            data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(Email, "UTF-8");
-//            data += "&" + URLEncoder.encode("user", "UTF-8") + "=" + URLEncoder.encode(Login, "UTF-8");
-//            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(Pass, "UTF-8");
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -72,32 +65,50 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
     protected Void doInBackground(String... params) {
         BufferedReader buff = null;
         OutputStreamWriter outputStreamWriter = null;
-//        int count = 0;
+        byte[] loginBytes = (username + ":" + password).getBytes();
+        StringBuilder loginBuilder = new StringBuilder()
+                .append("Basic ")
+                .append(Base64.encodeToString(loginBytes, Base64.DEFAULT));
+
         try {
             url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setDoInput(true);
             connection.setDoOutput(true);
 
-            outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-            outputStreamWriter.write(data);
+            connection.addRequestProperty("Authorization", loginBuilder.toString());
+
+            Log.i("name", nameToSend);
+
+            JSONObject uname = new JSONObject();
+            uname.put("name", nameToSend);
+
+            outputStreamWriter = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            outputStreamWriter.write(uname.toString());
             outputStreamWriter.flush();
+
+            int responseCode = connection.getResponseCode();
+            Log.i("response code", String.valueOf(responseCode));
 
             buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder sb = new StringBuilder();
-            String line = "";
-
-            while ((line = buff.readLine()) != null) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator")); // same as \n - newline
-
-//                publishProgress((int) ((count / (line.toCharArray().length)) * 100));
-//                count++;
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line = "";
+                while ((line = buff.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                content = sb.toString();
+            } else {
+                Log.i("error", "Cannot connect");
             }
 
-            content = sb.toString();
             Log.i("content", content);
         } catch (IOException e) {
             error = e.getMessage();
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -119,12 +130,6 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
-//        progressBar.setProgress(values[0]);
-    }
-
-    @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
@@ -137,27 +142,15 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
 
             String output = "";
             String nameAdded = "";
-            JSONObject jsonResponse;
             try {
-                JSONArray jsonArray = new JSONArray(content);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonPart = jsonArray.getJSONObject(i);
-                    nameAdded = jsonPart.getString("name");
-                }
+                JSONObject jsonObject = new JSONObject(content);
+                nameAdded = jsonObject.getString("name");
+                Toast.makeText(context, "\"" + nameAdded + "\" has been added", Toast.LENGTH_LONG).show();
                 output = "Name: " + nameAdded;
                 if (!nameAdded.equals("")) {
                     AdminActivity.nameList.add(nameAdded);
+                    AdminActivity.nameAdapter.notifyDataSetChanged();
                 }
-
-//                jsonResponse = new JSONObject(content);
-//                JSONArray jsonArray = jsonResponse.optJSONArray("Android");
-//                for (int i = 0; i < jsonArray.length(); i++) {
-//                    JSONObject child = jsonArray.getJSONObject(i);
-//                    String name = child.getString("name");
-//                    String number = child.getString("number");
-//                    String time = child.getString("date_added");
-//                    output = "Name: " + name + "\nNumber: " + number + "\nDate added: " + time + "\n";
-//                }
 
                 Log.i("output", output);
             } catch (JSONException e) {
