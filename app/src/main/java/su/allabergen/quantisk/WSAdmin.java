@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static su.allabergen.quantisk.AdminActivity.nameAdapter;
 import static su.allabergen.quantisk.AdminActivity.nameList;
@@ -26,9 +26,9 @@ import static su.allabergen.quantisk.AdminActivity.siteList;
  * Created by Rabat on 18.02.2016.
  */
 public class WSAdmin {
-
-    private List<String> personFromWebService;
-    private List<String> siteFromWebService;
+    
+    public static Map<Integer, String> personKV;
+    public static Map<Integer, String> siteKV;
     private ProgressDialog progressDialog;
     private String username, password;
 
@@ -39,7 +39,7 @@ public class WSAdmin {
         new WebService().execute(urlName, urlSite);
     }
 
-    public class WebService extends AsyncTask<String, Void, List<String>> {
+    public class WebService extends AsyncTask<String, Void, Map<Integer, String>> {
 
         @Override
         protected void onPreExecute() {
@@ -48,36 +48,38 @@ public class WSAdmin {
         }
 
         @Override
-        protected List<String> doInBackground(String... urls) {
-            personFromWebService = getJSON(urls[0], username, password);
-            siteFromWebService = getJSON(urls[1], username, password);
+        protected Map<Integer, String> doInBackground(String... urls) {
+            personKV = getJSON(urls[0], username, password);
+            siteKV = getJSON(urls[1], username, password);
 
             return null;
         }
 
         @Override
-        protected void onPostExecute(List<String> list) {
-            super.onPostExecute(list);
+        protected void onPostExecute(Map<Integer, String> map) {
+            super.onPostExecute(map);
             progressDialog.dismiss();
-            nameList.addAll(getPersonFromWebService());
+
+            for (Map.Entry<Integer, String> person : getPersonKV().entrySet())
+                nameList.add(person.getValue());
             nameAdapter.notifyDataSetChanged();
-            siteList.addAll(getSiteFromWebService());
+
+            for (Map.Entry<Integer, String> site : getSiteKV().entrySet())
+                siteList.add(site.getValue());
             siteAdapter.notifyDataSetChanged();
-            personFromWebService.clear();
-            siteFromWebService.clear();
         }
 
-        protected List<String> getPersonFromWebService() {
-            return personFromWebService;
+        protected Map<Integer, String> getPersonKV() {
+            return personKV;
         }
 
-        protected List<String> getSiteFromWebService() {
-            return siteFromWebService;
+        protected Map<Integer, String> getSiteKV() {
+            return siteKV;
         }
     }
 
-    public List<String> getJSON(String url1, String username, String password) {
-        List<String> dataFromWebService = new ArrayList<>();
+    public Map<Integer, String> getJSON(String url1, String username, String password) {
+        Map<Integer, String> dataFromWebService = new LinkedHashMap<>();
         String result = "";
         URL url;
         HttpURLConnection connection = null;
@@ -108,7 +110,7 @@ public class WSAdmin {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonPart = jsonArray.getJSONObject(i);
-                dataFromWebService.add(jsonPart.getString("name"));
+                dataFromWebService.put(jsonPart.getInt("id"), jsonPart.getString("name"));
             }
 
             return dataFromWebService;
