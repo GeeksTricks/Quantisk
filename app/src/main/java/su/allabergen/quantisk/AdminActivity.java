@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,8 +55,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     public static List<String> siteList = new ArrayList<>();
     public static List<String> nameList = new ArrayList<>();
-    private ArrayAdapter<String> nameAdapter;
-    private ArrayAdapter<String> siteAdapter;
+    public static ArrayAdapter<String> nameAdapter;
+    public static ArrayAdapter<String> siteAdapter;
     private WebService task;
 
     @Override
@@ -67,14 +68,13 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
         initVariables();
 
-        String urlName = "http://api-quantisk.rhcloud.com/v1/persons/";
-        String urlSite = "http://api-quantisk.rhcloud.com/v1/sites/";
-        task = new WebService(this);
+        String urlName = "https://api-quantisk.rhcloud.com/v1/persons/";
+        String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
+        task = new WebService(this, "user1", "qwerty1");
         task.execute(urlName, urlSite);
 //        task = new WebService(this);
 //        task.execute(urlSite);
 
-        spinnerLists();
         createSpinners();
     }
 
@@ -86,20 +86,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         dateFrom = (TextView) findViewById(R.id.dateFrom);
         dateTo = (TextView) findViewById(R.id.dateTo);
-    }
-
-    private void spinnerLists() {
-//        String[] siteArray = getResources().getStringArray(R.array.sites);
-//        siteList = new ArrayList<>();
-//        for (int i = 0; i < siteArray.length; i++) {
-//            siteList.add(siteArray[i]);
-//        }
-
-//        String[] nameArray = getResources().getStringArray(R.array.names);
-//        nameList = new ArrayList<>();
-//        for (int i = 0; i < nameArray.length; i++) {
-//            nameList.add(nameArray[i]);
-//        }
     }
 
     private void createSpinners() {
@@ -133,11 +119,14 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         private List<String> personFromWebService;
         private List<String> siteFromWebService;
         private ProgressDialog progressDialog;
+        private String username, password;
 
-        public WebService(Context context) {
+        public WebService(Context context, String username, String password) {
             personFromWebService = new ArrayList<>();
             siteFromWebService = new ArrayList<>();
             progressDialog = new ProgressDialog(context);
+            this.username = username;
+            this.password = password;
         }
 
         @Override
@@ -159,13 +148,20 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             InputStreamReader reader = null;
             InputStreamReader reader2 = null;
 
+            byte[] loginBytes = (username + ":" + password).getBytes();
+            StringBuilder loginBuilder = new StringBuilder()
+                    .append("Basic ")
+                    .append(Base64.encodeToString(loginBytes, Base64.DEFAULT));
+
             try {
                 url = new URL(urls[0]);
                 url2 = new URL(urls[1]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection2 = (HttpURLConnection) url2.openConnection();
-                connection.setRequestMethod("GET");
-                connection2.setRequestMethod("GET");
+
+                connection.addRequestProperty("Authorization", loginBuilder.toString());
+                connection2.addRequestProperty("Authorization", loginBuilder.toString());
+
                 is = connection.getInputStream();
                 is2 = connection2.getInputStream();
                 reader = new InputStreamReader(is);
