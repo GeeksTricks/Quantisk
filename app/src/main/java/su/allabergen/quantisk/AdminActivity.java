@@ -2,16 +2,11 @@ package su.allabergen.quantisk;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,15 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -57,7 +43,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     public static List<String> nameList = new ArrayList<>();
     public static ArrayAdapter<String> nameAdapter;
     public static ArrayAdapter<String> siteAdapter;
-    private WebService task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +55,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
         String urlName = "https://api-quantisk.rhcloud.com/v1/persons/";
         String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
-        task = new WebService(this, "user1", "qwerty1");
-        task.execute(urlName, urlSite);
-//        task = new WebService(this);
-//        task.execute(urlSite);
+
+        new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
 
         createSpinners();
     }
@@ -101,157 +84,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
         nameSpinner.setAdapter(nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
-    }
-
-    private void updateListView() {
-        try {
-            nameList.addAll(task.getPersonFromWebService());
-            nameAdapter.notifyDataSetChanged();
-            siteList.addAll(task.getSiteFromWebService());
-            siteAdapter.notifyDataSetChanged();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public class WebService extends AsyncTask<String, Void, Void> {
-
-        private List<String> personFromWebService;
-        private List<String> siteFromWebService;
-        private ProgressDialog progressDialog;
-        private String username, password;
-
-        public WebService(Context context, String username, String password) {
-            personFromWebService = new ArrayList<>();
-            siteFromWebService = new ArrayList<>();
-            progressDialog = new ProgressDialog(context);
-            this.username = username;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(String... urls) {
-            String result = "";
-            String result2 = "";
-            URL url;
-            URL url2;
-            HttpURLConnection connection = null;
-            HttpURLConnection connection2 = null;
-            InputStream is = null;
-            InputStream is2 = null;
-            InputStreamReader reader = null;
-            InputStreamReader reader2 = null;
-
-            byte[] loginBytes = (username + ":" + password).getBytes();
-            StringBuilder loginBuilder = new StringBuilder()
-                    .append("Basic ")
-                    .append(Base64.encodeToString(loginBytes, Base64.DEFAULT));
-
-            try {
-                url = new URL(urls[0]);
-                url2 = new URL(urls[1]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection2 = (HttpURLConnection) url2.openConnection();
-
-                connection.addRequestProperty("Authorization", loginBuilder.toString());
-                connection2.addRequestProperty("Authorization", loginBuilder.toString());
-
-                is = connection.getInputStream();
-                is2 = connection2.getInputStream();
-                reader = new InputStreamReader(is);
-                reader2 = new InputStreamReader(is2);
-                int data = reader.read();
-                int data2 = reader2.read();
-
-                while (data != -1) {
-                    char current = (char) data;
-                    result += current;
-                    data = reader.read();
-                }
-                while (data2 != -1) {
-                    char current = (char) data2;
-                    result2 += current;
-                    data2 = reader2.read();
-                }
-
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonPart = jsonArray.getJSONObject(i);
-                    personFromWebService.add(jsonPart.getString("name"));
-                }
-                JSONArray jsonArray2 = new JSONArray(result2);
-                for (int i = 0; i < jsonArray2.length(); i++) {
-                    JSONObject jsonPart = jsonArray2.getJSONObject(i);
-                    siteFromWebService.add(jsonPart.getString("name"));
-                }
-
-                Log.i("result", result);
-                Log.i("result", result2);
-
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                if (connection2 != null) {
-                    connection2.disconnect();
-                }
-                try {
-                    if (is != null) {
-                        is.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (is2 != null) {
-                        is2.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader2 != null) {
-                        reader2.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            progressDialog.dismiss();
-            updateListView();
-            personFromWebService.clear();
-            siteFromWebService.clear();
-        }
-
-        protected List<String> getPersonFromWebService() {
-            return personFromWebService;
-        }
-
-        protected List<String> getSiteFromWebService() {
-            return siteFromWebService;
-        }
     }
 
     @Override
