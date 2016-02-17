@@ -33,7 +33,7 @@ class DataLayer():
         # получаем весь список ссылок с пустой датой сканирвоания
         print("Начинаем проверять скан дэйт")
         result_set = self.session.query(Pages.id, Pages.url).filter(
-            or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(days=1) < datetime.now())).all()
+            or_(Pages.last_scan_date == None, Pages.last_scan_date + timedelta(days=1) < datetime.utcnow())).all()
         print(str(len(result_set)) + ' столько ссылок выбралось из базы')
         return result_set
 
@@ -58,7 +58,7 @@ class DataLayer():
                 print(url + " добавлено в сеесию")
                 bullet = Pages(url=url, site_id=id_site,
                                found_date_time="{0:%Y-%m-%d %H:%M:%S}".format(
-                                   datetime.now()))
+                                   datetime.utcnow()))
                 self.session.add(bullet)
         self.session.commit()
 
@@ -83,7 +83,7 @@ class DataLayer():
             pass
 
     def set_last_scan_date(self, id_url):
-        scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
+        scan_date = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.utcnow())
         self.session.query(Pages).filter_by(id=id_url).update(
             {'last_scan_date': scan_date})
         self.session.commit()

@@ -18,6 +18,7 @@ class Downloader():
             return sitemap
         except error.HTTPError:
             print('Неполучилось скачать sitemap.')
+            return False
             
     def download_html(self, link):
         html_file = 'pages'
@@ -28,7 +29,7 @@ class Downloader():
             return html_file
         except error.HTTPError:
             print('Неполучилось скачать html.')
-            pass
+            return False
 
 
 

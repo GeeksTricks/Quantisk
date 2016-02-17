@@ -19,19 +19,25 @@ def get_url_list(link_list):
     all_url_list = []
     for link in link_list:
         sitemap_file = download.download_sitemap(link)
-        urls = parser_sitemap.parse_sitemap(sitemap_file)
-        link_list.extend(urls['sitemap'])
-        all_url_list.extend(urls['urls'])
+        if sitemap_file:
+            urls = parser_sitemap.parse_sitemap(sitemap_file)
+            link_list.extend(urls['sitemap'])
+            all_url_list.extend(urls['urls'])
+        else:
+            continue
     return all_url_list
 
 
 def get_runk_add_to_table(html_file, query_list, id_url):
     # Парсим html файл и добавляем в сессию ранк, если таковой есть
-    for query in query_list:
-        count = parser_html.parse_html(html_file, query.keyword_1,
-                                       query.keyword_2, query.distance)
-        data.set_last_scan_date(id_url)
-        data.add_rank_to_table(count, id_url, query.person_id)
+    if html_file:
+        for query in query_list:
+            count = parser_html.parse_html(html_file, query.keyword_1,
+                                           query.keyword_2, query.distance)
+            data.set_last_scan_date(id_url)
+            data.add_rank_to_table(count, id_url, query.person_id)
+    else:
+        pass
 
 
 def main():
@@ -50,11 +56,11 @@ def main():
         queries = data.get_query_for_parse()
 
         for url in urls:
-            print(url)     # отладка
+            # отладка print(url)
             html_file = download.download_html(url.url)
             get_runk_add_to_table(html_file, queries, url.id)
 
-        time.sleep(1400)
+        time.sleep(43200)
 
 if __name__ == "__main__":
     main()
