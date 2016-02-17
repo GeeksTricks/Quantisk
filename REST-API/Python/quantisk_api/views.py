@@ -1,8 +1,9 @@
 from flask import request, abort
 from flask_restful import Resource
-from dateutil import parser
 from .repositories import person_repo, wordpair_repo, site_repo, rank_repo
 from .auth import auth
+import arrow
+from arrow.parser import ParserError
 
 
 class SingleResource(Resource):
@@ -99,11 +100,12 @@ class DailyRankResource(Resource):
         args = request.args
         person_id = int(args['person_id'])
         site_id = int(args['site_id'])
-        start_date = parser.parse(args['start_date'])
-        end_date = parser.parse(args['end_date'])
-        ranks = rank_repo.get_daily(person_id, site_id, start_date, end_date)
-        return [rank._asdict() for rank in ranks]
-
-
+        try:
+            start_date = arrow.get(args['start_date']).to('utc').datetime
+            end_date = arrow.get(args['end_date']).to('utc').datetime
+            ranks = rank_repo.get_daily(person_id, site_id, start_date, end_date)
+            return [rank._asdict() for rank in ranks]
+        except ParserError:
+            abort(400)
 
 

@@ -13,7 +13,7 @@ for i in range(1,11):
         page_repo.add(
             '/posts/' + str(i) + str(j),
             site.id,
-            dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
+            dp.parse('2016-02-{0:02d}T{1:02d}:55:33+03:00'.format(i, j)),
             dp.parse('2016-02-{0:02d}T{1:02d}:55:33'.format(i, j)),
         )
 

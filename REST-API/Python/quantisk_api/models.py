@@ -26,7 +26,7 @@ class PersonModel(db.Model):
     __tablename__ = 'Persons'
     
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    name = db.Column(db.String(2048), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -40,8 +40,8 @@ class WordpairModel(db.Model):
     __tablename__ = 'Wordpairs'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    keyword1 = db.Column(db.String(2048), nullable=False)
-    keyword2 = db.Column(db.String(2048), nullable=False)
+    keyword1 = db.Column(db.String(255), nullable=False)
+    keyword2 = db.Column(db.String(255), nullable=False)
     distance = db.Column(db.Integer, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('Persons.id'), nullable=False)
 
