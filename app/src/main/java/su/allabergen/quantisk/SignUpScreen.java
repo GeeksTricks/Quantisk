@@ -51,10 +51,28 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         String uname = usernameField.getText().toString();
         String upassword = passwordField.getText().toString();
 
-        if (isSignUp) {
+        if (isSignUp)
             saveUserAccount(uname, upassword);
-        } else {
+        else
             checkUserAccount(uname, upassword);
+    }
+
+    private void saveUserAccount(String uname, String upassword) {
+        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
+        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
+            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
+            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
+        }
+
+        if (checkForSimilarity(uname, upassword)) {
+            sharedPreferences.edit().remove("USERNAME").apply();
+            sharedPreferences.edit().remove("PASSWORD").apply();
+            tempUsername.add(uname);
+            tempPassword.add(upassword);
+            sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
+            sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
+
+            Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -65,6 +83,8 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
         }
 
+        tempList.clear();
+        tempList2.clear();
         tempList.addAll(tempUsername);
         tempList2.addAll(tempPassword);
 
@@ -89,25 +109,6 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, "Incorrect username or password.\nPlease, try again!", Toast.LENGTH_SHORT).show();
             return;
-        }
-    }
-
-    private void saveUserAccount(String uname, String upassword) {
-        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
-        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
-            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
-            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
-        }
-
-        if (checkForSimilarity(uname, upassword)) {
-            sharedPreferences.edit().remove("USERNAME").apply();
-            sharedPreferences.edit().remove("PASSWORD").apply();
-            tempUsername.add(uname);
-            tempPassword.add(upassword);
-            sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
-            sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
-
-            Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
         }
     }
 

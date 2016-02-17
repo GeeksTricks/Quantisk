@@ -26,7 +26,7 @@ import static su.allabergen.quantisk.AdminActivity.siteList;
  * Created by Rabat on 18.02.2016.
  */
 public class WSAdmin {
-    
+
     public static Map<Integer, String> personKV;
     public static Map<Integer, String> siteKV;
     private ProgressDialog progressDialog;
