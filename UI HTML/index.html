@@ -7,14 +7,15 @@
 	<script src="jquery-2.2.0.min.js"></script>
 	<script type="text/javascript" src="moment.js"></script>
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
 	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"> -->
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container">
+	<div class="container jumbotron">
 		<ul class="nav nav-tabs">
 			<li id="statAll" class="active">
 				<a href="#all" data-toggle="tab">Общая статистика</a>
@@ -25,9 +26,9 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane active" id="all">
-				<div class="row">
+				<div class="row firstRow">
 					<div class="col-md-3">Список доступных сайтов</div>
-					<button>Применить</button>
+					<button class="btn btn-primary">Применить</button>
 				</div>
 				<div class="row">
 					<form class="col-md-3">
@@ -44,7 +45,7 @@
 			  				<th>Имя</th>
 			  				<th>Кол-во упоминаний</th>
 			  			</tr>
-			  			<tr>
+			  			<tr class="info">
 			  				<td>Леонардо Ди Каприо</td>
 			  				<td>100500</td>
 			  			</tr>
@@ -52,9 +53,9 @@
 			  	</div>
 			</div>
 			<div class="tab-pane" id="daily">
-				<div class="row">
+				<div class="row firstRow">
 					<div class="col-md-3">Список доступных сайтов</div>
-					<button>Применить</button>
+					<button class="btn btn-primary">Применить</button>
 				</div>
 				<div class="row">
 					<form class="col-md-3">
