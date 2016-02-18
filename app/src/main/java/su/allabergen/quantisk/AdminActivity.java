@@ -57,6 +57,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
 
         new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
+        new VolleyGet(this, "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
 
         createSpinners();
     }

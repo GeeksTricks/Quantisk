@@ -17,10 +17,17 @@ public class AddDialog extends DialogFragment {
     EditText addEditText;
     String currFrag;
     View v;
+    int id;
 
     public AddDialog(String currFrag, View v) {
         this.currFrag = currFrag;
         this.v = v;
+    }
+
+    public AddDialog(String currFrag, View v, int id) {
+        this.currFrag = currFrag;
+        this.v = v;
+        this.id = id;
     }
 
     @NonNull
@@ -53,8 +60,7 @@ public class AddDialog extends DialogFragment {
                                 break;
 
                             case "removePersonBtn":
-                                new DeleteWebService(getActivity(), Integer.parseInt(addEditText.getText().toString()), "user1", "qwerty1")
-                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+
                                 break;
 
                             case "removeUserBtn":

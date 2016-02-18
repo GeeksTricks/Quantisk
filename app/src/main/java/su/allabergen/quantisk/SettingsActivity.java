@@ -1,5 +1,7 @@
 package su.allabergen.quantisk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import static su.allabergen.quantisk.AdminActivity.*;
+import static su.allabergen.quantisk.AdminActivity.nameList;
+import static su.allabergen.quantisk.AdminActivity.siteList;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -142,6 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
         View vSite;
         View vName;
         View vUser;
+        int position;
 
         /**
          * The fragment argument representing the section number for this
@@ -246,7 +250,7 @@ public class SettingsActivity extends AppCompatActivity {
                     currFrag = "addSiteBtn";
                     view = vSite;
                     break;
-                case R.id.addNameBtn :
+                case R.id.addPersonBtn :
                     currFrag = "addPersonBtn";
                     view = vName;
                     break;
@@ -258,9 +262,25 @@ public class SettingsActivity extends AppCompatActivity {
                     currFrag = "removeSiteBtn";
                     view = vSite;
                     break;
-                case R.id.removeNameBtn :
+                case R.id.removePersonBtn :
                     currFrag = "removePersonBtn";
                     view = vName;
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Remove Person")
+                            .setMessage("Are you sure to remove this person?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
+
+//                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
+//                                            .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .create()
+                            .show();
+
                     break;
                 case R.id.removeUserBtn :
                     currFrag = "removeUserBtn";
@@ -270,7 +290,7 @@ public class SettingsActivity extends AppCompatActivity {
                     currFrag = "editSiteBtn";
                     view = vSite;
                     break;
-                case R.id.editNameBtn :
+                case R.id.editPersonBtn :
                     currFrag = "editPersonBtn";
                     view = vName;
                     break;
@@ -280,14 +300,31 @@ public class SettingsActivity extends AppCompatActivity {
                     break;
             }
 
-            AddDialog dialog = new AddDialog(currFrag, view);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            dialog.show(ft, "Add Dialog");
+            AddDialog dialog = null;
+            if (currFrag.equals("removeSiteBtn") || currFrag.equals("removePersonBtn") || currFrag.equals("removeUserBtn")) {
+//                dialog = new AddDialog(currFrag, view, this.position);
+            } else {
+                dialog = new AddDialog(currFrag, view);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft, "Add Dialog");
+            }
         }
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            view.equals()
+            Spinner spinner = (Spinner) parent;
+
+            switch (spinner.getId()) {
+                case R.id.nameSpinner:
+                    this.position = position;
+                    break;
+                case R.id.siteSpinner:
+                    this.position = position;
+                    break;
+                case R.id.userSpinner:
+                    this.position = position;
+                    break;
+            }
         }
 
         @Override

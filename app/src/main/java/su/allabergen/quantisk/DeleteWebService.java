@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,15 +59,15 @@ public class DeleteWebService extends AsyncTask<String, Integer, Void> {
         try {
             url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setDoInput(true);
-            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setRequestMethod("DELETE");
 
             connection.addRequestProperty("Authorization", loginBuilder.toString());
 
             JSONObject id = new JSONObject();
             id.put("id", personToDelete);
+            Log.i("Quantisk id", "person to delete id=" + personToDelete);
 
             outputStreamWriter = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
             outputStreamWriter.write(id.toString());
@@ -77,15 +76,15 @@ public class DeleteWebService extends AsyncTask<String, Integer, Void> {
             int responseCode = connection.getResponseCode();
             Log.i("Quantisk response code", String.valueOf(responseCode));
 
-            buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder sb = new StringBuilder();
+//            buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            StringBuilder sb = new StringBuilder();
             if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
                 Toast.makeText(context, "Person has been deleted", Toast.LENGTH_LONG).show();
-                String line = "";
-                while ((line = buff.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                content = sb.toString();
+//                String line = "";
+//                while ((line = buff.readLine()) != null) {
+//                    sb.append(line + "\n");
+//                }
+//                content = sb.toString();
             } else {
                 Log.i("Quantisk", "Cannot delete");
             }
@@ -93,6 +92,7 @@ public class DeleteWebService extends AsyncTask<String, Integer, Void> {
             error = e.getMessage();
             e.printStackTrace();
         } catch (JSONException e) {
+            error = e.getMessage();
             e.printStackTrace();
         } finally {
             try {
@@ -122,18 +122,18 @@ public class DeleteWebService extends AsyncTask<String, Integer, Void> {
         if (error != null) {
             Log.i("Quantisk error", error);
         } else {
-            String output = "";
-            String nameAdded = "";
-            try {
-                JSONObject jsonObject = new JSONObject(content);
-                nameAdded = jsonObject.getString("name");
-                if (!nameAdded.equals("")) {
-                    AdminActivity.nameList.add(nameAdded);
-                    AdminActivity.nameAdapter.notifyDataSetChanged();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            String output = "";
+//            String nameAdded = "";
+//            try {
+//                JSONObject jsonObject = new JSONObject(content);
+//                nameAdded = jsonObject.getString("name");
+//                if (!nameAdded.equals("")) {
+//                    AdminActivity.nameList.add(nameAdded);
+//                    AdminActivity.nameAdapter.notifyDataSetChanged();
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }
