@@ -10,8 +10,11 @@ Site = namedtuple('Site', ['id', 'name'])
 Page = namedtuple('Page', ['id', 'url', 'site_id', 'found_date_time', 'last_scan_date'])
 TotalRank = namedtuple('Rank', ['rank', 'site_id', 'person_id'])
 DailyRank = namedtuple('DailyRank', ['rank', 'day', 'site_id', 'person_id'])
-User = namedtuple('User', ['id', 'login', 'pass_hash'])
+User = namedtuple('User', ['id', 'login', 'pass_hash', 'role'])
 
+
+class NonUniqueError(Exception):
+    pass
 
 class Repo:
 
@@ -25,25 +28,41 @@ class UserRepo(Repo):
         u = UserModel.query.get(id)
         if u is None:
             return None
-        return User(u.id, u.login, u.pass_hash)
+        return User(u.id, u.login, u.pass_hash, u.role)
 
     def get_by_login(self, login):
         query = UserModel.query
         u = query.filter_by(login=login).first()
         if u is None:
             return None
-        return User(u.id, u.login, u.pass_hash)
+        return User(u.id, u.login, u.pass_hash, u.role)
 
     def get_user_role(self, id):
         pass
+    
+    def get_all(self):
+        u_list = UserModel.query.all()
+        if u_list is None:
+            return None
+        return [User(u.id, u.login, u.pass_hash, u.role) for u in u_list]
 
-    # метод для тестов
-    def add_user(self, login, password):
+    def add(self, login, password, role):
+        if self.get_by_login(login):
+            raise NonUniqueError('')
         p_hash = generate_password_hash(password)
-        u = UserModel(login, p_hash)
+        u = UserModel(login, p_hash, role)
         db.session.add(u)
         db.session.commit()
-        return User(u.id, u.login, u.pass_hash)
+        return User(u.id, u.login, u.pass_hash, u.role)
+
+    def delete(self, id):
+        u = UserModel.query.get(id)
+        if u is None:
+            return None
+
+        db.session.delete(u)
+        db.session.commit()
+        return User(u.id, u.name)
 
 
 class PersonRepo(Repo):

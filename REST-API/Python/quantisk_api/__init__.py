@@ -52,6 +52,8 @@ api.add_resource(SiteListResource, '/v1/sites/')
 api.add_resource(SiteResource, '/v1/sites/<int:id>/')
 api.add_resource(TotalRankResource, '/v1/totalrank/<int:site_id>/')
 api.add_resource(DailyRankResource, '/v1/dailyrank/')
+api.add_resource(UserListResource, '/v1/users/')
+api.add_resource(UserResource, '/v1/users/<int:id>/')
 
 
 

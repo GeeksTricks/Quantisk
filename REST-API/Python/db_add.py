@@ -26,7 +26,9 @@ for i in range(1,101):
 for i in range(30,70):
     rank_repo.add_rank(2, page_id=i, person_id=4)
 
-for i in range(1, 10):
-    user_repo.add_user('user' + str(i), 'qwerty' + str(i))
+for i in range(1, 6):
+    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 1)
 
+for i in range(6, 11):
+    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 2)
 
