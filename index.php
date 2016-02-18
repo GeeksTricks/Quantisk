@@ -1,9 +1,9 @@
 <?php
-require('classes.php');
-require('repo.php');
-require('function.php');
+$title = "Главная страница";
 
-$link = getDbConnect();
+include('view/header.php');
+include('view/index.php');
+include('view/footer.php');
 
 // ТЕСТИРОВАНИЕ КЛАССОВ
 
