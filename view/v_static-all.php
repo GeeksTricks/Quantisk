@@ -22,6 +22,7 @@
 		</select>
 		<button type="submit" name="submit">Применить</button>
 	</form>
+	<br>
 	<?php if(isset($_POST['submit'])): ?>
 		<table>
 			<tr>

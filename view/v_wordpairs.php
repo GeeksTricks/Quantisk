@@ -31,15 +31,17 @@
 		<tr>
 			<td>Keyword1</td>
 			<td>Keyword2</td>
+			<td>Distance</td>
 			<td colspan="2"></td>
 		</tr>
 		<?php foreach ($pair_person as $key): 
 			$keyword_id = $key->getId();?>
 			<tr>
 				<td><?php echo $key->getKeyword1(); ?></td>
-				<td><?php echo $key->getKeyword2();?></td>		
+				<td><?php echo $key->getKeyword2(); ?></td>	
+				<td><?php echo $key->getDistance(); ?></td>
 				<td><a href="edit_keyword.php?id=<?php echo $keyword_id?>"><button name="edit">Редактировать</button></a></td>					
-				<td><a href="delete.php?id=<?php echo $keyword_id?>"><button name="delete">Удалить</button></a></td>			
+				<td><a href="delete.php?id=<?php echo $keyword_id?>&name=keyword"><button name="delete">Удалить</button></a></td>			
 			</tr>
 		<?php endforeach ?>
 	</table>

@@ -91,6 +91,10 @@ class Wordpair
 		$this->person = $person;
 	}
 
+	public function getId() {
+		return $this->id;
+	}	
+
 	public function getKeyword1() {
 		return $this->keyword1;
 	}
@@ -99,7 +103,7 @@ class Wordpair
 		return $this->keyword2;
 	}	
 
-	public function getId() {
-		return $this->id;
+	public function getDistance() {
+		return $this->distance;
 	}		
 }

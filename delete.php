@@ -4,8 +4,34 @@ require('classes.php');
 require('repo.php');
 
 $link = getDbConnect();
-$keyword_id = $_GET['id'];
+$id = $_GET['id'];
+$param = $_GET['name'];
 
-	if(WordpairRepository::delete($link, $keyword_id)) {
-		header("location: wordpairs.php");
-	} 
+switch ($param) {
+	case 'site':
+		if(SiteRepository::delete($link, $id)) {
+			header("location: sites.php");
+		}
+		break;
+
+	case 'keyword':
+		if(WordpairRepository::delete($link, $id)) {
+			header("location: wordpairs.php");
+		}
+		break;
+
+	case 'person':
+		if(PersonRepository::delete($link, $id)) {
+			header("location: persons.php");
+		}
+		break;
+	
+	default:
+		header("location: index.php");
+}
+
+
+
+
+
+

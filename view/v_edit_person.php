@@ -13,10 +13,9 @@
 	</ul>
 </div>
 <div>
-	<h3>Название</h3>
-		<form type="multipart/form-data" method="POST">
-	<input type="text" value="<?php echo $person_name ?>" name="name">
-
+	<form type="multipart/form-data" method="POST">
+		<h3>Название</h3>		
+		<input type="text" value="<?php echo $person_name ?>" name="name">
 		<button type="submit" name="submit">Сохранить</button>
 	</form>
 </div>

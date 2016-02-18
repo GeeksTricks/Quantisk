@@ -13,31 +13,19 @@
 	</ul>
 </div>
 <div>
-<table>
-	<tr><td>Наименование</td></tr>
-	<?php foreach ($all_persons as $key): ?>
-		<tr>
-			<td><?php echo $key->getName(); 
-			$person_id = $key->getId();
-			?></td>
-			<form type="multipart/form-data" method="POST">
-				<td><button name="edit">Редактировать</button></td>
-				<td><button name="delete">Удалить</button></td>
-			</form>
-		</tr>
-	<?php endforeach ?>
-	<?php 
-if(isset($_POST['edit'])) {
-	header("location: edit_person.php?id=".$person_id);
-}
-
-if(isset($_POST['delete'])) {
-	if(PersonRepository::delete($link, $person_id)) {
-		header("location: persons.php");
-	}
-}
-?>
-</table>
-<br>
-<a href="new_person.php"><button>Добавить</button> </a>
+	<table>
+			<tr>
+				<td colspan="3">Наименование</td>
+			</tr>
+		<?php foreach ($all_persons as $key): ?>
+			<tr>
+				<td><?php echo $key->getName(); 
+				$person_id = $key->getId();	?></td>
+				<td><a href="edit_person.php?id=<?php echo $person_id?>"><button name="edit">Редактировать</button></a></td>	
+				<td><a href="delete.php?id=<?php echo $person_id?>&name=person"><button name="delete">Удалить</button></a></td>			
+			</tr>
+		<?php endforeach ?>
+	</table>
+	<br>
+	<a href="new_person.php"><button>Добавить</button> </a>
 </div>

@@ -13,9 +13,9 @@
 	</ul>
 </div>
 <div>
-	<h3>Название</h3>
-		<form type="multipart/form-data" method="POST">
-			<input type="text" name="name">
-			<button type="submit" name="submit">Сохранить</button>
-		</form>
+	<form type="multipart/form-data" method="POST">
+		<h3>Название</h3>
+		<input type="text" name="name">
+		<button type="submit" name="submit">Сохранить</button>
+	</form>
 </div>

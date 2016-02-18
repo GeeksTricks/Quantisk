@@ -13,52 +13,52 @@
 	</ul>
 </div>
 <div>
-<form type="multipart/form-data" method="POST">
-	<select name="sites">
-		<option value="default">Выберите сайт</option>
-		<?php foreach ($all_sites as $site): ?>
-		<option value="<?php echo $site->getId() ?>"><?php echo $site->getName(); ?></option>
-		<?php endforeach ?>
-	</select>
-<br>
-	<select name="persons">
-		<option value="default">Выберите личность</option>
-		<?php foreach ($all_persons as $person): ?>
-		<option value="<?php echo $person->getId() ?>"><?php echo $person->getName(); ?></option>
-		<?php endforeach ?>
-	</select>	
-	<br>
-	Период с <input type="date" name="start"> до <input type="date" name="end"><br>
-	<button type="submit" name="submit">Применить</button>
-</form>
-<table>
-	<tr>
-		<td>Дата</td>
-		<td>Статистика</td>
-	</tr>
-	<?php if(isset($_POST['submit'])):
-	$person_id = $_POST['persons'];
-	$site_id = $_POST['sites'];
-	$start = $_POST['start'];
-	$start = " '$start' ";
-	$end = $_POST['end'];
-	$end = " '$end' ";
-
-	$period = RankRepository::loadByPeriod($link, $person_id, $site_id, $start, $end);	?>
-
-		<?php foreach($period as $key => $value): 
-			$key = substr($key, 0, 10);
-			$date = explode('-', $key);
-			$date = implode('.', $date); ?>
-					<tr>
-						<td>
-							<?php echo $date; ?>
-						</td>
-						<td>
-							<?php echo $value; ?>
-						</td>
-					</tr>
+	<form type="multipart/form-data" method="POST">
+		<select name="sites">
+			<option value="default">Выберите сайт</option>
+			<?php foreach ($all_sites as $site): ?>
+			<option value="<?php echo $site->getId() ?>"><?php echo $site->getName(); ?></option>
 			<?php endforeach ?>
-	<?php endif ?>
-</table>
+		</select>
+	<br>
+	<br>
+		<select name="persons">
+			<option value="default">Выберите личность</option>
+			<?php foreach ($all_persons as $person): ?>
+			<option value="<?php echo $person->getId() ?>"><?php echo $person->getName(); ?></option>
+			<?php endforeach ?>
+		</select>	
+	<br>
+	<br>
+		Период с <input type="date" name="start"> до <input type="date" name="end"><br><br>
+		<button type="submit" name="submit">Применить</button>
+	</form>
+	<br>
+	<?php if(isset($_POST['submit'])):?>
+	<table>
+		<tr>
+			<td colspan="2">Сайт: <?php echo $site_name ?></td>
+		</tr>
+		<tr>
+			<td colspan="2">Личность: <?php echo $person_name ?></td>
+		</tr>
+		<tr>
+			<td>Дата</td>
+			<td>Статистика</td>
+		</tr>		
+		<?php foreach($period as $key => $value): 
+				$key = substr($key, 0, 10);
+				$date = explode('-', $key);
+				$date = implode('.', $date); ?>
+						<tr>
+							<td>
+								<?php echo $date; ?>
+							</td>
+							<td>
+								<?php echo $value; ?>
+							</td>
+						</tr>
+				<?php endforeach ?>
+		<?php endif ?>
+	</table>
 </div>

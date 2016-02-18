@@ -13,36 +13,20 @@
 	</ul>
 </div>
 <div>
-<table>
-	<tr><td>Наименование</td></tr>
-	<?php foreach ($all_sites as $site): ?>
-		<tr>
-			<td>
-				<?php echo $site->getName(); 
-				$site_id = $site->getId();
-				?>
-			</td>
-			<form type="multipart/form-data" method="POST">
-			<td><button name="edit">Редактировать</button></td>
-			<td><button name="delete">Удалить</button></td>
-			</form>
-		</tr>
-	<?php endforeach ?>
-
-	<?php
-
-if(isset($_POST['edit'])) {
-	header("location: edit_site.php?id=".$site_id);
-}
-
-if(isset($_POST['delete'])) {
-	if(SiteRepository::delete($link, $site_id)) {
-		header("location: sites.php");
-	}
-}
-	?>
-</table>
-<br>
-<a href="new_site.php"><button>Добавить</button> </a>
-
+	<table>
+		<tr><td>Наименование</td></tr>
+		<?php foreach ($all_sites as $site): ?>
+			<tr>
+				<td>
+					<?php echo $site->getName(); 
+					$site_id = $site->getId();
+					?>
+				</td>
+				<td><a href="edit_site.php?id=<?php echo $site_id?>"><button name="edit">Редактировать</button></a></td>	
+				<td><a href="delete.php?id=<?php echo $site_id?>&name=site"><button name="delete">Удалить</button></a></td>	
+			</tr>
+		<?php endforeach ?>
+	</table>
+	<br>
+	<a href="new_site.php"><button>Добавить</button> </a>
 </div>

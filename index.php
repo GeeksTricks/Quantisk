@@ -5,6 +5,8 @@ require('function.php');
 
 $link = getDbConnect();
 
+// ТЕСТИРОВАНИЕ КЛАССОВ
+
 // $all_persons = PersonRepository::loadAll($link);
 // $person = PersonRepository::load($link);
 
@@ -29,11 +31,11 @@ $link = getDbConnect();
 
 // $all_pages = PageRepository::loadAll($link);
 // $one_page = PageRepository::load($link, 4);
-$site_page = PageRepository::selectAllBySiteID($link, 5);
+// $site_page = PageRepository::selectAllBySiteID($link, 5);
 
 // print_r($all_pages);
 // print_r($one_page);
-print_r($site_page);
+// print_r($site_page);
 
 // $wordpairs = WordpairRepository::loadAll($link);
 // $pair_person = WordpairRepository::loadByPerson($link, 2);

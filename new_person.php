@@ -4,15 +4,15 @@ require('classes.php');
 require('repo.php');
 
 $link = getDbConnect();
-$title = "Личности::Добавить";
+$title = "Личности: Добавить";
 
 if(isset($_POST['submit'])) {
 	$name = $_POST['name'];
+
 	if(PersonRepository::add($link, $name)) {
 		header("location: persons.php");
 	}
 }
-
 
 include('view/header.php');
 include('view/v_new_person.php');
