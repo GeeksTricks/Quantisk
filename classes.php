@@ -1,5 +1,4 @@
 <?php
-
 class Person
 	{
 	private $id;
@@ -8,6 +7,14 @@ class Person
 	function __construct($id, $name) {
 		$this->id = $id;
 		$this->name = $name; 
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getId() {
+		return $this->id;
 	}
 };
 
@@ -20,18 +27,30 @@ class Site
 		$this->id = $id;
 		$this->name = $name; 
 	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getId() {
+		return $this->id;
+	}	
 };
 
 class Rank
 	{
 	private $rank;
-	private $person;
 	private $page;
+	private $person;	
 
-	function __construct($rank, $person, $page) {
+	function __construct($rank, $page, $person) {
 		$this->rank = $rank;
-		$this->person = $person;
 		$this->page = $page;
+		$this->person = $person;
+	}
+
+	public function getRank() {
+		return $this->rank;
 	}
 };
 
@@ -39,79 +58,48 @@ class Page
 	{
 	private $id;
 	private $url;
-	private $site;
+	private $site_id;
 	private $found_date;
 	private $scan_date;
 
-	function __construct($id, $url, $site, $found_date, $scan_date) {
+	function __construct($id, $url, $site_id, $found_date, $scan_date) {
 		$this->id = $id;
 		$this->url = $url;
-		$this->site = $site;
+		$this->site_id = $site_id;
 		$this->found_date = $found_date;
 		$this->scan_date = $scan_date;
 	}
+
+	public function getId() {
+		return $this->id;
+	}	
 };
 
-class PersonRepository
-	{
-	public function loadAll(){
-		var persons = [15 => new Person(15, 'DiCaprio'),
-						22 => new Person(22, 'Damon')];
-		return persons;
+class Wordpair
+{
+	private $id;
+	private $keyword1;
+	private $keyword2;
+	private $distance;
+	private $person;
+
+	function __construct($id, $keyword1, $keyword2, $distance, $person) {
+		$this->id = $id;
+		$this->keyword1 = $keyword1;
+		$this->keyword2 = $keyword2;
+		$this->distance = $distance;
+		$this->person = $person;
 	}
 
-	public function load($PersonID) {
-		return new Person(15, 'DiCaprio');
-	};
-
-};
-
-class SiteRepository
-	{
-	public function loadAll(){
-		var sites = [1 => new Site(1, 'lifejournal.ru'),
-						2 => new Site(2, 'lenta.ru')];
-		return sites;
+	public function getKeyword1() {
+		return $this->keyword1;
 	}
 
-	public function load($SiteID) {
-		return new Site(1, 'lifejournal.ru', );
-	};
-};
+	public function getKeyword2() {
+		return $this->keyword2;
+	}	
 
-class RankRepository
-	{
-	public function loadAll() {
-		var rank = [new Rank(9, new Person(15, 'DiCaprio'), new Site(1, 'lifejournal.ru')), new Rank(5, new Person(22, 'Damon'), new Site(2, 'lenta.ru'))];
-		return rank;
-	}
-
-	public function load($Person_ID, $Page_ID) {
-		return new Rank(9, new Person(15, 'DiCaprio'), new Page(1, 'lifejournal.ru/article', new Site(1, 'lifejournal.ru'), '20.05.2015 19:48', '21.05.2015 21:50'));
-	};
-
-	// получить кол-во упоминаний (rank) за определенный период ($start-$end) выбранной личности на определенном сайте
-	public function loadByPeriod($siteid, $personid, $start, $end) {
-		var dateRank = ['20.05.2015' => 9,
-						'20.06.2016' => 15];
-		return dateRank;
-	};
-};
-
-class PageRepository
-	{
-	public function loadAll() {
-		var pages = [1 => new Page(1, 'lifejournal.ru/article', new Site(1, 'lifejournal.ru'), '20.05.2015 19:48', '21.05.2015 21:50')];
-		return pages;
-	};
-
-	public function load($PageID) {
-		return new Page(1, 'lifejournal.ru/article', new Site(1, 'lifejournal.ru'), '20.05.2015 19:48', '21.05.2015 21:50');
-	};
-
-	// получить ID страниц одного сайта
-	public function selectAllBySiteID($SiteID) {
-		var pages = [1, 2, 3];
-		return pages;
-	}
-};
+	public function getId() {
+		return $this->id;
+	}		
+}
