@@ -17,7 +17,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/addNameBtn"
+            android:id="@+id/addPersonBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="1dp"
@@ -28,7 +28,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/removeNameBtn"
+            android:id="@+id/removePersonBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/editNameBtn"
+            android:id="@+id/editPersonBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"

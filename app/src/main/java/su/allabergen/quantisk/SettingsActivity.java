@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -128,10 +129,10 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
-        Button addNameBtn;
-        Button removeNameBtn;
-        Button editNameBtn;
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+        Button addPersonBtn;
+        Button removePersonBtn;
+        Button editPersonBtn;
         Button addSiteBtn;
         Button removeSiteBtn;
         Button editSiteBtn;
@@ -164,8 +165,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //            View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 //            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -175,16 +175,18 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
                 Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
                 siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, siteList));
+                siteSpinner.setOnItemSelectedListener(this);
                 siteTextView.setText("Modify sites");
                 initSiteBtn(siteView);
                 return siteView;
             }
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
-                View nameView = inflater.inflate(R.layout.fragment_name, container, false);
+                View nameView = inflater.inflate(R.layout.fragment_person, container, false);
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
                 Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
                 nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, nameList));
+                nameSpinner.setOnItemSelectedListener(this);
                 nameTextView.setText("Modify names");
                 initNameBtn(nameView);
                 return nameView;
@@ -195,6 +197,7 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView userTextView = (TextView) userView.findViewById(R.id.user_label);
                 Spinner userSpinner = (Spinner) userView.findViewById(R.id.userSpinner);
                 userSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, SignUpScreen.tempList));
+                userSpinner.setOnItemSelectedListener(this);
                 userTextView.setText("Modify users");
                 initUserBtn(userView);
                 return userView;
@@ -213,14 +216,14 @@ public class SettingsActivity extends AppCompatActivity {
             editSiteBtn.setOnClickListener(this);
         }
 
-        private void initNameBtn(View nameView) {
-            vName = nameView;
-            addNameBtn = (Button) nameView.findViewById(R.id.addNameBtn);
-            removeNameBtn = (Button) nameView.findViewById(R.id.removeNameBtn);
-            editNameBtn = (Button) nameView.findViewById(R.id.editNameBtn);
-            addNameBtn.setOnClickListener(this);
-            removeNameBtn.setOnClickListener(this);
-            editNameBtn.setOnClickListener(this);
+        private void initNameBtn(View personView) {
+            vName = personView;
+            addPersonBtn = (Button) personView.findViewById(R.id.addPersonBtn);
+            removePersonBtn = (Button) personView.findViewById(R.id.removePersonBtn);
+            editPersonBtn = (Button) personView.findViewById(R.id.editPersonBtn);
+            addPersonBtn.setOnClickListener(this);
+            removePersonBtn.setOnClickListener(this);
+            editPersonBtn.setOnClickListener(this);
         }
 
         private void initUserBtn(View userView) {
@@ -244,7 +247,7 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vSite;
                     break;
                 case R.id.addNameBtn :
-                    currFrag = "addNameBtn";
+                    currFrag = "addPersonBtn";
                     view = vName;
                     break;
                 case R.id.addUserBtn :
@@ -256,7 +259,7 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vSite;
                     break;
                 case R.id.removeNameBtn :
-                    currFrag = "removeNameBtn";
+                    currFrag = "removePersonBtn";
                     view = vName;
                     break;
                 case R.id.removeUserBtn :
@@ -268,7 +271,7 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vSite;
                     break;
                 case R.id.editNameBtn :
-                    currFrag = "editNameBtn";
+                    currFrag = "editPersonBtn";
                     view = vName;
                     break;
                 case R.id.editUserBtn :
@@ -280,6 +283,16 @@ public class SettingsActivity extends AppCompatActivity {
             AddDialog dialog = new AddDialog(currFrag, view);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             dialog.show(ft, "Add Dialog");
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            view.equals()
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }

@@ -36,11 +36,38 @@ public class AddDialog extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (currFrag.equals("addSiteBtn")) {
-                            AdminActivity.siteList.add(addEditText.getText().toString());
-                        } else if (currFrag.equals("addNameBtn")) {
-                            new PostWebService(getActivity(), addEditText.getText().toString(), "user1", "qwerty1")
-                                    .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                        switch (currFrag) {
+                            case "addSiteBtn":
+                                AdminActivity.siteList.add(addEditText.getText().toString());
+                                break;
+
+                            case "addPersonBtn":
+                                new PostWebService(getActivity(), addEditText.getText().toString(), "user1", "qwerty1")
+                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                                break;
+
+                            case "addUserBtn":
+                                break;
+
+                            case "removeSiteBtn":
+                                break;
+
+                            case "removePersonBtn":
+                                new DeleteWebService(getActivity(), Integer.parseInt(addEditText.getText().toString()), "user1", "qwerty1")
+                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                                break;
+
+                            case "removeUserBtn":
+                                break;
+
+                            case "editSiteBtn":
+                                break;
+
+                            case "editPersonBtn":
+                                break;
+
+                            case "editUserBtn":
+                                break;
                         }
                     }
                 })

@@ -14,10 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -35,7 +33,6 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
     HttpURLConnection connection = null;
     String content;
     String error = null;
-    String data = "";
     String nameToSend;
     String username;
     String password;
@@ -52,13 +49,6 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog.show();
-
-        try {
-            data += URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(nameToSend, "UTF-8");
-            Log.i("data", data);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -79,8 +69,6 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
             connection.setDoOutput(true);
 
             connection.addRequestProperty("Authorization", loginBuilder.toString());
-
-            Log.i("name", nameToSend);
 
             JSONObject uname = new JSONObject();
             uname.put("name", nameToSend);
@@ -103,8 +91,6 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
             } else {
                 Log.i("error", "Cannot connect");
             }
-
-            Log.i("content", content);
         } catch (IOException e) {
             error = e.getMessage();
             e.printStackTrace();
@@ -140,19 +126,15 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
         } else {
             Log.i("server data received", content);
 
-            String output = "";
             String nameAdded = "";
             try {
                 JSONObject jsonObject = new JSONObject(content);
                 nameAdded = jsonObject.getString("name");
-                Toast.makeText(context, "\"" + nameAdded + "\" has been added", Toast.LENGTH_LONG).show();
-                output = "Name: " + nameAdded;
                 if (!nameAdded.equals("")) {
                     AdminActivity.nameList.add(nameAdded);
                     AdminActivity.nameAdapter.notifyDataSetChanged();
+                    Toast.makeText(context, "\"" + nameAdded + "\" has been added", Toast.LENGTH_LONG).show();
                 }
-
-                Log.i("output", output);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

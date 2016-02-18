@@ -76,7 +76,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         statSpinner.setAdapter(statAdapter);
         statSpinner.setOnItemSelectedListener(this);
 
-
         siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
