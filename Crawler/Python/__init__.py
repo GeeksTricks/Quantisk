@@ -5,6 +5,7 @@ from data_layer import DataLayer
 import downloader
 import parser_for_crawler
 import time
+import os
 
 # создаем экземпляры классов Загрузчика и Парсеров сайтмапа и роботс
 data = DataLayer()
@@ -41,6 +42,8 @@ def get_runk_add_to_table(html_file, query_list, id_url):
 
 
 def main():
+    # меняем каталог чтоб были права на запись для скачивания страниц
+    os.chdir(r'/tmp')   # надо сделать проверку ОС или ненадо)))
     while True:
         # получаем сайты из талицы Sites
         sites = data.get_site()
