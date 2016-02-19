@@ -27,12 +27,14 @@ class PersonModel(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
 
-    def __init__(self, name):
+    def __init__(self, name, user_id):
         self.name = name
+        self.user_id = user_id
 
     def __repr__(self):
-        return '<Person {0}>'.format(self.name)
+        return '<Person {0}>, Created by user: {1}'.format(self.name, self.user_id)
 
 
 class WordpairModel(db.Model):
@@ -66,12 +68,14 @@ class SiteModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
 
-    def __init__(self, name):
+    def __init__(self, name, user_id):
         self.name = name
+        self.user_id = user_id
 
     def __repr__(self):
-        return '<Site {0}>'.format(self.name)
+        return '<Site: {0} Created by user: {1}>'.format(self.name, self.user_id)
 
 
 class PageModel(db.Model):
