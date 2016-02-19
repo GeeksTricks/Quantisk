@@ -13,6 +13,9 @@
 	</ul>
 </div>
 <div>
+	<?php if($error): ?>
+		<span class="error">Заполните все поля!</span>
+	<?php endif?>
 	<form type="multipart/form-data" method="POST">
 		<select name="sites">
 			<option value="default">Выберите сайт</option>
@@ -34,7 +37,7 @@
 		<button type="submit" name="submit">Применить</button>
 	</form>
 	<br>
-	<?php if(isset($_POST['submit'])):?>
+	<?php if(isset($_POST['submit']) && !$error):?>
 	<table>
 		<tr>
 			<td colspan="2">Сайт: <?php echo $site_name ?></td>

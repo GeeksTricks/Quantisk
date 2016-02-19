@@ -5,12 +5,17 @@ require('repo.php');
 
 $link = getDbConnect();
 $title = "Сайты: Добавить";
+$error = false;
 
 if(isset($_POST['submit'])) {
-	$name = $_POST['name'];
+	$name = trim($_POST['name']);
 
-	if(SiteRepository::add($link, $name)) {
-		header("location: sites.php");
+	if($name != '') {
+		if(SiteRepository::add($link, $name)) {
+			header("location: sites.php");
+		}
+	} else {
+		$error = true;
 	}
 }
 

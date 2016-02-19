@@ -5,12 +5,17 @@ require('repo.php');
 
 $link = getDbConnect();
 $title = "Личности: Добавить";
+$error = false;
 
 if(isset($_POST['submit'])) {
-	$name = $_POST['name'];
+	$name = trim($_POST['name']);
 
-	if(PersonRepository::add($link, $name)) {
-		header("location: persons.php");
+	if($name != "") {
+		if(PersonRepository::add($link, $name)) {
+			header("location: persons.php");
+		}
+	} else {
+		$error = true;
 	}
 }
 

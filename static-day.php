@@ -5,6 +5,7 @@ require('repo.php');
 
 $link = getDbConnect();
 $title = "Ежедневная статистика";
+$error = false;
 
 $all_sites = SiteRepository::loadAll($link);
 $all_persons = PersonRepository::loadAll($link);
@@ -17,6 +18,7 @@ if(isset($_POST['submit'])) {
 	$end = $_POST['end'];
 	$end = " '$end' ";
 
+	if($person_id != 0 && $site_id != 0) {
 	$person = PersonRepository::load($link, $person_id);
 	$person_name = $person->getName();
 
@@ -24,6 +26,9 @@ if(isset($_POST['submit'])) {
 	$site_name = $site->getName();
 	
 	$period = RankRepository::loadByPeriod($link, $person_id, $site_id, $start, $end);
+	} else {
+		$error = true;
+	}
 }
 
 include('view/header.php');

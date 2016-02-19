@@ -13,6 +13,9 @@
 	</ul>
 </div>
 <div>
+	<?php if($error): ?>
+		<span class="error">Заполните все поля!</span>
+	<?php endif?>	
 	<form type="multipart/form-data" method="POST">
 		<h3>Название</h3>		
 		<input type="text" name="name">
