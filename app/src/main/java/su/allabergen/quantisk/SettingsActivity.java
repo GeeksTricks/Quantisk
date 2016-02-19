@@ -271,6 +271,8 @@ public class SettingsActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+//                                    new VolleyDeleteCustom(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
+
                                     new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
 
 //                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
@@ -293,6 +295,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.editPersonBtn :
                     currFrag = "editPersonBtn";
                     view = vName;
+                    new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
                     break;
                 case R.id.editUserBtn :
                     currFrag = "editUserBtn";
