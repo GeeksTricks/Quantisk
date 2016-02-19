@@ -1,14 +1,7 @@
 package su.allabergen.quantisk;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.http.AndroidHttpClient;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.HttpStack;
-import com.android.volley.toolbox.Volley;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -138,20 +131,6 @@ public class OwnHttpClientStack extends com.android.volley.toolbox.HttpClientSta
 
         public String getMethod() {
             return METHOD_NAME;
-        }
-    }
-
-    class customDeleteRequest {
-        public customDeleteRequest() {
-            String userAgent = "volley/0";
-            try {
-                String packageName = VolleyDelete.context.getPackageName();
-                PackageInfo info = VolleyDelete.context.getPackageManager().getPackageInfo(packageName, 0);
-                userAgent = packageName + "/" + info.versionCode;
-            } catch (PackageManager.NameNotFoundException e) {}
-
-            HttpStack httpStack = new OwnHttpClientStack(AndroidHttpClient.newInstance(userAgent));
-            RequestQueue requesQueue = Volley.newRequestQueue(VolleyDelete.context, httpStack);
         }
     }
 }
