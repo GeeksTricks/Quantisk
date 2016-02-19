@@ -1,12 +1,20 @@
 from quantisk_api.repositories import rank_repo, page_repo, site_repo, wordpair_repo, person_repo, user_repo
 import dateutil.parser as dp
 
-for i in range(10):
-    person = person_repo.add('персона' + str(i))
+
+for i in range(1, 6):
+    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 1)
+
+for i in range(6, 11):
+    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 2)
+
+for i in range(1, 11):
+    person = person_repo.add('персона' + str(i), i)
     for j in range(10):
         wordpair_repo.add('word' + str(j), 'fff' + str(j), 2, person.id)
 
-site = site_repo.add('lenta.ru')
+site = site_repo.add('lenta.ru', 1)
+site1 = site_repo.add('lenta.ru', 2)
 
 for i in range(1,11):
     for j in range(1,11):
@@ -26,9 +34,5 @@ for i in range(1,101):
 for i in range(30,70):
     rank_repo.add_rank(2, page_id=i, person_id=4)
 
-for i in range(1, 6):
-    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 1)
 
-for i in range(6, 11):
-    user_repo.add('user' + str(i) + '@example.com', 'qwerty' + str(i), 2)
 
