@@ -1,8 +1,8 @@
 //
-//  GTPersons.swift
+//  GTSetting.swift
 //  Quantisk
 //
-//  Created by iMac on 11.02.16.
+//  Created by iMac on 18.02.16.
 //  Copyright © 2016 GeeksTricks. All rights reserved.
 //
 
@@ -12,15 +12,15 @@ import RealmSwift
 
 
 
-class GTPersons: Object{
+class GTSetting: Object{
     
-    dynamic var ID: Int = -1
-    dynamic var Name: String = ""
+    dynamic var ID: String = ""
+    dynamic var Value: String = ""
     override static func primaryKey() -> String? {
         return "ID"
- }
-
-
-
+    }
+    
+    
+    
 }
 

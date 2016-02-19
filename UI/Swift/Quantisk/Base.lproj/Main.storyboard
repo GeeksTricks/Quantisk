@@ -28,12 +28,18 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.48999999999999999" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="yOi-Qy-aE9" id="0oA-mJ-Uxw"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Password" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d0X-h1-rdH">
                                 <rect key="frame" x="60" y="323" width="240" height="30"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="yOi-Qy-aE9" id="Obr-lL-vAP"/>
+                                </connections>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="city.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="mzF-Zy-MzP">
                                 <rect key="frame" x="6" y="20" width="308" height="207"/>
@@ -47,6 +53,7 @@
                                     <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="logIn:" destination="yOi-Qy-aE9" eventType="touchUpInside" id="JjE-mv-iW1"/>
                                     <segue destination="tS7-GP-Aw4" kind="show" id="q7o-Hm-45y"/>
                                 </connections>
                             </button>
@@ -54,6 +61,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="textPassword" destination="d0X-h1-rdH" id="r9G-VJ-UDl"/>
+                        <outlet property="textUserName" destination="LYK-DR-F1z" id="2Ex-OS-KDt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CfS-af-nG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -128,17 +139,20 @@
                                 </date>
                             </datePicker>
                             <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="fUv-k4-BM2">
-                                <rect key="frame" x="57" y="383" width="252" height="53"/>
+                                <rect key="frame" x="57" y="373" width="252" height="53"/>
                                 <date key="date" timeIntervalSinceReferenceDate="476294193.90724301">
                                     <!--2016-02-04 15:56:33 +0000-->
                                 </date>
                             </datePicker>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="to.png" translatesAutoresizingMaskIntoConstraints="NO" id="tm6-Ul-aaJ">
-                                <rect key="frame" x="12" y="394" width="32" height="32"/>
+                                <rect key="frame" x="12" y="384" width="32" height="32"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="diagram.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qq9-Jg-9p6">
+                                <rect key="frame" x="12" y="436" width="32" height="32"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OrP-ep-DSS">
-                                <rect key="frame" x="103" y="450" width="115" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <rect key="frame" x="96" y="494" width="129" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="Get Statistics">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -146,6 +160,16 @@
                                     <action selector="getStatistic:" destination="612-9x-IbB" eventType="touchUpInside" id="Rm8-yl-OzU"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bhf-8O-Hqw">
+                                <rect key="frame" x="236" y="436" width="51" height="31"/>
+                                <color key="onTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use Diagrams" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwA-9n-T1b">
+                                <rect key="frame" x="77" y="439" width="137" height="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -167,6 +191,7 @@
                     <connections>
                         <outlet property="fromDatePicker" destination="gvi-WP-4iW" id="2Xa-hD-I7S"/>
                         <outlet property="imageFromDate" destination="aZU-PZ-K3J" id="GdW-eE-6C3"/>
+                        <outlet property="imagePerson" destination="z9t-DT-9Qq" id="tB3-dT-PcT"/>
                         <outlet property="imageToDate" destination="tm6-Ul-aaJ" id="T9X-5J-Txa"/>
                         <outlet property="personPicker" destination="2AA-3i-vhQ" id="VbE-YK-fxn"/>
                         <outlet property="sitePicker" destination="yX5-xP-d5y" id="eCU-3b-occ"/>
@@ -256,6 +281,12 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="7RX-EG-P5u">
                                 <rect key="frame" x="20" y="112" width="32" height="32"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="work.png" translatesAutoresizingMaskIntoConstraints="NO" id="w8I-Oq-8UN">
+                                <rect key="frame" x="20" y="152" width="32" height="32"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="changeUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="mOJ-Ik-QNx">
+                                <rect key="frame" x="20" y="230" width="32" height="32"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jga-eB-7eB">
                                 <rect key="frame" x="81" y="74" width="159" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
@@ -271,7 +302,7 @@
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3W-7i-zbI">
                                 <rect key="frame" x="81" y="113" width="159" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="Update Persons">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -282,11 +313,36 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hft-lz-ZYx">
                                 <rect key="frame" x="285" y="118" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="URL API" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-vN-Tzj">
+                                <rect key="frame" x="125" y="157" width="70" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://api-quantisk.rhcloud.com/" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l4X-uF-eud">
+                                <rect key="frame" x="20" y="192" width="285" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCP-2d-dVc">
+                                <rect key="frame" x="81" y="231" width="159" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Change User">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="updateSites:" destination="ObU-yl-T8Z" eventType="touchUpInside" id="Yb5-aH-zlH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Setting" id="S5y-m3-Lb0"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="updatePersonIndicator" destination="hft-lz-ZYx" id="zql-Lf-jBf"/>
+                        <outlet property="updateSiteIndicator" destination="6Sq-iw-CAE" id="4dn-zY-lCV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hqA-sA-JyS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -294,8 +350,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="changeUser.png" width="32" height="32"/>
         <image name="city.jpg" width="700" height="464"/>
         <image name="database.png" width="32" height="32"/>
+        <image name="diagram.png" width="32" height="32"/>
         <image name="from.png" width="32" height="32"/>
         <image name="lock3.png" width="32" height="32"/>
         <image name="nastr.png" width="32" height="32"/>
@@ -305,5 +363,6 @@
         <image name="user.png" width="32" height="32"/>
         <image name="user2.png" width="32" height="32"/>
         <image name="user4.png" width="32" height="32"/>
+        <image name="work.png" width="32" height="32"/>
     </resources>
 </document>

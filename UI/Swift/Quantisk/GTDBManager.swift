@@ -21,22 +21,30 @@ class GTDBManager{
     
     //delete all pesons
     func deleteAllPersons(){
-        let realm = try! Realm()
-        realm.deleteAll()
+        let persons = self.realm.objects(GTPersons)
+        try! realm.write {
+            realm.delete(persons)
+        }
     
     }
     //delete all sites
     func deleteAllSites(){
-        let realm = try! Realm()
-        realm.deleteAll()
+        let sites = self.realm.objects(GTSites)
+        try! realm.write {
+            realm.delete(sites)
+        }
     }
     
 
     //get refresh pesons
     func refreshPersons()->(Bool){
+        
+        self.deleteAllPersons()
+        
+        
         // Get the default Realm
         
-             let URL = "https://user1:qwerty1@api-quantisk.rhcloud.com/v1/persons/"
+             let URL = "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/persons/"
         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
             response in
             switch response.result {
@@ -67,9 +75,9 @@ class GTDBManager{
     }
     //get refresh sites
     func refreshSites()->(Bool){
-        
-        
-        let URL = "https://user1:qwerty1@api-quantisk.rhcloud.com/v1/sites/"
+        self.deleteAllSites()
+      
+        let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/sites/"
         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
             response in
             switch response.result {
@@ -112,6 +120,7 @@ class GTDBManager{
         }
         return persons_list
     }
+    
     //get all sites
     func getAllSites()->([String]){
         let sites = self.realm.objects(GTSites)
@@ -124,54 +133,34 @@ class GTDBManager{
     }
     
     
+    // get login
+    func getCurrentLogin() -> String{
+        let currentLogin = self.realm.objects(GTSetting).filter("ID == 'user'").first
+       return currentLogin!.Value
+     
+    }
     
-    
-    
-    
-    
-    
-    
-    /*
-    
-    
-    
-    
-    
-    func general()->(){
-        super.viewDidLoad()
-        let realm = try! Realm()
-        let onlineLW = Data()
-        let ot = temp()
-        let URL = "http://api.openweathermap.org/data/2.5/forecast?"
-        let param = ["q": "Moscow", "appid": "cc43de317c7b45042d6dd7d09ee12d74"]
-        Alamofire.request(.GET, URL , parameters: param)
-            .responseJSON { response in
-                switch response.result {
-                case .Success:
-                    if let value = response.result.value {
-                        let json = JSON(value)
-                        print(json)
-                        onlineLW.city_n = json["city"]["name"].stringValue
-                        print(onlineLW.city_n)
-                        onlineLW.update_d = NSDate()
-                        for (_,subJson):(String, JSON) in json["list"] {
-                            ot.t = subJson["main"]["temp"].double!
-                            onlineLW.templst.append(ot)
-                        }
-                        print(onlineLW.templst[0].t)
-                        try! realm.write {
-                            realm.add(onlineLW, update: true)
-                            
-                        }
-                        
-                    }
-                case .Failure(let error):
-                    print(error)
-                }
-                
-                
-        }*/
+    // get login
+    func getCurrentPassword() -> String{
+        let currentPass = self.realm.objects(GTSetting).filter("ID == 'pass'").first
+        return currentPass!.Value
         
-        // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    
+    // getTotalStat
+   // get
+    
+    
+    //http://user1:qwerty1@api-quantisk.rhcloud.com/v1/dailyrank/?site_id=1&person_id=1&start_date=2006-02-11&end_date=2026-02-11
+    //https://user1:qwerty1@api-quantisk.rhcloud.com/v1/persons/
+    
+    
+  
+    
+    
+    
+    
+
     }
     

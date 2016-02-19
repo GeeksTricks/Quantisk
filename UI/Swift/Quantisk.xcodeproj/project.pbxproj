@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		37765AFA699978520A963C17 /* Pods_Quantisk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9A8F551C3351889A69C8D37 /* Pods_Quantisk.framework */; };
+		8808BC981C764A5B00AD0D6B /* GTSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8808BC971C764A5B00AD0D6B /* GTSetting.swift */; };
+		8808BC9A1C764C3C00AD0D6B /* api.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC991C764C3C00AD0D6B /* api.png */; };
+		8808BC9C1C764C5600AD0D6B /* api2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC9B1C764C5600AD0D6B /* api2.png */; };
+		8808BC9E1C764C8400AD0D6B /* work.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC9D1C764C8400AD0D6B /* work.png */; };
+		8808BCA01C764D9700AD0D6B /* diagram.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC9F1C764D9700AD0D6B /* diagram.png */; };
+		8808BCA21C764E6500AD0D6B /* changeUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BCA11C764E6500AD0D6B /* changeUser.png */; };
+		8808BCA41C764E8000AD0D6B /* changeUser2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BCA31C764E8000AD0D6B /* changeUser2.png */; };
 		88AA18E21C604CFA009877C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA18E11C604CFA009877C8 /* AppDelegate.swift */; };
 		88AA18E41C604CFA009877C8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA18E31C604CFA009877C8 /* ViewController.swift */; };
 		88AA18E71C604CFA009877C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88AA18E51C604CFA009877C8 /* Main.storyboard */; };
@@ -37,6 +44,13 @@
 
 /* Begin PBXFileReference section */
 		52073D08DC13302DF3879579 /* Pods-Quantisk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quantisk.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quantisk/Pods-Quantisk.release.xcconfig"; sourceTree = "<group>"; };
+		8808BC971C764A5B00AD0D6B /* GTSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTSetting.swift; sourceTree = "<group>"; };
+		8808BC991C764C3C00AD0D6B /* api.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = api.png; sourceTree = "<group>"; };
+		8808BC9B1C764C5600AD0D6B /* api2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = api2.png; sourceTree = "<group>"; };
+		8808BC9D1C764C8400AD0D6B /* work.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = work.png; sourceTree = "<group>"; };
+		8808BC9F1C764D9700AD0D6B /* diagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diagram.png; sourceTree = "<group>"; };
+		8808BCA11C764E6500AD0D6B /* changeUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeUser.png; sourceTree = "<group>"; };
+		8808BCA31C764E8000AD0D6B /* changeUser2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeUser2.png; sourceTree = "<group>"; };
 		88AA18DE1C604CFA009877C8 /* Quantisk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quantisk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88AA18E11C604CFA009877C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88AA18E31C604CFA009877C8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +118,7 @@
 				88F5F2201C6D1F4500A9919B /* GTPersons.swift */,
 				88F5F2221C6D1F5900A9919B /* GTSites.swift */,
 				88F0B7F11C6F3CF600B20796 /* GTDBManager.swift */,
+				8808BC971C764A5B00AD0D6B /* GTSetting.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -165,8 +180,14 @@
 				88F7B1BC1C6A72A90096D96C /* to.png */,
 				88F7B1BF1C6A76810096D96C /* info.png */,
 				88F7B1B71C6A6E7A0096D96C /* nastr4.png */,
+				8808BC9D1C764C8400AD0D6B /* work.png */,
+				8808BC991C764C3C00AD0D6B /* api.png */,
 				88F7B1B91C6A705D0096D96C /* site.png */,
+				8808BCA11C764E6500AD0D6B /* changeUser.png */,
+				8808BCA31C764E8000AD0D6B /* changeUser2.png */,
 				88F7B1CB1C6A7C110096D96C /* database.png */,
+				8808BC9B1C764C5600AD0D6B /* api2.png */,
+				8808BC9F1C764D9700AD0D6B /* diagram.png */,
 				88F7B1B31C6A6AE70096D96C /* city.jpg */,
 				88F7B1AF1C6A51540096D96C /* lock3.png */,
 			);
@@ -236,15 +257,21 @@
 			files = (
 				88F7B1BE1C6A72A90096D96C /* to.png in Resources */,
 				88AA18EC1C604CFA009877C8 /* LaunchScreen.storyboard in Resources */,
+				8808BC9E1C764C8400AD0D6B /* work.png in Resources */,
 				88F7B1CC1C6A7C110096D96C /* database.png in Resources */,
 				88F7B1AE1C6A513D0096D96C /* user2.png in Resources */,
+				8808BC9A1C764C3C00AD0D6B /* api.png in Resources */,
+				8808BCA41C764E8000AD0D6B /* changeUser2.png in Resources */,
+				8808BCA21C764E6500AD0D6B /* changeUser.png in Resources */,
 				88F7B1B81C6A6E7A0096D96C /* nastr4.png in Resources */,
 				88F7B1C21C6A76920096D96C /* user.png in Resources */,
 				88AA18E91C604CFA009877C8 /* Assets.xcassets in Resources */,
+				8808BC9C1C764C5600AD0D6B /* api2.png in Resources */,
 				88F7B1B21C6A51840096D96C /* user4.png in Resources */,
 				88F7B1BD1C6A72A90096D96C /* from.png in Resources */,
 				88F7B1B61C6A6DDF0096D96C /* nastr.png in Resources */,
 				88F7B1BA1C6A705D0096D96C /* site.png in Resources */,
+				8808BCA01C764D9700AD0D6B /* diagram.png in Resources */,
 				88AA18E71C604CFA009877C8 /* Main.storyboard in Resources */,
 				88F7B1B01C6A51540096D96C /* lock3.png in Resources */,
 				88F7B1C01C6A76810096D96C /* info.png in Resources */,
@@ -312,6 +339,7 @@
 				88F5F2211C6D1F4500A9919B /* GTPersons.swift in Sources */,
 				88F7B1CA1C6A7A5F0096D96C /* GTSettingViewController.swift in Sources */,
 				88F5F2231C6D1F5900A9919B /* GTSites.swift in Sources */,
+				8808BC981C764A5B00AD0D6B /* GTSetting.swift in Sources */,
 				88F7B1C81C6A7A020096D96C /* GTGeneralSettingViewController.swift in Sources */,
 				88AA18E41C604CFA009877C8 /* ViewController.swift in Sources */,
 				88AA18E21C604CFA009877C8 /* AppDelegate.swift in Sources */,

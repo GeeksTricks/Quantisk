@@ -12,11 +12,18 @@ import UIKit
 
 class GTSettingViewController: UIViewController {
     
+    @IBOutlet var updatePersonIndicator: UIActivityIndicatorView!
+    @IBOutlet var updateSiteIndicator: UIActivityIndicatorView!
     @IBAction func updateSites(sender: AnyObject) {
-         GTDBManager.sharedInstance.refreshSites()
+        updateSiteIndicator.startAnimating()
+        GTDBManager.sharedInstance.refreshSites()
+        updateSiteIndicator.stopAnimating()
     }
     @IBAction func updatePersons(sender: AnyObject) {
+        updatePersonIndicator.startAnimating()
         GTDBManager.sharedInstance.refreshPersons()
+        updatePersonIndicator.stopAnimating()
+       
     }
     override func viewDidLoad() {
         super.viewDidLoad()

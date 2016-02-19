@@ -13,7 +13,7 @@ class GTSites: Object{
     dynamic var ID: Int = -1
     dynamic var Name: String = ""
     override static func primaryKey() -> String? {
-        return "Name"
+        return "ID"
     }
     
 }
