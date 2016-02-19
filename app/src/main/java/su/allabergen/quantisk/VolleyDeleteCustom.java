@@ -1,6 +1,9 @@
 package su.allabergen.quantisk;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.http.AndroidHttpClient;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,9 +13,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,9 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Rabat on 19.02.2016.
+ * Created by Rabat on 20.02.2016.
  */
-public class VolleyPut {
+public class VolleyDeleteCustom {
+
     RequestQueue requestQueue;
     JSONObject jsonObject;
     Context context;
@@ -31,8 +37,18 @@ public class VolleyPut {
     String password;
     int id;
 
-    public VolleyPut(Context context, String url, int id, String username, String password) {
-        requestQueue = Volley.newRequestQueue(context);
+    public VolleyDeleteCustom(Context context, String url, int id, String username, String password) {
+        String userAgent = "volley/0";
+        try {
+            String packageName = VolleyDelete.context.getPackageName();
+            PackageInfo info = VolleyDelete.context.getPackageManager().getPackageInfo(packageName, 0);
+            userAgent = packageName + "/" + info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        HttpStack httpStack = new OwnHttpClientStack(AndroidHttpClient.newInstance(userAgent));
+        requestQueue = Volley.newRequestQueue(VolleyDelete.context, httpStack);
         jsonObject = new JSONObject();
         this.context = context;
         this.username = username;
@@ -45,23 +61,22 @@ public class VolleyPut {
     public void getVolley() {
         try {
             jsonObject.put("id", id);
-            jsonObject.put("name", "Mike");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.DELETE, url, jsonObject,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Edited Person with ID = " + id, Toast.LENGTH_SHORT).show();
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(context, "Deleted Person with ID = " + id, Toast.LENGTH_SHORT).show();
                         Log.i("Quantisk header", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not edit Person", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Could not delete Person with ID = " + id, Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }) {

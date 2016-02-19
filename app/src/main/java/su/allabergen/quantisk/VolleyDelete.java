@@ -10,9 +10,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,18 +50,18 @@ public class VolleyDelete {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url, jsonObject,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.DELETE, url, jsonObject,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Deleted Person with ID = " + id, Toast.LENGTH_SHORT).show();
-                        Log.i("Quantisk header", response.toString());
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(context, "DELETED Person with ID = " + id, Toast.LENGTH_SHORT).show();
+                        Log.i("Quantisk response", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not delete Person with ID = " + id, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Could not delete Person", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }) {
