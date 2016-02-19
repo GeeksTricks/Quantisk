@@ -4,7 +4,7 @@ require('classes.php');
 require('repo.php');
 
 $link = getDbConnect();
-$title = "Общая статистика";
+$title = "Это Общая статистика";
 $pids = [];
 $ranks = [];
 $error = false;
