@@ -1,4 +1,4 @@
-package su.allabergen.quantisk.WebServiceVolley;
+package su.allabergen.quantisk.webServiceVolley;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

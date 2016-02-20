@@ -27,11 +27,11 @@ import android.widget.TextView;
 import java.util.Map;
 
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.WebServiceVolley.VolleyDelete;
+import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
 import su.allabergen.quantisk.dialog.AddDialog;
 
-import static su.allabergen.quantisk.WebServiceVolley.VolleyGet.personMap;
-import static su.allabergen.quantisk.WebServiceVolley.VolleyGet.siteMap;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personMap;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteMap;
 
 public class SettingsActivity extends AppCompatActivity {
 

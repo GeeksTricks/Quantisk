@@ -1,4 +1,4 @@
-package su.allabergen.quantisk.WebServiceHttpUrlConnection;
+package su.allabergen.quantisk.webServiceHttpUrlConnection;
 
 import android.app.ProgressDialog;
 import android.content.Context;

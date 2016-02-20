@@ -11,8 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.WebServiceVolley.VolleyPost;
-import su.allabergen.quantisk.activity.AdminActivity;
+import su.allabergen.quantisk.webServiceVolley.VolleyPost;
 
 /**
  * Created by Rabat on 07.02.2016.

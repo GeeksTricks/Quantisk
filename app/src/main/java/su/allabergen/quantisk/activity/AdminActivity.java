@@ -22,7 +22,7 @@ import java.util.List;
 
 import su.allabergen.quantisk.dialog.DateDialog;
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.WebServiceVolley.VolleyGet;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 
 public class AdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

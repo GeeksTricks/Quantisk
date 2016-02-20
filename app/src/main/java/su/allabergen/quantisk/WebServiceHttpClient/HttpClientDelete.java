@@ -1,4 +1,4 @@
-package su.allabergen.quantisk.WebServiceHttpClient;
+package su.allabergen.quantisk.webServiceHttpClient;
 
 import android.util.Base64;
 

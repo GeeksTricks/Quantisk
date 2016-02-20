@@ -1,4 +1,4 @@
-package su.allabergen.quantisk.WebServiceVolley;
+package su.allabergen.quantisk.webServiceVolley;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
