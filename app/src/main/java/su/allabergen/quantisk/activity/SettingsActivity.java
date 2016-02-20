@@ -23,6 +23,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import su.allabergen.quantisk.R;
 import su.allabergen.quantisk.dialog.AddDialog;
 import su.allabergen.quantisk.model.Person;
@@ -36,6 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final int PERSON = 0;
     public static final int SITE = 1;
+
+    public static List<String> keywordsList = new ArrayList<>();
+    public static ArrayAdapter<String> keywordsAdapter;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -60,6 +66,11 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+//        new VolleyGet(this, "", "user1", "qwerty1");
+        keywordsList.clear();
+        keywordsList.add("No Keywords");
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -131,7 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case 1:
                     return "NAMES";
                 case 2:
-                    return "USERS";
+                    return "KEYWORDS";
             }
             return null;
         }
@@ -207,12 +218,12 @@ public class SettingsActivity extends AppCompatActivity {
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
                 View userView = inflater.inflate(R.layout.fragment_user, container, false);
-                TextView userTextView = (TextView) userView.findViewById(R.id.user_label);
-                Spinner userSpinner = (Spinner) userView.findViewById(R.id.userSpinner);
-                userSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, SignUpScreen.tempList));
-                userSpinner.setOnItemSelectedListener(this);
-                userTextView.setText("Modify users");
-                initUserBtn(userView);
+                TextView keywordsTextView = (TextView) userView.findViewById(R.id.keywords_label);
+                Spinner keywordsSpinner = (Spinner) userView.findViewById(R.id.keywordsSpinner);
+                keywordsSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, keywordsList));
+                keywordsSpinner.setOnItemSelectedListener(this);
+                keywordsTextView.setText("Modify keywords");
+                initKeywordsBtn(userView);
                 return userView;
             }
 
@@ -239,11 +250,11 @@ public class SettingsActivity extends AppCompatActivity {
             editPersonBtn.setOnClickListener(this);
         }
 
-        private void initUserBtn(View userView) {
+        private void initKeywordsBtn(View userView) {
             vUser = userView;
-            addUserBtn = (Button) userView.findViewById(R.id.addUserBtn);
-            removeUserBtn = (Button) userView.findViewById(R.id.removeUserBtn);
-            editUserBtn = (Button) userView.findViewById(R.id.editUserBtn);
+            addUserBtn = (Button) userView.findViewById(R.id.addKeywordsBtn);
+            removeUserBtn = (Button) userView.findViewById(R.id.removeKeywordsBtn);
+            editUserBtn = (Button) userView.findViewById(R.id.editKeywordsBtn);
             addUserBtn.setOnClickListener(this);
             removeUserBtn.setOnClickListener(this);
             editUserBtn.setOnClickListener(this);
@@ -263,7 +274,7 @@ public class SettingsActivity extends AppCompatActivity {
                     currFrag = "addPersonBtn";
                     view = vName;
                     break;
-                case R.id.addUserBtn:
+                case R.id.addKeywordsBtn:
                     currFrag = "addUserBtn";
                     view = vUser;
                     break;
@@ -312,7 +323,7 @@ public class SettingsActivity extends AppCompatActivity {
                             .create()
                             .show();
                     break;
-                case R.id.removeUserBtn:
+                case R.id.removeKeywordsBtn:
                     currFrag = "removeUserBtn";
                     view = vUser;
                     break;
@@ -323,9 +334,8 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.editPersonBtn:
                     currFrag = "editPersonBtn";
                     view = vName;
-//                    new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", -1, "user1", "qwerty1");
                     break;
-                case R.id.editUserBtn:
+                case R.id.editKeywordsBtn:
                     currFrag = "editUserBtn";
                     view = vUser;
                     break;
@@ -334,6 +344,14 @@ public class SettingsActivity extends AppCompatActivity {
             AddDialog dialog = null;
             if (currFrag.equals("removeSiteBtn") || currFrag.equals("removePersonBtn") || currFrag.equals("removeUserBtn")) {
 //                dialog = new AddDialog(currFrag, view, this.position);
+            } else if (currFrag.equals("editSiteBtn")) {
+                dialog = new AddDialog(currFrag, view, siteSelected, check(SITE));
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft, "Add Dialog");
+            } else if (currFrag.equals("editPersonBtn")) {
+                dialog = new AddDialog(currFrag, view, personSelected, check(PERSON));
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft, "Add Dialog");
             } else {
                 dialog = new AddDialog(currFrag, view);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -369,7 +387,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.siteSpinner:
                     siteSelected = spinner.getSelectedItem().toString();
                     break;
-                case R.id.userSpinner:
+                case R.id.keywordsSpinner:
                     break;
             }
         }
