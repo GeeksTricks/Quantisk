@@ -6,19 +6,34 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.model.Person;
+import su.allabergen.quantisk.model.Sites;
+import su.allabergen.quantisk.model.Totalrank;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
+
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.totalrankList0;
 
 public class CommonStatActivity extends AppCompatActivity {
 
     private TextView lastUpdateTimeTextView;
-    private TextView nameTextView;
-    private TextView articleTextView;
+    private TextView siteTextView;
+    private ListView commonStatListView;
+    private List<String> commonList;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +46,6 @@ public class CommonStatActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        String name = extras.getString("NAME");
-
         initVariables();
 
         Calendar calendar = Calendar.getInstance();
@@ -42,14 +54,46 @@ public class CommonStatActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         lastUpdateTimeTextView.setText(day + "/" + month + "/" + year);
-        nameTextView.setText("Имя: " + name);
-        articleTextView.setText("Статьи: " + ((int) (Math.random() * 100000)));
+
+        Bundle extras = getIntent().getExtras();
+        String name = extras.getString("SITE");
+        int site_id = 1;
+        String url = null;
+        for (Sites site : siteList0) {
+            if (site.getName().equals(name)) {
+                site_id = site.getId();
+                url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
+                new VolleyGet(this, url, "user1", "qwerty1");
+                siteTextView.setText("Сайт: " + name);
+                Log.i("Quantisk toalrank", totalrankList0.toString());
+                break;
+            }
+        }
+
+        String personName = "No Name";
+        int rate;
+        for (Totalrank totalrank : totalrankList0) {
+            for (Person person : personList0) {
+                if (person.getId() == totalrank.getPerson_id()) {
+                    personName = person.getName();
+                    break;
+                }
+            }
+            rate = totalrank.getRate();
+            commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void initVariables() {
         lastUpdateTimeTextView = (TextView) findViewById(R.id.lastUpdateTimeTextView);
-        nameTextView = (TextView) findViewById(R.id.nameTextView);
-        articleTextView = (TextView) findViewById(R.id.articleTextView);
+        siteTextView = (TextView) findViewById(R.id.siteTextView);
+        commonStatListView = (ListView) findViewById(R.id.commonStatListView);
+        commonList = new ArrayList<>();
+        commonList.add("Loading data...");
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, commonList);
+        commonStatListView.setAdapter(adapter);
+        commonList.clear();
     }
 
     @Override
