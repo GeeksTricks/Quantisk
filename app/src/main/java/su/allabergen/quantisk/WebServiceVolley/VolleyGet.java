@@ -15,9 +15,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import su.allabergen.quantisk.model.Person;
+import su.allabergen.quantisk.model.Sites;
+import su.allabergen.quantisk.model.Totalrank;
 
 import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
 import static su.allabergen.quantisk.activity.AdminActivity.nameList;
@@ -28,8 +33,12 @@ import static su.allabergen.quantisk.activity.AdminActivity.siteList;
  * Created by Rabat on 19.02.2016.
  */
 public class VolleyGet {
-    public static Map<Integer, String> personMap = new LinkedHashMap<>();
-    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
+    public static List<Person> personList0 = new ArrayList<>();
+    public static List<Sites> siteList0 = new ArrayList<>();
+    public static List<Totalrank> totalrankList0 = new ArrayList<>();
+
+//    public static Map<Integer, String> personMap = new LinkedHashMap<>();
+//    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
     RequestQueue requestQueue;
     JSONObject jsonObject;
     Context context;
@@ -48,36 +57,86 @@ public class VolleyGet {
     }
 
     public void getVolley() {
-        final Map<Integer, String> dataFromVolley = new LinkedHashMap<>();
+//        final Map<Integer, String> dataFromVolley = new LinkedHashMap<>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject jsonPart = null;
-                            try {
-                                jsonPart = response.getJSONObject(i);
-                                dataFromVolley.put(jsonPart.getInt("id"), jsonPart.getString("name"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        if (url.contains("persons")) {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonPart = null;
+                                try {
+                                    jsonPart = response.getJSONObject(i);
+                                    Person person = new Person();
+
+                                    person.setId(jsonPart.getInt("id"));
+                                    person.setName(jsonPart.getString("name"));
+
+                                    personList0.add(person);
+
+//                                    dataFromVolley.put(jsonPart.getInt("id"), jsonPart.getString("name"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            for (Person p : personList0)
+                                nameList.add(p.getName());
+                            nameAdapter.notifyDataSetChanged();
+                        } else if (url.contains("sites")) {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonPart = null;
+                                try {
+                                    jsonPart = response.getJSONObject(i);
+                                    Sites site = new Sites();
+
+                                    site.setId(jsonPart.getInt("id"));
+                                    site.setName(jsonPart.getString("name"));
+
+                                    siteList0.add(site);
+
+//                                    dataFromVolley.put(jsonPart.getInt("id"), jsonPart.getString("name"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            for (Sites s : siteList0) {
+                                siteList.add(s.getName());
+                            }
+                            siteAdapter.notifyDataSetChanged();
+                        } else if (url.contains("totalrank")) {
+                            totalrankList0.clear();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonPart = null;
+                                try {
+                                    jsonPart = response.getJSONObject(i);
+                                    Totalrank totalrank = new Totalrank();
+
+                                    totalrank.setPerson_id(jsonPart.getInt("person_id"));
+                                    totalrank.setRate(jsonPart.getInt("rank"));
+                                    totalrank.setSite_id(jsonPart.getInt("site_id"));
+
+                                    totalrankList0.add(totalrank);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
-                        if (url.contains("persons")) {
-                            personMap.clear();
-                            nameList.clear();
-                            personMap.putAll(dataFromVolley);
-                            for (Map.Entry<Integer, String> person : dataFromVolley.entrySet())
-                                nameList.add(person.getValue());
-                            nameAdapter.notifyDataSetChanged();
-                        } else if (url.contains("sites")) {
-                            siteMap.clear();
-                            siteList.clear();
-                            siteMap.putAll(dataFromVolley);
-                            for (Map.Entry<Integer, String> site : dataFromVolley.entrySet())
-                                siteList.add(site.getValue());
-                            siteAdapter.notifyDataSetChanged();
-                        }
+//                        if (url.contains("persons")) {
+//                            personMap.clear();
+//                            nameList.clear();
+//                            personMap.putAll(dataFromVolley);
+//                            for (Map.Entry<Integer, String> person : dataFromVolley.entrySet())
+//                                nameList.add(person.getValue());
+//                            nameAdapter.notifyDataSetChanged();
+//                        } else if (url.contains("sites")) {
+//                            siteMap.clear();
+//                            siteList.clear();
+//                            siteMap.putAll(dataFromVolley);
+//                            for (Map.Entry<Integer, String> site : dataFromVolley.entrySet())
+//                                siteList.add(site.getValue());
+//                            siteAdapter.notifyDataSetChanged();
+//                        }
                     }
                 },
                 new Response.ErrorListener() {
