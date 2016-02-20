@@ -131,7 +131,12 @@ class RankRepository
 
 // получить кол-во упоминаний (rank) за определенный период ($start-$end) выбранной личности на определенном сайте
 	public static function loadByPeriod($link, $person_id, $site_id, $start, $end) {
-		$sql = "SELECT PersonsPageRank.rank, Pages.found_date_time FROM PersonsPageRank JOIN Pages ON PersonsPageRank.page_id = Pages.id WHERE PersonsPageRank.person_id = $person_id AND Pages.site_id = $site_id AND Pages.found_date_time BETWEEN $start AND $end";
+		$sql = "SELECT SUM(PersonsPageRank.rank) as rank, DATE_FORMAT(Pages.found_date_time,'%d-%m-%Y') as found_date_time
+				FROM PersonsPageRank JOIN Pages ON PersonsPageRank.page_id = Pages.id 
+				WHERE PersonsPageRank.person_id = $person_id 
+					AND Pages.site_id = $site_id 
+					AND Pages.found_date_time BETWEEN $start AND $end
+				GROUP BY DATE_FORMAT(Pages.found_date_time,'%d-%m-%Y')";
 		$result = mysqli_query($link, $sql);
 		$period = array();
 		while ($row = mysqli_fetch_assoc($result)) {
