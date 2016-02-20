@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,14 +23,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.Map;
-
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
 import su.allabergen.quantisk.dialog.AddDialog;
+import su.allabergen.quantisk.model.Person;
+import su.allabergen.quantisk.model.Sites;
+import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
 
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personMap;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteMap;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteList0;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -156,8 +155,6 @@ public class SettingsActivity extends AppCompatActivity {
         View vUser;
         String personSelected;
         String siteSelected;
-        int personId;
-        int siteId;
 
         /**
          * The fragment argument representing the section number for this
@@ -258,19 +255,19 @@ public class SettingsActivity extends AppCompatActivity {
             View view = null;
 
             switch (v.getId()) {
-                case R.id.addSiteBtn :
+                case R.id.addSiteBtn:
                     currFrag = "addSiteBtn";
                     view = vSite;
                     break;
-                case R.id.addPersonBtn :
+                case R.id.addPersonBtn:
                     currFrag = "addPersonBtn";
                     view = vName;
                     break;
-                case R.id.addUserBtn :
+                case R.id.addUserBtn:
                     currFrag = "addUserBtn";
                     view = vUser;
                     break;
-                case R.id.removeSiteBtn :
+                case R.id.removeSiteBtn:
                     currFrag = "removeSiteBtn";
                     view = vSite;
                     new AlertDialog.Builder(getActivity())
@@ -293,7 +290,7 @@ public class SettingsActivity extends AppCompatActivity {
                             .create()
                             .show();
                     break;
-                case R.id.removePersonBtn :
+                case R.id.removePersonBtn:
                     currFrag = "removePersonBtn";
                     view = vName;
                     new AlertDialog.Builder(getActivity())
@@ -315,20 +312,20 @@ public class SettingsActivity extends AppCompatActivity {
                             .create()
                             .show();
                     break;
-                case R.id.removeUserBtn :
+                case R.id.removeUserBtn:
                     currFrag = "removeUserBtn";
                     view = vUser;
                     break;
-                case R.id.editSiteBtn :
+                case R.id.editSiteBtn:
                     currFrag = "editSiteBtn";
                     view = vSite;
                     break;
-                case R.id.editPersonBtn :
+                case R.id.editPersonBtn:
                     currFrag = "editPersonBtn";
                     view = vName;
 //                    new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", -1, "user1", "qwerty1");
                     break;
-                case R.id.editUserBtn :
+                case R.id.editUserBtn:
                     currFrag = "editUserBtn";
                     view = vUser;
                     break;
@@ -346,21 +343,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         public int check(int id) {
             if (id == PERSON) {
-                for (Map.Entry<Integer, String> person : personMap.entrySet()) {
-                    if (person.getValue().equals(personSelected)) {
-                        personId = person.getKey();
-                        Log.i("Quantisk P_ID", String.valueOf(personId));
-                        Log.i("Quantisk PERSON", person.getValue());
-                        return personId;
+                for (Person person : personList0) {
+                    if (person.getName().equals(personSelected)) {
+                        return person.getId();
                     }
                 }
             } else if (id == SITE) {
-                for (Map.Entry<Integer, String> site : siteMap.entrySet()) {
-                    if (site.getValue().equals(siteSelected)) {
-                        siteId = site.getKey();
-                        Log.i("Quantisk S_ID", String.valueOf(siteId));
-                        Log.i("Quantisk SITE", site.getValue());
-                        return siteId;
+                for (Sites site : siteList0) {
+                    if (site.getName().equals(siteSelected)) {
+                        return site.getId();
                     }
                 }
             }
