@@ -136,7 +136,7 @@ class RankRepository
 		$period = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$rank = $row['rank'];
-			$foundDateTime = $row['foundDateTime'];
+			$foundDateTime = $row['found_date_time'];
 			$period[$foundDateTime] = $rank;				
 		}
 		return $period;			
