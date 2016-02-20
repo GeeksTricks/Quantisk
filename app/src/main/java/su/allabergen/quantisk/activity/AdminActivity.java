@@ -35,6 +35,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private LinearLayout dateLayout;
 
     private String nameToPass;
+    private String siteToPass;
     private boolean isDailyStat = true;
     private int yearFrom;
     private int monthFrom;
@@ -107,7 +108,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         }
         if (spinner.getId() == R.id.siteSpinner) {
-
+            siteToPass = spinner.getSelectedItem().toString();
         }
         if (spinner.getId() == R.id.nameSpinner) {
             nameToPass = spinner.getSelectedItem().toString();
@@ -122,7 +123,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     public void generateBtnClick(View view) {
         if (!isDailyStat) {
             Intent intent = new Intent(this, CommonStatActivity.class);
-            intent.putExtra("NAME", nameToPass);
+            intent.putExtra("SITE", siteToPass);
             startActivity(intent);
         } else if (dateFrom.getText().toString().substring(0, 2).equals("dd") || dateTo.getText().toString().substring(0, 2).equals("dd")) {
             showDateAlertDialog();
