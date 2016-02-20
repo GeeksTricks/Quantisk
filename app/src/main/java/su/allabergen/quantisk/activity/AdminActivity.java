@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -19,6 +19,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import su.allabergen.quantisk.DateDialog;
+import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.WebServiceVolley.VolleyGet;
 
 public class AdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -56,11 +60,11 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         String urlName = "https://api-quantisk.rhcloud.com/v1/persons/";
         String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
 
-        new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
-        new VolleyGet(this, "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
-        new RetrofitGet("https://api-quantisk.rhcloud.com");
-
+//        new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
         createSpinners();
+
+        new VolleyGet(this, urlSite, "user1", "qwerty1");
+        new VolleyGet(this, urlName, "user1", "qwerty1");
     }
 
     private void initVariables() {

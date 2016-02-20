@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import su.allabergen.quantisk.DateDialog;
+import su.allabergen.quantisk.R;
 
 public class UserActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

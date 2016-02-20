@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,10 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.WebServiceHttpUrlConnection.PostWebService;
+import su.allabergen.quantisk.activity.AdminActivity;
 
 /**
  * Created by Rabat on 07.02.2016.

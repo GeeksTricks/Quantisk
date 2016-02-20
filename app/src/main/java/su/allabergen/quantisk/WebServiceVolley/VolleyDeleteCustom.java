@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.WebServiceVolley;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -24,6 +24,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import su.allabergen.quantisk.OwnHttpClientStack;
+
 /**
  * Created by Rabat on 20.02.2016.
  */
@@ -40,15 +42,15 @@ public class VolleyDeleteCustom {
     public VolleyDeleteCustom(Context context, String url, int id, String username, String password) {
         String userAgent = "volley/0";
         try {
-            String packageName = VolleyDelete.context.getPackageName();
-            PackageInfo info = VolleyDelete.context.getPackageManager().getPackageInfo(packageName, 0);
+            String packageName = context.getPackageName();
+            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
             userAgent = packageName + "/" + info.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
         HttpStack httpStack = new OwnHttpClientStack(AndroidHttpClient.newInstance(userAgent));
-        requestQueue = Volley.newRequestQueue(VolleyDelete.context, httpStack);
+        requestQueue = Volley.newRequestQueue(context, httpStack);
         jsonObject = new JSONObject();
         this.context = context;
         this.username = username;

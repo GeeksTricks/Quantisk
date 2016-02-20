@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.WebServiceVolley;
 
 import android.content.Context;
 import android.util.Base64;

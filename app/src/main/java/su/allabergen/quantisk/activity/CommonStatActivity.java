@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.Calendar;
+
+import su.allabergen.quantisk.R;
 
 public class CommonStatActivity extends AppCompatActivity {
 

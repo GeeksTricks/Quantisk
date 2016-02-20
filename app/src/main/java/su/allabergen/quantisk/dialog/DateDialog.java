@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.dialog;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

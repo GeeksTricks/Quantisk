@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.WebServiceRetrofit;
 
 import org.json.JSONArray;
 

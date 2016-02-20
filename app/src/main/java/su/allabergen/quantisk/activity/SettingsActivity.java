@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,8 +23,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import static su.allabergen.quantisk.AdminActivity.nameList;
-import static su.allabergen.quantisk.AdminActivity.siteList;
+import su.allabergen.quantisk.AddDialog;
+import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.WebServiceVolley.VolleyDelete;
+import su.allabergen.quantisk.WebServiceVolley.VolleyPut;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -178,7 +180,7 @@ public class SettingsActivity extends AppCompatActivity {
                 View siteView = inflater.inflate(R.layout.fragment_site, container, false);
                 TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
                 Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
-                siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, siteList));
+                siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity.siteList));
                 siteSpinner.setOnItemSelectedListener(this);
                 siteTextView.setText("Modify sites");
                 initSiteBtn(siteView);
@@ -189,7 +191,7 @@ public class SettingsActivity extends AppCompatActivity {
                 View nameView = inflater.inflate(R.layout.fragment_person, container, false);
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
                 Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
-                nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, nameList));
+                nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity.nameList));
                 nameSpinner.setOnItemSelectedListener(this);
                 nameTextView.setText("Modify names");
                 initNameBtn(nameView);

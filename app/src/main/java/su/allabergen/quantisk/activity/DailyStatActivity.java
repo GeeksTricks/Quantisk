@@ -1,4 +1,4 @@
-package su.allabergen.quantisk;
+package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
+import su.allabergen.quantisk.R;
 
 public class DailyStatActivity extends AppCompatActivity {
 
