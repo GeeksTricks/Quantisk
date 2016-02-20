@@ -52,7 +52,9 @@
 		<?php foreach($period as $key => $value): 
 				$key = substr($key, 0, 10);
 				$date = explode('-', $key);
-				$date = implode('.', $date); ?>
+				$date = array_reverse($date);
+				$date = implode('.', $date);
+				 ?>
 						<tr>
 							<td>
 								<?php echo $date; ?>
