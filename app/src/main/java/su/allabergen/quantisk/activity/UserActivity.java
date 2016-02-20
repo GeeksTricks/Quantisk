@@ -16,13 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import su.allabergen.quantisk.dialog.DateDialog;
 import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.dialog.DateDialog;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
+
+import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.nameList;
+import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.siteList;
 
 public class UserActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -35,6 +38,7 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
     private LinearLayout dateLayout;
 
     private String nameToPass;
+    private String siteToPass;
     private boolean isDailyStat = true;
     private int yearFrom;
     private int monthFrom;
@@ -43,21 +47,23 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
     private int monthTo;
     private int dayTo;
 
-    public static List<String> siteList = new ArrayList<>();
-    public static List<String> nameList = new ArrayList<>();
-
-    public Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initVariables();
+
+        String urlName = "https://api-quantisk.rhcloud.com/v1/persons/";
+        String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
+
+//        new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
         createSpinners();
-        spinnerLists();
+
+        new VolleyGet(this, urlSite, "user1", "qwerty1");
+        new VolleyGet(this, urlName, "user1", "qwerty1");
     }
 
     private void initVariables() {
@@ -70,24 +76,16 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         dateTo = (TextView) findViewById(R.id.dateTo);
     }
 
-    private void spinnerLists() {
-        String[] siteArray = getResources().getStringArray(R.array.sites);
-        siteList = Arrays.asList(siteArray);
-
-        String[] nameArray = getResources().getStringArray(R.array.names);
-        nameList = Arrays.asList(nameArray);
-    }
-
     private void createSpinners() {
         ArrayAdapter statAdapter = ArrayAdapter.createFromResource(this, R.array.stats, android.R.layout.simple_list_item_activated_1);
         statSpinner.setAdapter(statAdapter);
         statSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
+        siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
         siteSpinner.setAdapter(siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
+        nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
         nameSpinner.setAdapter(nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
     }
@@ -108,7 +106,7 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         if (spinner.getId() == R.id.siteSpinner) {
-
+            siteToPass = spinner.getSelectedItem().toString();
         }
         if (spinner.getId() == R.id.nameSpinner) {
             nameToPass = spinner.getSelectedItem().toString();
@@ -123,7 +121,7 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
     public void generateBtnClick(View view) {
         if (!isDailyStat) {
             Intent intent = new Intent(this, CommonStatActivity.class);
-            intent.putExtra("NAME", nameToPass);
+            intent.putExtra("SITE", siteToPass);
             startActivity(intent);
         } else if (dateFrom.getText().toString().substring(0, 2).equals("dd") || dateTo.getText().toString().substring(0, 2).equals("dd")) {
             showDateAlertDialog();
