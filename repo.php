@@ -2,7 +2,7 @@
 class PersonRepository
 {
 	public static function loadAll($link) {
-		$sql = 'SELECT `id`, `name` FROM `persons` ';
+		$sql = 'SELECT * FROM `Persons` ';
 		$result = mysqli_query($link, $sql);
 		$persons = array();
 		while ($row = mysqli_fetch_assoc($result)) {
@@ -15,7 +15,7 @@ class PersonRepository
 	}
 
 	public static function load($link, $person_id) {
-		$sql = "SELECT `id`, `name` FROM `persons` WHERE `id` = $person_id";
+		$sql = "SELECT * FROM `Persons` WHERE `id` = $person_id";
 		$result = mysqli_query($link, $sql);
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
@@ -30,21 +30,21 @@ class PersonRepository
 		if ($name == '') {
 			return false;
 		}
-		$sql = "INSERT INTO `persons` (`name`) VALUES ('%s')";
+		$sql = "INSERT INTO `Persons` (`name`) VALUES ('%s')";
 		$query = sprintf($sql, sql_escape($link, $name));
 		$result = mysqli_query($link, $query);
 		return true;
 	}
 
 	public static function edit($link, $person_id, $name) {
-		$sql = "UPDATE `persons` SET `name` = '%s' WHERE `id` = $person_id";
+		$sql = "UPDATE `Persons` SET `name` = '%s' WHERE `id` = $person_id";
 		$query = sprintf($sql, sql_escape($link, $name));
 		$result = mysqli_query($link, $query);
 		return true;
 	}
 
 	public static function delete($link, $person_id) {
-		$sql = "DELETE FROM `persons` WHERE `id` = $person_id";
+		$sql = "DELETE FROM `Persons` WHERE `id` = $person_id";
 		$result = mysqli_query($link, $sql);
 		return true;
 	}
@@ -53,7 +53,7 @@ class PersonRepository
 class SiteRepository
 {
 	public static function loadAll($link) {
-		$sql = 'SELECT `id`, `name` FROM `sites` ';
+		$sql = 'SELECT * FROM `Sites` ';
 		$result = mysqli_query($link, $sql);
 		$sites = array();
 		while ($row = mysqli_fetch_assoc($result)) {
@@ -66,7 +66,7 @@ class SiteRepository
 	}
 
 	public static function load($link, $site_id) {
-		$sql = "SELECT `id`, `name` FROM `sites` WHERE `id` = $site_id";
+		$sql = "SELECT * FROM `Sites` WHERE `id` = $site_id";
 		$result = mysqli_query($link, $sql);
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
@@ -81,21 +81,21 @@ class SiteRepository
 		if ($name == '') {
 			return false;
 		}
-		$sql = "INSERT INTO `sites` (`name`) VALUES ('%s')";
+		$sql = "INSERT INTO `Sites` (`name`) VALUES ('%s')";
 		$query = sprintf($sql, sql_escape($link, $name));
 		$result = mysqli_query($link, $query);
 		return true;
 	}
 
 	public static function edit($link, $site_id, $name) {
-		$sql = "UPDATE `sites` SET `name` = '%s' WHERE `id` = $site_id";
+		$sql = "UPDATE `Sites` SET `name` = '%s' WHERE `id` = $site_id";
 		$query = sprintf($sql, sql_escape($link, $name));
 		$result = mysqli_query($link, $query);
 		return true;
 	}
 
 	public static function delete($link, $site_id) {
-		$sql = "DELETE FROM `sites` WHERE `id` = $site_id";
+		$sql = "DELETE FROM `Sites` WHERE `id` = $site_id";
 		$result = mysqli_query($link, $sql);
 		return true;
 	}
@@ -104,13 +104,13 @@ class SiteRepository
 class RankRepository
 {
 	public static function loadAll($link) {
-		$sql = 'SELECT `rank`, `pageID`, `personID` FROM `personpagerank` ';
+		$sql = 'SELECT * FROM `PersonsPageRank` ';
 		$result = mysqli_query($link, $sql);
 		$ranks = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$rank = $row['rank'];
-			$page = $row['pageID'];
-			$person = $row['personID'];
+			$page = $row['page_id'];
+			$person = $row['person_id'];
 			$obj = new Rank($rank, $page, $person);
 			$ranks[] = $obj;				
 		}
@@ -118,12 +118,12 @@ class RankRepository
 	}
 
 	public static function load($link, $page_id, $person_id) {
-		$sql = "SELECT `rank`, `pageID`, `personID` FROM `personpagerank` WHERE `pageID` = $page_id AND `personID` = $person_id";
+		$sql = "SELECT * FROM `PersonsPageRank` WHERE `page_id` = $page_id AND `person_id` = $person_id";
 		$result = mysqli_query($link, $sql);
 		if ($row = mysqli_fetch_assoc($result)) {
 			$rank = $row['rank'];
-			$page = $row['pageID'];
-			$person = $row['personID'];
+			$page = $row['page_id'];
+			$person = $row['person_id'];
 			return new Rank($rank, $page, $person);
 		}
 		return new Rank(0, $page_id, $person_id);
@@ -131,7 +131,7 @@ class RankRepository
 
 // получить кол-во упоминаний (rank) за определенный период ($start-$end) выбранной личности на определенном сайте
 	public static function loadByPeriod($link, $person_id, $site_id, $start, $end) {
-		$sql = "SELECT personpagerank.rank, pages.foundDateTime FROM personpagerank JOIN pages ON personpagerank.pageID = pages.id WHERE personpagerank.personID = $person_id AND pages.siteID = $site_id AND pages.foundDateTime BETWEEN $start AND $end";
+		$sql = "SELECT PersonsPageRank.rank, Pages.found_date_time FROM PersonsPageRank JOIN Pages ON PersonsPageRank.page_id = Pages.id WHERE PersonsPageRank.person_id = $person_id AND Pages.site_id = $site_id AND Pages.found_date_time BETWEEN $start AND $end";
 		$result = mysqli_query($link, $sql);
 		$period = array();
 		while ($row = mysqli_fetch_assoc($result)) {
@@ -147,15 +147,15 @@ class RankRepository
 class PageRepository
 {
 	public static function loadAll($link) {
-		$sql = 'SELECT `id`, `url`, `siteID`, `foundDateTime`, `lastScanDate` FROM `pages` ';
+		$sql = 'SELECT * FROM `Pages` ';
 		$result = mysqli_query($link, $sql);
 		$pages = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
 			$url = $row['url'];
-			$siteID = $row['siteID'];
-			$foundDateTime = $row['foundDateTime'];
-			$lastScanDate = $row['lastScanDate'];								
+			$siteID = $row['site_id'];
+			$foundDateTime = $row['found_date_time'];
+			$lastScanDate = $row['last_scan_date'];								
 			$page = new Page($id, $url, $siteID, $foundDateTime, $lastScanDate);
 			$pages[] = $page;				
 		}
@@ -163,7 +163,7 @@ class PageRepository
 	}
 
 	public static function load($link, $page_id) {
-		$sql = "SELECT `id`, `url`, `siteID`, `foundDateTime`, `lastScanDate` FROM `pages` WHERE `id` = $page_id";
+		$sql = "SELECT * FROM `Pages` WHERE `id` = $page_id";
 		$result = mysqli_query($link, $sql);
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
@@ -178,15 +178,15 @@ class PageRepository
 
 	// получить ID страниц одного сайта
 	public static function selectAllBySiteID($link, $site_id) {
-		$sql = "SELECT * FROM `pages` WHERE `siteID` = $site_id";
+		$sql = "SELECT * FROM `Pages` WHERE `site_id` = $site_id";
 		$result = mysqli_query($link, $sql);
 		$site_page = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
 			$url = $row['url'];
-			$siteID = $row['siteID'];
-			$foundDateTime = $row['foundDateTime'];
-			$lastScanDate = $row['lastScanDate'];								
+			$siteID = $row['site_id'];
+			$foundDateTime = $row['found_date_time'];
+			$lastScanDate = $row['last_scan_date'];								
 			$page = new Page($id, $url, $siteID, $foundDateTime, $lastScanDate);
 			$site_page[] = $page;
 		}
@@ -202,15 +202,15 @@ class PageRepository
 class WordpairRepository
 {
 	public static function loadAll($link) {
-		$sql = 'SELECT * FROM `wordpairs` ';
+		$sql = 'SELECT * FROM `Wordpairs` ';
 		$result = mysqli_query($link, $sql);
 		$pairs = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
-			$keyword1 = $row['keyword1'];
-			$keyword2 = $row['keyword2'];
+			$keyword1 = $row['keyword_1'];
+			$keyword2 = $row['keyword_2'];
 			$distance = $row['distance'];
-			$person = $row['personID'];
+			$person = $row['person_id'];
 			$wordpair = new Wordpair($id, $keyword1, $keyword2, $distance, $person);
 			$pairs[] = $wordpair;
 		}
@@ -218,14 +218,14 @@ class WordpairRepository
 	}
 
 	public static function load($link, $keyword_id) {
-		$sql = "SELECT * FROM `wordpairs` WHERE `id` = $keyword_id";
+		$sql = "SELECT * FROM `Wordpairs` WHERE `id` = $keyword_id";
 		$result = mysqli_query($link, $sql);
 		if ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
-			$keyword1 = $row['keyword1'];
-			$keyword2 = $row['keyword2'];
+			$keyword1 = $row['keyword_1'];
+			$keyword2 = $row['keyword_2'];
 			$distance = $row['distance'];
-			$person = $row['personID'];								
+			$person = $row['person_id'];								
 			$wordpair = new Wordpair($id, $keyword1, $keyword2, $distance, $person);
 			return $wordpair;
 		}
@@ -233,15 +233,15 @@ class WordpairRepository
 	}	
 
 	public static function loadByPerson($link, $person) {
-		$sql = "SELECT * FROM `wordpairs` WHERE `personID` = $person";
+		$sql = "SELECT * FROM `Wordpairs` WHERE `person_id` = $person";
 		$result = mysqli_query($link, $sql);
 		$pair_person = array();
 		while ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
-			$keyword1 = $row['keyword1'];
-			$keyword2 = $row['keyword2'];
+			$keyword1 = $row['keyword_1'];
+			$keyword2 = $row['keyword_2'];
 			$distance = $row['distance'];
-			$person = $row['personID'];
+			$person = $row['person_id'];
 			$wordpair = new Wordpair($id, $keyword1, $keyword2, $distance, $person);
 			$pair_person[] = $wordpair;
 		}
@@ -255,7 +255,7 @@ class WordpairRepository
 		if ($keyword1 == '' && $keyword2 == '') {
 			return false;
 		}
-		$sql = "INSERT INTO `wordpairs` (`keyword1`, `keyword2`, `personID`, `distance`) VALUES ('%s', '%s', $person_id, $distance) " ;
+		$sql = "INSERT INTO `Wordpairs` (`keyword_1`, `keyword_2`, `person_id`, `distance`) VALUES ('%s', '%s', $person_id, $distance) " ;
 		$query = sprintf($sql, sql_escape($link, $keyword1), sql_escape($link, $keyword2));
 		$result = mysqli_query($link, $query);
 		return true;
@@ -263,14 +263,14 @@ class WordpairRepository
 
 	public static function edit($link, $keyword1, $keyword2, $keyword_id, $distance) {
 		$distance = (int)$distance;
-		$sql = "UPDATE `wordpairs` SET `keyword1` = '%s', `keyword2` = '%s', `distance` = $distance WHERE `id` = $keyword_id";
+		$sql = "UPDATE `Wordpairs` SET `keyword_1` = '%s', `keyword_2` = '%s', `distance` = $distance WHERE `id` = $keyword_id";
 		$query = sprintf($sql, sql_escape($link, $keyword1), sql_escape($link, $keyword2));
 		$result = mysqli_query($link, $query);
 		return true;
 	}
 
 	public static function delete($link, $keyword_id) {
-		$sql = "DELETE FROM `wordpairs` WHERE `id` = $keyword_id";
+		$sql = "DELETE FROM `Wordpairs` WHERE `id` = $keyword_id";
 		$result = mysqli_query($link, $sql);
 		return true;
 	}
