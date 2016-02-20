@@ -63,6 +63,7 @@ public class VolleyGet {
                     @Override
                     public void onResponse(JSONArray response) {
                         if (url.contains("persons")) {
+                            personList0.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonPart = null;
                                 try {
@@ -79,10 +80,12 @@ public class VolleyGet {
                                     e.printStackTrace();
                                 }
                             }
+                            nameList.clear();
                             for (Person p : personList0)
                                 nameList.add(p.getName());
                             nameAdapter.notifyDataSetChanged();
                         } else if (url.contains("sites")) {
+                            siteList0.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonPart = null;
                                 try {
@@ -99,6 +102,7 @@ public class VolleyGet {
                                     e.printStackTrace();
                                 }
                             }
+                            siteList.clear();
                             for (Sites s : siteList0) {
                                 siteList.add(s.getName());
                             }

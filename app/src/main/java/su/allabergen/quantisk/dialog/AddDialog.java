@@ -12,14 +12,16 @@ import android.widget.EditText;
 
 import su.allabergen.quantisk.R;
 import su.allabergen.quantisk.webServiceVolley.VolleyPost;
+import su.allabergen.quantisk.webServiceVolley.VolleyPut;
 
 /**
  * Created by Rabat on 07.02.2016.
  */
 public class AddDialog extends DialogFragment {
+    View v;
     EditText addEditText;
     String currFrag;
-    View v;
+    String nameEdit;
     int id;
 
     public AddDialog(String currFrag, View v) {
@@ -27,9 +29,9 @@ public class AddDialog extends DialogFragment {
         this.v = v;
     }
 
-    public AddDialog(String currFrag, View v, int id) {
-        this.currFrag = currFrag;
-        this.v = v;
+    public AddDialog(String currFrag, View v, String nameEdit, int id) {
+        this(currFrag, v);
+        this.nameEdit = nameEdit;
         this.id = id;
     }
 
@@ -40,6 +42,7 @@ public class AddDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add, null);
         addEditText = (EditText) view.findViewById(R.id.addEditText);
+        addEditText.setHint(nameEdit);
 
         builder.setView(view)
                 .setTitle(currFrag)
@@ -67,7 +70,6 @@ public class AddDialog extends DialogFragment {
                                 break;
 
                             case "removePersonBtn":
-
                                 break;
 
                             case "removeUserBtn":
@@ -77,6 +79,8 @@ public class AddDialog extends DialogFragment {
                                 break;
 
                             case "editPersonBtn":
+                                new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
+                                        id, addEditText.getText().toString(), "user1", "qwerty1");
                                 break;
 
                             case "editUserBtn":

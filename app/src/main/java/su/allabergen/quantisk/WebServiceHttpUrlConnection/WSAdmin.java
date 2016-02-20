@@ -17,11 +17,6 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
-import static su.allabergen.quantisk.activity.AdminActivity.nameList;
-import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
-import static su.allabergen.quantisk.activity.AdminActivity.siteList;
-
 /**
  * Created by Rabat on 18.02.2016.
  */
@@ -60,13 +55,13 @@ public class WSAdmin {
             super.onPostExecute(map);
             progressDialog.dismiss();
 
-            for (Map.Entry<Integer, String> person : getPersonKV().entrySet())
-                nameList.add(person.getValue());
-            nameAdapter.notifyDataSetChanged();
-
-            for (Map.Entry<Integer, String> site : getSiteKV().entrySet())
-                siteList.add(site.getValue());
-            siteAdapter.notifyDataSetChanged();
+//            for (Map.Entry<Integer, String> person : getPersonKV().entrySet())
+//                nameList.add(person.getValue());
+//            nameAdapter.notifyDataSetChanged();
+//
+//            for (Map.Entry<Integer, String> site : getSiteKV().entrySet())
+//                siteList.add(site.getValue());
+//            siteAdapter.notifyDataSetChanged();
         }
 
         protected Map<Integer, String> getPersonKV() {

@@ -19,8 +19,6 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import su.allabergen.quantisk.activity.AdminActivity;
-
 /**
  * Created by Rabat on 07.02.2016.
  */
@@ -133,8 +131,8 @@ public class PostWebService extends AsyncTask<String, Integer, Void> {
                 JSONObject jsonObject = new JSONObject(content);
                 nameAdded = jsonObject.getString("name");
                 if (!nameAdded.equals("")) {
-                    AdminActivity.nameList.add(nameAdded);
-                    AdminActivity.nameAdapter.notifyDataSetChanged();
+//                    AdminActivity.nameList.add(nameAdded);
+//                    AdminActivity.nameAdapter.notifyDataSetChanged();
                     Toast.makeText(context, "\"" + nameAdded + "\" has been added", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
