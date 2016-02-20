@@ -17,10 +17,10 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static su.allabergen.quantisk.AdminActivity.nameAdapter;
-import static su.allabergen.quantisk.AdminActivity.nameList;
-import static su.allabergen.quantisk.AdminActivity.siteAdapter;
-import static su.allabergen.quantisk.AdminActivity.siteList;
+import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.nameList;
+import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.siteList;
 
 /**
  * Created by Rabat on 18.02.2016.

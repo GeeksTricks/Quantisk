@@ -3,9 +3,9 @@ package su.allabergen.quantisk.WebServiceVolley;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class VolleyDelete {
     RequestQueue requestQueue;
     JSONObject jsonObject;
     Context context;
+    String url0;
     String url;
     String username;
     String password;
@@ -38,8 +40,9 @@ public class VolleyDelete {
         this.context = context;
         this.username = username;
         this.password = password;
-        this.url = url;
-        this.id = id + 1;
+        this.id = id;
+        this.url0 = url;
+        this.url = url + this.id + "/";
         getVolley();
     }
 
@@ -54,27 +57,36 @@ public class VolleyDelete {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Toast.makeText(context, "DELETED Person with ID = " + id, Toast.LENGTH_SHORT).show();
-                        Log.i("Quantisk response", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not delete Person", Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
+
                     }
                 }) {
             @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == HttpStatus.SC_NO_CONTENT)
+                    Log.i("Quantisk NO CONTENT", String.valueOf(response.statusCode));
+                new VolleyGet(context, url0, "user1", "qwerty1");
+
+                return super.parseNetworkResponse(response);
+            }
+
+            @Override
+            protected void deliverResponse(JSONArray response) {
+                super.deliverResponse(response);
+                Log.i("Quantisk deliver", response.toString());
+            }
+
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-//                headers.put("USERNAME", username);
-//                headers.put("PASSWORD", password);
                 String credentials = username + ":" + password;
                 String auth = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                 headers.put("Content-Type", "application/json, charset=UTF-8");
                 headers.put("Authorization", auth);
-                Log.i("Quantisk header", headers.toString());
                 return headers;
             }
         };

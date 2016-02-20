@@ -16,7 +16,7 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import static su.allabergen.quantisk.AdminActivity.*;
+//import static su.allabergen.quantisk.activity.AdminActivity.*;
 //
 ///**
 // * Created by Rabat on 12.02.2016.

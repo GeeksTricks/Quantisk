@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import su.allabergen.quantisk.DateDialog;
+import su.allabergen.quantisk.dialog.DateDialog;
 import su.allabergen.quantisk.R;
 
 public class UserActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

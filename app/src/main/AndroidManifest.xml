@@ -12,29 +12,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".UserActivity"
+            android:name=".activity.UserActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".CommonStatActivity"
+            android:name=".activity.CommonStatActivity"
             android:label="@string/title_activity_common_stat"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UserActivity" />
+                android:value=".activity.UserActivity" />
         </activity>
         <activity
-            android:name=".DailyStatActivity"
+            android:name=".activity.DailyStatActivity"
             android:label="@string/title_activity_daily_stat"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UserActivity" />
+                android:value=".activity.UserActivity" />
         </activity>
         <activity
-            android:name=".SignUpScreen"
+            android:name=".activity.SignUpScreen"
             android:label="@string/title_activity_sign_up_screen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -44,16 +44,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".UserActivity"
+            android:parentActivityName=".activity.UserActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="su.allabergen.quantisk.AdminActivity" />
+                android:value=".activity.AdminActivity" />
         </activity>
         <activity
-            android:name=".AdminActivity"
+            android:name=".activity.AdminActivity"
             android:label="@string/title_activity_admin"
             android:theme="@style/AppTheme.NoActionBar">
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nameFragment"
-    tools:context="su.allabergen.quantisk.SettingsActivity$PlaceholderFragment">
+    tools:context="su.allabergen.quantisk.activity.SettingsActivity$PlaceholderFragment">
 
     <TextView
         android:id="@+id/name_label"
@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/nameSpinner"
+        android:id="@+id/personSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_label"

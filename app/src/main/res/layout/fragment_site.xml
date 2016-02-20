@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/siteFragment"
-    tools:context="su.allabergen.quantisk.SettingsActivity$PlaceholderFragment">
+    tools:context="su.allabergen.quantisk.activity.SettingsActivity$PlaceholderFragment">
 
     <TextView
         android:id="@+id/site_label"

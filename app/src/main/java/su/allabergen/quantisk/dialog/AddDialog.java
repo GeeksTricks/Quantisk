@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.WebServiceHttpUrlConnection.PostWebService;
+import su.allabergen.quantisk.WebServiceVolley.VolleyPost;
 import su.allabergen.quantisk.activity.AdminActivity;
 
 /**
@@ -49,12 +49,16 @@ public class AddDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (currFrag) {
                             case "addSiteBtn":
-                                AdminActivity.siteList.add(addEditText.getText().toString());
+//                                AdminActivity.siteList.add(addEditText.getText().toString());
+                                new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/",
+                                        addEditText.getText().toString(), "user1", "qwerty1");
                                 break;
 
                             case "addPersonBtn":
-                                new PostWebService(getActivity(), addEditText.getText().toString(), "user1", "qwerty1")
-                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+//                                new PostWebService(getActivity(), addEditText.getText().toString(), "user1", "qwerty1")
+//                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                                new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
+                                        addEditText.getText().toString(), "user1", "qwerty1");
                                 break;
 
                             case "addUserBtn":

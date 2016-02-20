@@ -24,8 +24,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import su.allabergen.quantisk.OwnHttpClientStack;
-
 /**
  * Created by Rabat on 20.02.2016.
  */

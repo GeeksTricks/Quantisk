@@ -12,6 +12,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +24,19 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import su.allabergen.quantisk.AddDialog;
+import java.util.Map;
+
 import su.allabergen.quantisk.R;
 import su.allabergen.quantisk.WebServiceVolley.VolleyDelete;
-import su.allabergen.quantisk.WebServiceVolley.VolleyPut;
+import su.allabergen.quantisk.dialog.AddDialog;
+
+import static su.allabergen.quantisk.WebServiceVolley.VolleyGet.personMap;
+import static su.allabergen.quantisk.WebServiceVolley.VolleyGet.siteMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final int PERSON = 0;
+    public static final int SITE = 1;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -147,7 +154,10 @@ public class SettingsActivity extends AppCompatActivity {
         View vSite;
         View vName;
         View vUser;
-        int position;
+        String personSelected;
+        String siteSelected;
+        int personId;
+        int siteId;
 
         /**
          * The fragment argument representing the section number for this
@@ -190,7 +200,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
                 View nameView = inflater.inflate(R.layout.fragment_person, container, false);
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
-                Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.nameSpinner);
+                Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.personSpinner);
                 nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity.nameList));
                 nameSpinner.setOnItemSelectedListener(this);
                 nameTextView.setText("Modify names");
@@ -263,6 +273,25 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.removeSiteBtn :
                     currFrag = "removeSiteBtn";
                     view = vSite;
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Remove Site")
+                            .setMessage("Are you sure to remove this site?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+//                                    new VolleyDeleteCustom(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
+//
+//                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
+//                                            .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+
+                                    int check = check(SITE);
+                                    new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", check, "user1", "qwerty1");
+
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .create()
+                            .show();
                     break;
                 case R.id.removePersonBtn :
                     currFrag = "removePersonBtn";
@@ -275,16 +304,16 @@ public class SettingsActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 //                                    new VolleyDeleteCustom(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
 
-                                    new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
-
 //                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
 //                                            .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+
+                                    int check = check(PERSON);
+                                    new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", check, "user1", "qwerty1");
                                 }
                             })
                             .setNegativeButton("No", null)
                             .create()
                             .show();
-
                     break;
                 case R.id.removeUserBtn :
                     currFrag = "removeUserBtn";
@@ -297,7 +326,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.editPersonBtn :
                     currFrag = "editPersonBtn";
                     view = vName;
-                    new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
+//                    new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", -1, "user1", "qwerty1");
                     break;
                 case R.id.editUserBtn :
                     currFrag = "editUserBtn";
@@ -315,19 +344,41 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+        public int check(int id) {
+            if (id == PERSON) {
+                for (Map.Entry<Integer, String> person : personMap.entrySet()) {
+                    if (person.getValue().equals(personSelected)) {
+                        personId = person.getKey();
+                        Log.i("Quantisk P_ID", String.valueOf(personId));
+                        Log.i("Quantisk PERSON", person.getValue());
+                        return personId;
+                    }
+                }
+            } else if (id == SITE) {
+                for (Map.Entry<Integer, String> site : siteMap.entrySet()) {
+                    if (site.getValue().equals(siteSelected)) {
+                        siteId = site.getKey();
+                        Log.i("Quantisk S_ID", String.valueOf(siteId));
+                        Log.i("Quantisk SITE", site.getValue());
+                        return siteId;
+                    }
+                }
+            }
+            return -1;
+        }
+
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             Spinner spinner = (Spinner) parent;
 
             switch (spinner.getId()) {
-                case R.id.nameSpinner:
-                    this.position = position;
+                case R.id.personSpinner:
+                    personSelected = spinner.getSelectedItem().toString();
                     break;
                 case R.id.siteSpinner:
-                    this.position = position;
+                    siteSelected = spinner.getSelectedItem().toString();
                     break;
                 case R.id.userSpinner:
-                    this.position = position;
                     break;
             }
         }

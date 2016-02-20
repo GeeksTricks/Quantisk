@@ -2,7 +2,6 @@ package su.allabergen.quantisk.WebServiceVolley;
 
 import android.content.Context;
 import android.util.Base64;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,15 +19,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static su.allabergen.quantisk.AdminActivity.nameAdapter;
-import static su.allabergen.quantisk.AdminActivity.nameList;
-import static su.allabergen.quantisk.AdminActivity.siteAdapter;
-import static su.allabergen.quantisk.AdminActivity.siteList;
+import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.nameList;
+import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity.siteList;
 
 /**
  * Created by Rabat on 19.02.2016.
  */
 public class VolleyGet {
+    public static Map<Integer, String> personMap = new LinkedHashMap<>();
+    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
     RequestQueue requestQueue;
     JSONObject jsonObject;
     Context context;
@@ -61,18 +62,21 @@ public class VolleyGet {
                                 e.printStackTrace();
                             }
                         }
-                        Log.i("Quantisk dataMap", dataFromVolley.toString());
 
                         if (url.contains("persons")) {
+                            personMap.clear();
+                            nameList.clear();
+                            personMap.putAll(dataFromVolley);
                             for (Map.Entry<Integer, String> person : dataFromVolley.entrySet())
                                 nameList.add(person.getValue());
                             nameAdapter.notifyDataSetChanged();
-                            Log.i("Quantiks nameList", nameList.toString());
                         } else if (url.contains("sites")) {
+                            siteMap.clear();
+                            siteList.clear();
+                            siteMap.putAll(dataFromVolley);
                             for (Map.Entry<Integer, String> site : dataFromVolley.entrySet())
                                 siteList.add(site.getValue());
                             siteAdapter.notifyDataSetChanged();
-                            Log.i("Quantiks siteList", siteList.toString());
                         }
                     }
                 },

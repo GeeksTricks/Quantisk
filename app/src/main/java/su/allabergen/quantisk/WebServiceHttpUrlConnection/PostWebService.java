@@ -19,7 +19,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import su.allabergen.quantisk.AdminActivity;
+import su.allabergen.quantisk.activity.AdminActivity;
 
 /**
  * Created by Rabat on 07.02.2016.
