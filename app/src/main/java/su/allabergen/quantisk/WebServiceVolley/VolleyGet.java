@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import su.allabergen.quantisk.model.Dailyrank;
 import su.allabergen.quantisk.model.Person;
 import su.allabergen.quantisk.model.Sites;
 import su.allabergen.quantisk.model.Totalrank;
@@ -31,6 +32,7 @@ import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
 import static su.allabergen.quantisk.activity.AdminActivity.siteList;
 import static su.allabergen.quantisk.activity.CommonStatActivity.adapter;
 import static su.allabergen.quantisk.activity.CommonStatActivity.commonList;
+import static su.allabergen.quantisk.activity.DailyStatActivity.*;
 
 /**
  * Created by Rabat on 19.02.2016.
@@ -39,10 +41,11 @@ public class VolleyGet {
     public static List<Person> personList0 = new ArrayList<>();
     public static List<Sites> siteList0 = new ArrayList<>();
     public static List<Totalrank> totalrankList0 = new ArrayList<>();
+    public static List<Dailyrank> dailyrankList0 = new ArrayList<>();
 
     ProgressDialog progressDialog;
 
-    //    public static Map<Integer, String> personMap = new LinkedHashMap<>();
+//    public static Map<Integer, String> personMap = new LinkedHashMap<>();
 //    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
     RequestQueue requestQueue;
     Context context;
@@ -148,6 +151,48 @@ public class VolleyGet {
                                 commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
                             }
                             adapter.notifyDataSetChanged();
+                        } else if (url.contains("dailyrank")) {
+                            dailyrankList0.clear();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonPart = null;
+                                try {
+                                    jsonPart = response.getJSONObject(i);
+                                    Dailyrank dailyrank = new Dailyrank();
+
+                                    dailyrank.setDay(jsonPart.getString("day"));
+                                    dailyrank.setPerson_id(jsonPart.getInt("person_id"));
+                                    dailyrank.setRank(jsonPart.getInt("rank"));
+                                    dailyrank.setSite_id(jsonPart.getInt("site_id"));
+
+                                    dailyrankList0.add(dailyrank);
+
+                                    progressDialog.dismiss();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            String personName = "No Name";
+                            String siteName = "No Site";
+                            String date = "yyyy-MM-dd";
+                            int rate;
+                            for (Dailyrank dailyrank : dailyrankList0) {
+                                for (Person person : personList0) {
+                                    if (person.getId() == dailyrank.getPerson_id()) {
+                                        personName = person.getName();
+                                        break;
+                                    }
+                                }
+                                for (Sites site : siteList0) {
+                                    if (site.getId() == dailyrank.getSite_id()) {
+                                        siteName = site.getName();
+                                        break;
+                                    }
+                                }
+                                date = dailyrank.getDay();
+                                rate = dailyrank.getRank();
+                                dailyList.add(date + "\nИмя: " + personName + "\nСайт: " + siteName + "\nСтатистика: " + rate);
+                            }
+                            dailyAdapter.notifyDataSetChanged();
                         }
 
 //                        if (url.contains("persons")) {
