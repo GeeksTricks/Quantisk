@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -32,8 +31,8 @@ public class CommonStatActivity extends AppCompatActivity {
     private TextView lastUpdateTimeTextView;
     private TextView siteTextView;
     private ListView commonStatListView;
-    private List<String> commonList;
-    private ArrayAdapter<String> adapter;
+    public static List<String> commonList;
+    public static ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +58,35 @@ public class CommonStatActivity extends AppCompatActivity {
         String name = extras.getString("SITE");
         int site_id = 1;
         String url = null;
-        for (Sites site : siteList0) {
-            if (site.getName().equals(name)) {
-                site_id = site.getId();
-                url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
-                new VolleyGet(this, url, "user1", "qwerty1");
-                siteTextView.setText("Сайт: " + name);
-                Log.i("Quantisk toalrank", totalrankList0.toString());
-                break;
-            }
-        }
 
-        String personName = "No Name";
-        int rate;
-        for (Totalrank totalrank : totalrankList0) {
-            for (Person person : personList0) {
-                if (person.getId() == totalrank.getPerson_id()) {
-                    personName = person.getName();
+        siteTextView.setText("Сайт: " + name);
+
+        if (totalrankList0.isEmpty()) {
+            for (Sites site : siteList0) {
+                if (site.getName().equals(name)) {
+                    site_id = site.getId();
+                    url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
+                    new VolleyGet(this, url, "user1", "qwerty1");
                     break;
                 }
             }
-            rate = totalrank.getRate();
-            commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
         }
-        adapter.notifyDataSetChanged();
+
+        if (!totalrankList0.isEmpty()) {
+            String personName = "No Name";
+            int rate;
+            for (Totalrank totalrank : totalrankList0) {
+                for (Person person : personList0) {
+                    if (person.getId() == totalrank.getPerson_id()) {
+                        personName = person.getName();
+                        break;
+                    }
+                }
+                rate = totalrank.getRate();
+                commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initVariables() {

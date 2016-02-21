@@ -1,5 +1,6 @@
 package su.allabergen.quantisk.webServiceVolley;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Base64;
 
@@ -28,6 +29,8 @@ import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
 import static su.allabergen.quantisk.activity.AdminActivity.nameList;
 import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
 import static su.allabergen.quantisk.activity.AdminActivity.siteList;
+import static su.allabergen.quantisk.activity.CommonStatActivity.adapter;
+import static su.allabergen.quantisk.activity.CommonStatActivity.commonList;
 
 /**
  * Created by Rabat on 19.02.2016.
@@ -37,7 +40,9 @@ public class VolleyGet {
     public static List<Sites> siteList0 = new ArrayList<>();
     public static List<Totalrank> totalrankList0 = new ArrayList<>();
 
-//    public static Map<Integer, String> personMap = new LinkedHashMap<>();
+    ProgressDialog progressDialog;
+
+    //    public static Map<Integer, String> personMap = new LinkedHashMap<>();
 //    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
     RequestQueue requestQueue;
     JSONObject jsonObject;
@@ -49,6 +54,7 @@ public class VolleyGet {
     public VolleyGet(Context context, String url, String username, String password) {
         requestQueue = Volley.newRequestQueue(context);
         jsonObject = new JSONObject();
+        progressDialog = new ProgressDialog(context);
         this.context = context;
         this.username = username;
         this.password = password;
@@ -58,6 +64,7 @@ public class VolleyGet {
 
     public void getVolley() {
 //        final Map<Integer, String> dataFromVolley = new LinkedHashMap<>();
+        progressDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -74,6 +81,8 @@ public class VolleyGet {
                                     person.setName(jsonPart.getString("name"));
 
                                     personList0.add(person);
+
+                                    progressDialog.dismiss();
 
 //                                    dataFromVolley.put(jsonPart.getInt("id"), jsonPart.getString("name"));
                                 } catch (JSONException e) {
@@ -96,6 +105,8 @@ public class VolleyGet {
                                     site.setName(jsonPart.getString("name"));
 
                                     siteList0.add(site);
+
+                                    progressDialog.dismiss();
 
 //                                    dataFromVolley.put(jsonPart.getInt("id"), jsonPart.getString("name"));
                                 } catch (JSONException e) {
@@ -120,10 +131,25 @@ public class VolleyGet {
                                     totalrank.setSite_id(jsonPart.getInt("site_id"));
 
                                     totalrankList0.add(totalrank);
+
+                                    progressDialog.dismiss();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
+                            String personName = "No Name";
+                            int rate;
+                            for (Totalrank totalrank : totalrankList0) {
+                                for (Person person : personList0) {
+                                    if (person.getId() == totalrank.getPerson_id()) {
+                                        personName = person.getName();
+                                        break;
+                                    }
+                                }
+                                rate = totalrank.getRate();
+                                commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
+                            }
+                            adapter.notifyDataSetChanged();
                         }
 
 //                        if (url.contains("persons")) {
@@ -146,6 +172,7 @@ public class VolleyGet {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
                         error.printStackTrace();
                     }
                 }) {
