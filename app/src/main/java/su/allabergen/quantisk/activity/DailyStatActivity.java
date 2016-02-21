@@ -14,14 +14,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.model.Dailyrank;
+import su.allabergen.quantisk.model.Person;
+import su.allabergen.quantisk.model.Sites;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
+
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.dailyrankList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet.totalrankList0;
 
 public class DailyStatActivity extends AppCompatActivity {
 
@@ -29,6 +40,8 @@ public class DailyStatActivity extends AppCompatActivity {
     private TextView date;
     private TextView article;
     private TextView dailyNameTextView;
+    public static List<String> dailyList;
+    public static ArrayAdapter<String> dailyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +57,65 @@ public class DailyStatActivity extends AppCompatActivity {
         dailyStatListView = (ListView) findViewById(R.id.dailyStatListView);
         date = (TextView) findViewById(R.id.date);
         article = (TextView) findViewById(R.id.article);
-        dailyNameTextView = (TextView) findViewById(R.id.dailyNameTextView);
+        dailyList = new ArrayList<>();
+        dailyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dailyList);
+        dailyStatListView.setAdapter(dailyAdapter);
 
-        Intent intent = getIntent();
-        dailyNameTextView.setText(intent.getStringExtra("NAME"));
-        dailyStatListView.setAdapter(new DailyStatAdapter(this, intent));
+//        https://api-quantisk.rhcloud.com/v1/dailyrank/?person_id=1&site_id=1&start_date=2016-01-09&end_date=2016-02-09
+
+        Intent i = getIntent();
+        String dateFrom = i.getStringExtra("DATE_FROM");
+        String dateTo = i.getStringExtra("DATE_TO");
+        String username = i.getStringExtra("NAME");
+        String sitename = i.getStringExtra("SITE");
+        String url = null;
+        int site_id = -1;
+        int person_id = -1;
+
+        if (dailyrankList0.isEmpty()) {
+            for (Person person : personList0) {
+                if (person.getName().equals(username)) {
+                    person_id = person.getId();
+                    break;
+                }
+            }
+            for (Sites site : siteList0) {
+                if (site.getName().equals(sitename)) {
+                    site_id = site.getId();
+                    break;
+                }
+            }
+            url = "https://api-quantisk.rhcloud.com/v1/dailyrank/?person_id=" + person_id + "&site_id=" + site_id + "&start_date=" + dateFrom + "&end_date=" + dateTo;
+            new VolleyGet(this, url, "user1", "qwerty1");
+        }
+
+        if (!totalrankList0.isEmpty()) {
+            String personName = "No Name";
+            String siteName = "No Site";
+            String date = "yyyy-MM-dd";
+            int rate;
+            for (Dailyrank dailyrank : dailyrankList0) {
+                for (Person person : personList0) {
+                    if (person.getId() == dailyrank.getPerson_id()) {
+                        personName = person.getName();
+                        break;
+                    }
+                }
+                for (Sites site : siteList0) {
+                    if (site.getId() == dailyrank.getSite_id()) {
+                        siteName = site.getName();
+                        break;
+                    }
+                }
+                date = dailyrank.getDay();
+                rate = dailyrank.getRank();
+                dailyList.add(date + "\nИмя: " + personName + "\nСайт: " + siteName + "\nСтатистика: " + rate);
+            }
+            dailyAdapter.notifyDataSetChanged();
+        }
+
+//        dailyNameTextView.setText(i.getStringExtra("NAME"));
+//        dailyStatListView.setAdapter(new DailyStatAdapter(this, intent));
     }
 
     @Override
@@ -94,7 +161,6 @@ class DailyStatAdapter extends BaseAdapter {
     private GregorianCalendar cal;
     private Context context;
     private String dateFrom;
-
     private String dateTo;
     private String[] dates_from;
     private String[] dates_to;
@@ -121,8 +187,8 @@ class DailyStatAdapter extends BaseAdapter {
         dateFrom = i.getStringExtra("DATE_FROM");
         dateTo = i.getStringExtra("DATE_TO");
 
-        dates_from = dateFrom.split("/");
-        dates_to = dateTo.split("/");
+        dates_from = dateFrom.split("-");
+        dates_to = dateTo.split("-");
 
         dayFrom = Integer.parseInt(dates_from[0]);
         monthFrom = Integer.parseInt(dates_from[1]);
@@ -164,16 +230,16 @@ class DailyStatAdapter extends BaseAdapter {
 
                 if (dates[MONTH] == 0 && df > dt) {
                     for (int d = df; d <= monthDay[mf + 1]; d++) {
-                        datesToShow.add(d + "/" + (mf) + "/" + yf);
+                        datesToShow.add(d + "-" + (mf) + "-" + yf);
                         articles.add((int) (Math.random() * 50));
                     }
                     for (int d = 1; d <= dt; d++) {
-                        datesToShow.add(d + "/" + (mf + 1) + "/" + yf);
+                        datesToShow.add(d + "-" + (mf + 1) + "-" + yf);
                         articles.add((int) (Math.random() * 50));
                     }
                 } else {
                     for (int d = df; d <= dt; d++) {
-                        datesToShow.add(d + "/" + (mf) + "/" + yf);
+                        datesToShow.add(d + "-" + (mf) + "-" + yf);
                         articles.add((int) (Math.random() * 50));
                     }
                 }

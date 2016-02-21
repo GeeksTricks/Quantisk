@@ -129,15 +129,20 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             showDateAlertDialog();
         } else {
             Intent intent = new Intent(this, DailyStatActivity.class);
-            checkDate(dateFrom.getText().toString(), dateTo.getText().toString(), intent);
+            intent.putExtra("NAME", nameToPass);
+            intent.putExtra("SITE", siteToPass);
+            intent.putExtra("DATE_FROM", String.valueOf(dateFrom.getText()));
+            intent.putExtra("DATE_TO", String.valueOf(dateTo.getText()));
+            startActivity(intent);
+//            checkDate(dateFrom.getText().toString(), dateTo.getText().toString(), intent);
         }
     }
 
     private void checkDate(String dateFrom, String dateTo, Intent intent) {
 
         int[] dateDifference = getDateDifferenceInDDMMYYYY(dateFrom, dateTo);
-        String[] dates_from = dateFrom.split("/");
-        String[] dates_to = dateTo.split("/");
+        String[] dates_from = dateFrom.split("-");
+        String[] dates_to = dateTo.split("-");
         dayFrom = Integer.parseInt(dates_from[0]);
         monthFrom = Integer.parseInt(dates_from[1]);
         yearFrom = Integer.parseInt(dates_from[2]);
@@ -149,17 +154,18 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             showDateAlertDialog();
         } else {
             intent.putExtra("NAME", nameToPass);
+            intent.putExtra("SITE", siteToPass);
             intent.putExtra("DATE_FROM", dateFrom);
             intent.putExtra("DATE_TO", dateTo);
-            intent.putExtra("DATES", dateDifference);
+//            intent.putExtra("DATES", dateDifference);
             startActivity(intent);
         }
     }
 
     public int[] getDateDifferenceInDDMMYYYY(String dateFrom, String dateTo) {
 
-        String[] dates_from = dateFrom.split("/");
-        String[] dates_to = dateTo.split("/");
+        String[] dates_from = dateFrom.split("-");
+        String[] dates_to = dateTo.split("-");
         dayFrom = Integer.parseInt(dates_from[0]);
         monthFrom = Integer.parseInt(dates_from[1]) - 1;
         yearFrom = Integer.parseInt(dates_from[2]);
