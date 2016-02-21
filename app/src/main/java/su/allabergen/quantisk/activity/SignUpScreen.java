@@ -37,7 +37,7 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
     public static List<String> tempList = new ArrayList<>();
     private static List<String> tempList2 = new ArrayList<>();
 
-    boolean isSignUp = true;
+    boolean isSignUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +100,11 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        if (isOK || (uname.equals("user1") && upassword.equals("qwerty1"))) {
+        if (isOK) {
             Intent intent = new Intent(getApplicationContext(), UserActivity.class);
             startActivity(intent);
             finish();
-        } else if (uname.equals("admin") && upassword.equals("admin")) {
+        } else if ((uname.equals("user1") && upassword.equals("qwerty1")) || (uname.equals("admin") && upassword.equals("admin"))) {
             Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivity(intent);
             finish();
@@ -154,12 +154,12 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.changeModeTextView) {
             if (isSignUp) {
                 isSignUp = false;
-                signUpBtn.setText("Log In");
-                changeModeTextView.setText("Sign Up");
+                signUpBtn.setText("Войти");
+                changeModeTextView.setText("Регистрация");
             } else {
                 isSignUp = true;
-                signUpBtn.setText("Sign Up");
-                changeModeTextView.setText("Log In");
+                signUpBtn.setText("Регистрация");
+                changeModeTextView.setText("Войти");
             }
         } else if (v.getId() == R.id.logo || v.getId() == R.id.signUpRelativeLayout) {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
