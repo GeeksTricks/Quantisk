@@ -3,6 +3,9 @@ package su.allabergen.quantisk.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -260,6 +263,14 @@ public class SettingsActivity extends AppCompatActivity {
             editUserBtn.setOnClickListener(this);
         }
 
+        public static Handler mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                // This is where you do your work in the UI thread.
+                // Your worker tells you in the message what to do.
+            }
+        };
+
         @Override
         public void onClick(View v) {
             String currFrag = "";
@@ -294,6 +305,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                     int check = check(SITE);
                                     new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", check, "user1", "qwerty1");
+//                                    new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
 
                                 }
                             })
@@ -317,6 +329,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                     int check = check(PERSON);
                                     new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", check, "user1", "qwerty1");
+//                                    new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 }
                             })
                             .setNegativeButton("No", null)
