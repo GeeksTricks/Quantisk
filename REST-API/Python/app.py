@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.extend(os.path.dirname(__file__))
+sys.path.extend([os.path.dirname(__file__)])
 from quantisk_api import app as application
 import os 
 
