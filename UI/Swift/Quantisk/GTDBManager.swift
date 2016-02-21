@@ -18,7 +18,7 @@ class GTDBManager{
     //singlenton
     static let sharedInstance = GTDBManager()
     let realm = try! Realm()
-    
+   
     //delete all pesons
     func deleteAllPersons(){
         let persons = self.realm.objects(GTPersons)
@@ -132,6 +132,13 @@ class GTDBManager{
         return sites_list
     }
     
+    //getPersonFromID
+    func getPersonNameFromId(IDPerson: Int) -> (String){
+        let currentPerson = self.realm.objects(GTPersons).filter("ID == %@",IDPerson).first
+        return currentPerson!.Name
+  
+    }
+    
     
     // get login
     func getCurrentLogin() -> String{
@@ -149,8 +156,128 @@ class GTDBManager{
     
     
     // getTotalStat
-   // get
+    func GetLoadlStat(siteId: Int) {
+      //  /v1/totalrank/<site_id>/
+        
+        let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/totalrank/" + String(siteId) + "/"
+        print(URL)
+     
+        let stats = self.realm.objects(GTStat)
+        try! realm.write {
+            realm.delete(stats)
+        }
+        
+         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
+            response in
+            switch response.result {
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                  
+                    for (_,subJson):(String, JSON) in json {
+                        print(subJson["rank"].int!," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ")
+                      
+                        let stat = GTStat()
+                        stat.person = self.getPersonNameFromId(subJson["person_id"].int!)
+                        stat.stat = subJson["rank"].int!
+                      
+                       
+                        try! self.realm.write {
+                            self.realm.add(stat)
+                        }
+                   
+                    }
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName("NotificationIdentifierStat", object: nil)
+                }
+            case .Failure(let error):
+                print(error)
+            }
+        }
+       
+    }
+    func GetLoadlStatPersond(siteId: Int, personId: Int, startDate: NSDate , endDate: NSDate) {
+     /*
+        /v1/dailyrank/?person_id=<person_id>&site_id=<site_id>&start_date=<start_date>&end_date=<end_date>
+        
+        GET: Возвращает статистику по дням для конкретной личности на конкретном сайте в промежутке между двумя датами.
+        Принимает аргументы в урле. Даты ожидаются в ISO-формате (например: 2005-08-09T18:31:42). Таймзоны пока не работают.
+        Возвращает:
+        [
+        {
+        "rank": integer,
+        "day": string,
+        "site_id": integer,
+        "person_id": integer,
+        }
+        ]
+        */
+        
+        
+        let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/totalrank/" + String(siteId) + "/"
+        print(URL)
+        
+        let stats = self.realm.objects(GTStat)
+        try! realm.write {
+            realm.delete(stats)
+        }
+         let param = ["person_id":  personId, "site_id": siteId,  "start_date": startDate,  "site_id": endDate]
+        Alamofire.request(.GET, URL , parameters: param).responseJSON {
+            response in
+            switch response.result {
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                    
+                    for (_,subJson):(String, JSON) in json {
+                        print(subJson["rank"].int!," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ")
+                        
+                        let stat = GTStat()
+                        stat.person = self.getPersonNameFromId(subJson["person_id"].int!)
+                        stat.stat = subJson["rank"].int!
+                        stat.date = subJson["day"].string!
+                        
+                        try! self.realm.write {
+                            self.realm.add(stat)
+                        }
+                        
+                    }
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName("NotificationIdentifierStat", object: nil)
+                }
+            case .Failure(let error):
+                print(error)
+            }
+        }
+        
+    }
     
+    //getTotalStat
+    func getTotalStatText() ->([String]){
+        
+        let text = self.realm.objects(GTStat)
+        
+        var text_list: [String] = []
+        for var i = 0; i < text.count; i++ {
+            text_list.append(text[i].person)
+        }
+        return text_list
+    }
+    //getTotalStat
+    func getTotalStatSubText(type:Int) ->([String]){
+        
+        let text = self.realm.objects(GTStat)
+        
+        var text_list: [String] = []
+        for var i = 0; i < text.count; i++ {
+            if type == 0 {
+            text_list.append(String(text[i].date) + " " + String(text[i].stat)  )
+            } else{
+            text_list.append(String(text[i].stat)  )
+            }
+        }
+        return text_list
+    }
     
     //http://user1:qwerty1@api-quantisk.rhcloud.com/v1/dailyrank/?site_id=1&person_id=1&start_date=2006-02-11&end_date=2026-02-11
     //https://user1:qwerty1@api-quantisk.rhcloud.com/v1/persons/

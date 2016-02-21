@@ -13,14 +13,32 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
     
     @IBOutlet var table: UITableView!
     var typeStatic:Int = 0
+    var siteID:Int?
+    var perosnId:Int?
+     var personsName: [String] = [""]
+    var personRate: [String] = [""]
     
-    
+    func methodOfReceivedNotification(notification: NSNotification){
+        self.personsName =  GTDBManager.sharedInstance.getTotalStatText()
+        self.personRate =  GTDBManager.sharedInstance.getTotalStatSubText(self.typeStatic)
+        self.table.reloadData()
+        
+        print("hello")
+       NSNotificationCenter.defaultCenter().removeObserver(self, name: "NotificationIdentifierStat", object: nil)
+    }
    
-    
-    var persons: [String] = ["11/02/2016 - 14", "12/02/2016 - 15", "13/02/2016 - 16", "14/02/2016 - 17"]
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.typeStatic ==0 {
+        GTDBManager.sharedInstance.GetLoadlStat(self.siteID!)
+        } else{
+            
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "methodOfReceivedNotification:", name:"NotificationIdentifierStat", object: nil)
+        
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -29,25 +47,17 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.typeStatic == 0{
-            return persons.count
-        } else{
         
-        return 1;
-        }
+            return personsName.count
+     
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = self.table.dequeueReusableCellWithIdentifier("cell",forIndexPath: indexPath)
-        cell.textLabel?.text = "Petrov"
-        print(self.typeStatic)
-        if self.typeStatic == 0{
-            cell.detailTextLabel?.text = persons[indexPath.row]
-            
-        } else{
-            
-             cell.detailTextLabel?.text = "56"
-        }
+      
+            cell.textLabel?.text = personsName[indexPath.row]
+            cell.detailTextLabel?.text = personRate[indexPath.row]
+        
         return cell
     }
    

@@ -10,17 +10,21 @@ import Foundation
 import UIKit
 
 class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource{
-      var type: Int = 0
+  
     @IBOutlet var userName: UINavigationItem!
     @IBOutlet var imageToDate: UIImageView!
     @IBOutlet var imagePerson: UIImageView!
     @IBOutlet var imageFromDate: UIImageView!
+    
+    
+   //push button statsic
     @IBAction func getStatistic(sender: AnyObject) {
   
      
       let vc = self.storyboard!.instantiateViewControllerWithIdentifier("static") as! GTStaticViewController
-        vc.typeStatic = self.type
-        print(self.type)
+        vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
+        vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
+        
         self.navigationController!.pushViewController(vc, animated: true)
 
         
@@ -38,7 +42,7 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
         super.viewDidAppear(animated)
         self.site = GTDBManager.sharedInstance.getAllSites()
         self.persons = GTDBManager.sharedInstance.getAllPersons()
-        print("print")
+        
         sitePicker.reloadAllComponents()
         personPicker.reloadAllComponents()
      //   print(self.site )
@@ -64,7 +68,6 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
     //MARK: Delegates
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == typeStatPicker{
-            self.type = row
             return typeStat[row]
         } else  if pickerView == sitePicker{
             return site[row]

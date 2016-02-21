@@ -332,6 +332,7 @@
                                 </state>
                                 <connections>
                                     <action selector="updateSites:" destination="ObU-yl-T8Z" eventType="touchUpInside" id="Yb5-aH-zlH"/>
+                                    <segue destination="yOi-Qy-aE9" kind="show" id="O9Z-YS-MvK"/>
                                 </connections>
                             </button>
                         </subviews>
