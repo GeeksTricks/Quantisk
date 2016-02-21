@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,7 +13,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,10 +48,8 @@ public class VolleyPut {
 
     public void getVolley() {
         try {
-            Log.i("Quantisk ID", String.valueOf(id));
-            Log.i("Quantisk NAME TO EDIT", nameToEdit);
-            jsonObject.put("id", id);
             jsonObject.put("name", nameToEdit);
+            Log.i("JSONOBJECT", jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,29 +59,22 @@ public class VolleyPut {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast.makeText(context, "Successfully Edited", Toast.LENGTH_SHORT).show();
-                        Log.i("Quantisk header", response.toString());
+//                          new VolleyGet(context, url0, "user1", "qwerty1");
+                        Log.i("Quantisk onResponse", response.toString());
+//                        new VolleyGet(url0, "user1", "qwerty1");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(context, "Could not edit", Toast.LENGTH_SHORT).show();
+                        Log.i("Quantisk onErrorRes", error.toString());
                         error.printStackTrace();
                     }
                 }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                if (response.statusCode == HttpStatus.SC_NO_CONTENT)
-                    Log.i("Quantisk NO CONTENT", String.valueOf(response.statusCode));
-                new VolleyGet(context, url0, "user1", "qwerty1");
-
-                return super.parseNetworkResponse(response);
-            }
-
-            @Override
-            protected void deliverResponse(JSONObject response) {
-                super.deliverResponse(response);
-                Log.i("Quantisk deliver", response.toString());
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
             }
 
             @Override

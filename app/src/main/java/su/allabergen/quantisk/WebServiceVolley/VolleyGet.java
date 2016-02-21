@@ -45,7 +45,6 @@ public class VolleyGet {
     //    public static Map<Integer, String> personMap = new LinkedHashMap<>();
 //    public static Map<Integer, String> siteMap = new LinkedHashMap<>();
     RequestQueue requestQueue;
-    JSONObject jsonObject;
     Context context;
     String url;
     String username;
@@ -53,7 +52,6 @@ public class VolleyGet {
 
     public VolleyGet(Context context, String url, String username, String password) {
         requestQueue = Volley.newRequestQueue(context);
-        jsonObject = new JSONObject();
         progressDialog = new ProgressDialog(context);
         this.context = context;
         this.username = username;

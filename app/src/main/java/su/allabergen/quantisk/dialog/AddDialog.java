@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 import su.allabergen.quantisk.webServiceVolley.VolleyPost;
 import su.allabergen.quantisk.webServiceVolley.VolleyPut;
 
@@ -54,6 +56,7 @@ public class AddDialog extends DialogFragment {
 //                                AdminActivity.siteList.add(addEditText.getText().toString());
                                 new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/",
                                         addEditText.getText().toString(), "user1", "qwerty1");
+//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
                                 break;
 
                             case "addPersonBtn":
@@ -61,6 +64,7 @@ public class AddDialog extends DialogFragment {
 //                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
                                 new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
                                         addEditText.getText().toString(), "user1", "qwerty1");
+//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 break;
 
                             case "addUserBtn":
@@ -76,11 +80,15 @@ public class AddDialog extends DialogFragment {
                                 break;
 
                             case "editSiteBtn":
+                                new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/",
+                                        id, addEditText.getText().toString(), "user1", "qwerty1");
+//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
                                 break;
 
                             case "editPersonBtn":
                                 new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
                                         id, addEditText.getText().toString(), "user1", "qwerty1");
+//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 break;
 
                             case "editUserBtn":
