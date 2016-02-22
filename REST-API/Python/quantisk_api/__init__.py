@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from flask_restful import Api
-from .views import *
 from .models import db
 import os
 from werkzeug.exceptions import default_exceptions
@@ -38,12 +37,12 @@ if mysql_openshift:
     mysql_openshift = mysql_openshift.replace('mysql', 'mysql+pymysql')
     mysql_openshift += 'api?charset=utf8'
 app.config['SQLALCHEMY_DATABASE_URI'] = mysql_openshift or mysql_local
-# db_path = os.environ.get('OPENSHIFT_DATA_DIR', os.path.dirname(__file__))
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path + '/GeeksDB.db'
 # app.config['SQLALCHEMY_ECHO'] = True
 
 
 db.create_all()
+
+from .views import *
 
 api.add_resource(PersonListResource, '/v1/persons/')
 api.add_resource(PersonResource, '/v1/persons/<int:id>/')
@@ -56,7 +55,3 @@ api.add_resource(TotalRankResource, '/v1/totalrank/<int:site_id>/')
 api.add_resource(DailyRankResource, '/v1/dailyrank/')
 api.add_resource(UserListResource, '/v1/users/')
 api.add_resource(UserResource, '/v1/users/<int:id>/')
-
-
-
-
