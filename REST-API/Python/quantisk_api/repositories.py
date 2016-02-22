@@ -16,159 +16,123 @@ User = namedtuple('User', ['id', 'login'])
 class NonUniqueError(Exception):
     pass
 
+
 class Repo:
 
-    def __init__(self):
+    def __init__(self, model):
+        self.model = model
+
+    def model_to_dto(self, item):
         pass
+
+    def get_by_id(self, id):
+        item = self.model.query.get(id)
+        if item is None:
+            return None
+        return self.model_to_dto(item)
+
+    def get_all(self):
+        item_list = self.model.query.all()
+        if item_list is None:
+            return None
+        return [self.model_to_dto(item) for item in item_list]
+
+    def delete(self, id):
+        item = self.model.query.get(id)
+        if item is None:
+            return None
+        db.session.delete(item)
+        db.session.commit()
+        return self.model_to_dto(item)
 
 
 class UserRepo(Repo):
 
-    def get_by_id(self, id):
-        u = UserModel.query.get(id)
-        if u is None:
-            return None
-        return User(u.id, u.login)
+    def model_to_dto(self, user):
+        return User(user.id, user.login)
 
     def get_by_login(self, login):
-        query = UserModel.query
+        query = self.model.query
         u = query.filter_by(login=login).first()
         if u is None:
             return None
-        return User(u.id, u.login)
+        return self.model_to_dto(u)
 
     def get_pass_hash(self, id):
-        query = UserModel.query
+        query = self.model.query
         u = query.get(id)
         if u is None:
             return None
         return u.pass_hash
 
-    def get_all(self):
-        u_list = UserModel.query.all()
-        if u_list is None:
-            return None
-        return [User(u.id, u.login) for u in u_list]
-
     def add(self, login, password):
         if self.get_by_login(login):
             raise NonUniqueError('This login is already taken')
         p_hash = generate_password_hash(password)
-        u = UserModel(login, p_hash)
+        u = self.model(login, p_hash)
         db.session.add(u)
         db.session.commit()
-        return User(u.id, u.login)
-
-    def delete(self, id):
-        u = UserModel.query.get(id)
-        if u is None:
-            return None
-        db.session.delete(u)
-        db.session.commit()
-        return User(u.id, u.login)
+        return self.model_to_dto(u)
 
 
 class PersonRepo(Repo):
 
-    def get_by_id(self, id):
-        p = PersonModel.query.get(id)
-        if p is None:
-            return None
-        return Person(p.id, p.name)
-
-    def get_all(self):
-        p_list = PersonModel.query.all()
-        if p_list is None:
-            return None
-        return [Person(p.id, p.name) for p in p_list]
+    def model_to_dto(self, person):
+        return Person(person.id, person.name)
 
     def set(self, id, name):
-        p = PersonModel.query.get(id)
+        p = self.model.query.get(id)
         if p is None:
             return None
         p.name = name
         db.session.commit()
-        return Person(p.id, p.name)
+        return self.model_to_dto(p)
 
     def add(self, name):
-        p = PersonModel(name)
+        p = self.model(name)
         db.session.add(p)
         db.session.commit()
-        return Person(p.id, p.name)
-
-    def delete(self, id):
-        p = PersonModel.query.get(id)
-        if p is None:
-            return None
-        db.session.delete(p)
-        db.session.commit()
-        return Person(p.id, p.name)
+        return self.model_to_dto(p)
 
 
 class WordPairRepo(Repo):
 
-    def get_by_id(self, id):
-        wp = WordpairModel.query.get(id)
-        if wp is None:
-            return None
-        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
+    def model_to_dto(self, wp):
+        return WordPair(wp.id, wp.keyword_1, wp.keyword_2, wp.distance, wp.person_id)
 
     def get_by_person_id(self, person_id):
-        query = WordpairModel.query
+        query = self.model.query
         query = query.filter_by(person_id=person_id)
         if query is None:
             return None
         wp_list = query.all()
-        return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id) for wp in wp_list]
-
-    def get_all(self):
-        wp_list = WordpairModel.query.all()
-        if wp_list is None:
-            return None
-        return [WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id) for wp in wp_list]
+        return [self.model_to_dto(wp) for wp in wp_list]
 
     def add(self, keyword1, keyword2, distance, person_id):
-        wp = WordpairModel(keyword1, keyword2, distance, person_id)
+        wp = self.model(keyword1, keyword2, distance, person_id)
         db.session.add(wp)
         db.session.commit()
-        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
+        return self.model_to_dto(wp)
 
     def set(self, id, keyword1, keyword2, distance, person_id):
-        wp = WordpairModel.query.get(id)
+        wp = self.model.query.get(id)
         if wp is None:
             return None
-        wp.keyword1 = keyword1
-        wp.keyword2 = keyword2
+        wp.keyword_1 = keyword1
+        wp.keyword_2 = keyword2
         wp.distance = distance
         wp.person_id = person_id
         db.session.commit()
-        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
-
-    def delete(self, id):
-        wp = WordpairModel.query.get(id)
-        if wp is None:
-            return None
-        db.session.delete(wp)
-        db.session.commit()
-        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
+        return self.model_to_dto(wp)
 
 
 class SiteRepo(Repo):
 
-    def get_by_id(self, id):
-        s = SiteModel.query.get(id)
-        if s is None:
-            return None
-        return Site(s.id, s.name)
-
-    def get_all(self):
-        s_list = SiteModel.query.all()
-        if s_list is None:
-            return None
-        return [Site(s.id, s.name) for s in s_list]
+    def model_to_dto(self, site):
+        return Site(site.id, site.name)
 
     def set(self, id, name):
-        s = SiteModel.query.get(id)
+        s = self.model.query.get(id)
         if s is None:
             return None
         s.name = name
@@ -176,21 +140,13 @@ class SiteRepo(Repo):
         return Site(s.id, s.name)
 
     def add(self, name):
-        s = SiteModel(name)
+        s = self.model(name)
         db.session.add(s)
         db.session.commit()
         return Site(s.id, s.name)
 
-    def delete(self, id):
-        s = SiteModel.query.get(id)
-        if s is None:
-            return None
-        db.session.delete(s)
-        db.session.commit()
-        return Site(s.id, s.name)
 
-
-class RankRepo(Repo):
+class RankRepo:
 
     def get_total(self, site_id):
         s = SiteModel.query.get(site_id)
@@ -223,15 +179,18 @@ class RankRepo(Repo):
 
 class PageRepo(Repo):
 
+    def model_to_dto(self, page):
+        return Page(page.id, page.url, page.site_id, page.found_date_time, page.last_scan_date)
+
     def add(self, url, site_id, found_date_time, last_scan_date):
         p = PageModel(url, site_id, found_date_time, last_scan_date)
         db.session.add(p)
         db.session.commit()
-        return Page(p.id, p.url, p.site_id, p.found_date_time, p.last_scan_date)
+        return self.model_to_dto(p)
 
-person_repo = PersonRepo()
-wordpair_repo = WordPairRepo()
-site_repo = SiteRepo()
 rank_repo = RankRepo()
-page_repo = PageRepo()
-user_repo = UserRepo()
+person_repo = PersonRepo(PersonModel)
+wordpair_repo = WordPairRepo(WordpairModel)
+site_repo = SiteRepo(SiteModel)
+page_repo = PageRepo(PageModel)
+user_repo = UserRepo(UserModel)
