@@ -4,13 +4,6 @@ from functools import wraps
 from flask import request, jsonify, g
 
 
-ROLES = {
-    'Admin': 1,
-    'User': 2,
-}
-ADMIN = ROLES['Admin']
-USER  = ROLES['User']
-
 def verify_password(login, password):
     user = user_repo.get_by_login(login)
     if user:
@@ -39,12 +32,3 @@ def requires_auth(f):
     return decorated
 
 
-def requires_roles(*roles):
-    def wrapper(f):
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-            if g.user.role not in roles:
-                return unauthorized('WRONG ROLE!!!')
-            return f(*args, **kwargs)
-        return wrapped
-    return wrapper
