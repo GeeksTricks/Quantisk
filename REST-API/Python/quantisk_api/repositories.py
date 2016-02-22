@@ -37,6 +37,13 @@ class UserRepo(Repo):
             return None
         return User(u.id, u.login)
 
+    def get_pass_hash(self, id):
+        query = UserModel.query
+        u = query.get(id)
+        if u is None:
+            return None
+        return u.pass_hash
+
     def get_all(self):
         u_list = UserModel.query.all()
         if u_list is None:
