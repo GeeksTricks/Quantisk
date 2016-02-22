@@ -41,7 +41,7 @@ class WordpairModel(db.Model):
     keyword1 = db.Column(db.String(255), nullable=False)
     keyword2 = db.Column(db.String(255), nullable=False)
     distance = db.Column(db.Integer, nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('Persons.id'), nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('Persons.id', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, keyword1, keyword2, distance, person_id):
         self.keyword1 = keyword1
@@ -78,7 +78,7 @@ class PageModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     url = db.Column(db.String(255), unique=True, nullable=False)
-    site_id = db.Column(db.Integer, db.ForeignKey('Sites.id'), nullable=False)
+    site_id = db.Column(db.Integer, db.ForeignKey('Sites.id', ondelete='CASCADE'), nullable=False)
     found_date_time = db.Column(db.DateTime)
     last_scan_date = db.Column(db.DateTime)
 
@@ -103,8 +103,8 @@ class RankModel(db.Model):
     __tablename__ = 'PersonPageRank'
 
     rank = db.Column(db.Integer, nullable=False)
-    page_id = db.Column(db.Integer, db.ForeignKey('Pages.id'), primary_key=True, nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('Persons.id'), primary_key=True, nullable=False)
+    page_id = db.Column(db.Integer, db.ForeignKey('Pages.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('Persons.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
     def __init__(self, rank, page_id, person_id):
         self.rank = rank
