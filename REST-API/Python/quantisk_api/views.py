@@ -53,8 +53,23 @@ class UserResource(SingleResource):
     repo = user_repo
 
 
-class UserListResource(ListResource):
+class UserListResource(Resource):
     repo = user_repo
+
+    @requires_auth
+    def get(self):
+        return [i._asdict() for i in self.repo.get_all()]
+
+    def post(self):
+        body = request.get_json()
+        try:
+            item = self.repo.add(**body)
+        except TypeError as e:
+            abort(400, e)
+        except NonUniqueError as e:
+            abort(409, e)
+        else:
+            return item._asdict()
 
 
 class PersonResource(SingleResource):
