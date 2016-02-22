@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="su.allabergen.quantisk.activity.SettingsActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/keywords_label"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addKeywordsBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:fontFamily="sans-serif-thin"
+            android:text="ADD"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/removeKeywordsBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:fontFamily="sans-serif-thin"
+            android:text="REMOVE"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/editKeywordsBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:fontFamily="sans-serif-thin"
+            android:text="EDIT"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/keywordsSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/keywords_label"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" />
+
+    <ListView
+        android:id="@+id/keywordsListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/keywordsSpinner"
+        android:layout_alignLeft="@+id/keywordsSpinner"
+        android:layout_alignRight="@+id/keywordsSpinner"
+        android:layout_alignStart="@+id/keywordsSpinner"
+        android:layout_below="@+id/keywordsSpinner"
+        android:layout_marginBottom="48dp" />
+
+</RelativeLayout>
