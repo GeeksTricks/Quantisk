@@ -16,16 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.GregorianCalendar;
-
 import su.allabergen.quantisk.R;
 import su.allabergen.quantisk.dialog.DateDialog;
 import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 
-import static su.allabergen.quantisk.activity.AdminActivity.nameAdapter;
-import static su.allabergen.quantisk.activity.AdminActivity.nameList;
-import static su.allabergen.quantisk.activity.AdminActivity.siteAdapter;
-import static su.allabergen.quantisk.activity.AdminActivity.siteList;
+import static su.allabergen.quantisk.activity.AdminActivity._nameAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity._nameList;
+import static su.allabergen.quantisk.activity.AdminActivity._siteAdapter;
+import static su.allabergen.quantisk.activity.AdminActivity._siteList;
 
 public class UserActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -40,12 +38,6 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
     private String nameToPass;
     private String siteToPass;
     private boolean isDailyStat = true;
-    private int yearFrom;
-    private int monthFrom;
-    private int dayFrom;
-    private int yearTo;
-    private int monthTo;
-    private int dayTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +47,10 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
         initVariables();
+        createSpinners();
 
         String urlName = "https://api-quantisk.rhcloud.com/v1/persons/";
         String urlSite = "https://api-quantisk.rhcloud.com/v1/sites/";
-
-//        new WSAdmin(this, "user1", "qwerty1", urlName, urlSite);
-        createSpinners();
 
         new VolleyGet(this, urlSite, "user1", "qwerty1");
         new VolleyGet(this, urlName, "user1", "qwerty1");
@@ -81,12 +71,12 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         statSpinner.setAdapter(statAdapter);
         statSpinner.setOnItemSelectedListener(this);
 
-        siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, siteList);
-        siteSpinner.setAdapter(siteAdapter);
+        _siteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, _siteList);
+        siteSpinner.setAdapter(_siteAdapter);
         siteSpinner.setOnItemSelectedListener(this);
 
-        nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, nameList);
-        nameSpinner.setAdapter(nameAdapter);
+        _nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, _nameList);
+        nameSpinner.setAdapter(_nameAdapter);
         nameSpinner.setOnItemSelectedListener(this);
     }
 
@@ -127,91 +117,12 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
             showDateAlertDialog();
         } else {
             Intent intent = new Intent(this, DailyStatActivity.class);
-            checkDate(dateFrom.getText().toString(), dateTo.getText().toString(), intent);
-        }
-    }
-
-    private void checkDate(String dateFrom, String dateTo, Intent intent) {
-
-        int[] dateDifference = getDateDifferenceInDDMMYYYY(dateFrom, dateTo);
-        String[] dates_from = dateFrom.split("/");
-        String[] dates_to = dateTo.split("/");
-        dayFrom = Integer.parseInt(dates_from[0]);
-        monthFrom = Integer.parseInt(dates_from[1]);
-        yearFrom = Integer.parseInt(dates_from[2]);
-        dayTo = Integer.parseInt(dates_to[0]);
-        monthTo = Integer.parseInt(dates_to[1]);
-        yearTo = Integer.parseInt(dates_to[2]);
-
-        if (dateDifference[2] < 0) {
-            showDateAlertDialog();
-        } else {
             intent.putExtra("NAME", nameToPass);
-            intent.putExtra("DATE_FROM", dateFrom);
-            intent.putExtra("DATE_TO", dateTo);
-            intent.putExtra("DATES", dateDifference);
+            intent.putExtra("SITE", siteToPass);
+            intent.putExtra("DATE_FROM", String.valueOf(dateFrom.getText()));
+            intent.putExtra("DATE_TO", String.valueOf(dateTo.getText()));
             startActivity(intent);
         }
-    }
-
-    public int[] getDateDifferenceInDDMMYYYY(String dateFrom, String dateTo) {
-
-        String[] dates_from = dateFrom.split("/");
-        String[] dates_to = dateTo.split("/");
-        dayFrom = Integer.parseInt(dates_from[0]);
-        monthFrom = Integer.parseInt(dates_from[1]) - 1;
-        yearFrom = Integer.parseInt(dates_from[2]);
-        dayTo = Integer.parseInt(dates_to[0]);
-        monthTo = Integer.parseInt(dates_to[1]) - 1;
-        yearTo = Integer.parseInt(dates_to[2]);
-        int[] monthDay = {31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        int increment = 0;
-        int[] ageDiffArr = new int[3];
-
-        int year;
-        int month;
-        int day;
-
-        if (dayFrom > dayTo) {
-            increment = monthDay[monthFrom];
-        }
-
-        GregorianCalendar cal = new GregorianCalendar();
-        boolean isLeapYear = cal.isLeapYear(yearFrom);
-
-        if (increment == -1) {
-            if (isLeapYear) {
-                increment = 29;
-            } else {
-                increment = 28;
-            }
-        }
-
-        // DAY CALCULATION
-        if (increment != 0) {
-            day = (dayTo + increment) - dayFrom;
-            increment = 1;
-        } else {
-            day = dayTo - dayFrom;
-        }
-
-        // MONTH CALCULATION
-        if ((monthFrom + increment) > monthTo) {
-            month = (monthTo + 12) - (monthFrom + increment);
-            increment = 1;
-        } else {
-            month = monthTo - (monthFrom + increment);
-            increment = 0;
-        }
-
-        // YEAR CALCULATION
-        year = yearTo - (yearFrom + increment);
-
-        ageDiffArr[0] = day;
-        ageDiffArr[1] = month;
-        ageDiffArr[2] = year;
-
-        return ageDiffArr;
     }
 
     private void showDateAlertDialog() {
@@ -251,8 +162,8 @@ public class UserActivity extends AppCompatActivity implements AdapterView.OnIte
         if (id == R.id.about) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("О нас")
-                    .setMessage("Quantisk\n\nGeeksTricks\nCopyright 2016")
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setMessage("Quantisk\n\nGeeksTricks Ltd.\nCopyright 2016")
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();

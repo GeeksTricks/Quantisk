@@ -6,13 +6,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 import su.allabergen.quantisk.webServiceVolley.VolleyPost;
 import su.allabergen.quantisk.webServiceVolley.VolleyPut;
 
@@ -20,11 +18,12 @@ import su.allabergen.quantisk.webServiceVolley.VolleyPut;
  * Created by Rabat on 07.02.2016.
  */
 public class AddDialog extends DialogFragment {
-    View v;
-    EditText addEditText;
-    String currFrag;
-    String nameEdit;
-    int id;
+    private View v;
+    private EditText addEditText;
+    private String currFrag;
+    private String nameEdit;
+    private String title;
+    private int id;
 
     public AddDialog(String currFrag, View v) {
         this.currFrag = currFrag;
@@ -47,61 +46,51 @@ public class AddDialog extends DialogFragment {
         addEditText.setHint(nameEdit);
 
         builder.setView(view)
-                .setTitle(currFrag)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (currFrag) {
                             case "addSiteBtn":
-//                                AdminActivity.siteList.add(addEditText.getText().toString());
+                                title = "Добавить сайт";
                                 new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/",
                                         addEditText.getText().toString(), "user1", "qwerty1");
-//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
                                 break;
 
                             case "addPersonBtn":
-//                                new PostWebService(getActivity(), addEditText.getText().toString(), "user1", "qwerty1")
-//                                        .execute("https://api-quantisk.rhcloud.com/v1/persons/");
+                                title = "Добавить человека";
                                 new VolleyPost(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
                                         addEditText.getText().toString(), "user1", "qwerty1");
-//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 break;
 
                             case "addUserBtn":
-                                break;
-
-                            case "removeSiteBtn":
-                                break;
-
-                            case "removePersonBtn":
-                                break;
-
-                            case "removeUserBtn":
+                                title = "Добавить ключевого слово";
                                 break;
 
                             case "editSiteBtn":
+                                title = "Изменить сайт";
                                 new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/",
                                         id, addEditText.getText().toString(), "user1", "qwerty1");
-//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
                                 break;
 
                             case "editPersonBtn":
+                                title = "Изменить человека";
                                 new VolleyPut(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/",
                                         id, addEditText.getText().toString(), "user1", "qwerty1");
-//                                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 break;
 
                             case "editUserBtn":
+                                title = "Изменить ключевого слово";
                                 break;
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                });
+                })
+                .setTitle(title);
 
         Dialog dialog = builder.create();
         return dialog;

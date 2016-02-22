@@ -26,14 +26,14 @@ import java.util.Map;
  * Created by Rabat on 18.02.2016.
  */
 public class VolleyDelete {
-    RequestQueue requestQueue;
-    JSONObject jsonObject;
-    Context context;
-    String url0;
-    String url;
-    String username;
-    String password;
-    int id;
+    private RequestQueue requestQueue;
+    private JSONObject jsonObject;
+    private Context context;
+    private String url0;
+    private String url;
+    private String username;
+    private String password;
+    private int id;
 
     public VolleyDelete(Context context, String url, int id, String username, String password) {
         requestQueue = Volley.newRequestQueue(context);
@@ -58,23 +58,20 @@ public class VolleyDelete {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show();
-//                        new VolleyGet(url0, "user1", "qwerty1");
+                        Toast.makeText(context, "Успешно удален", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not delete", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Невозможно удалить", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 if (response.statusCode == HttpStatus.SC_NO_CONTENT)
-//                    new VolleyGet(context, url, "user1", "qwerty1");
                     Log.i("Quantisk CODE OK", String.valueOf(response.statusCode));
-//                new VolleyGet(url, "user1", "qwerty1");
 
                 return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
             }

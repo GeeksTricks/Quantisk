@@ -3,9 +3,6 @@ package su.allabergen.quantisk.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,16 +32,16 @@ import su.allabergen.quantisk.model.Person;
 import su.allabergen.quantisk.model.Sites;
 import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
 
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personList0;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._personList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._siteList0;
 
 public class SettingsActivity extends AppCompatActivity {
 
     public static final int PERSON = 0;
     public static final int SITE = 1;
 
-    public static List<String> keywordsList = new ArrayList<>();
-    public static ArrayAdapter<String> keywordsAdapter;
+    public static List<String> _keywordsList = new ArrayList<>();
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -70,9 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-//        new VolleyGet(this, "", "user1", "qwerty1");
-        keywordsList.clear();
-        keywordsList.add("No Keywords");
+        _keywordsList.clear();
+        _keywordsList.add("No Keywords");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -141,11 +137,11 @@ public class SettingsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SITES";
+                    return "САЙТЫ";
                 case 1:
-                    return "NAMES";
+                    return "ЛЮДИ";
                 case 2:
-                    return "KEYWORDS";
+                    return "КЛЮЧЕВЫЕ СЛОВА";
             }
             return null;
         }
@@ -155,20 +151,20 @@ public class SettingsActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-        Button addPersonBtn;
-        Button removePersonBtn;
-        Button editPersonBtn;
-        Button addSiteBtn;
-        Button removeSiteBtn;
-        Button editSiteBtn;
-        Button addUserBtn;
-        Button removeUserBtn;
-        Button editUserBtn;
-        View vSite;
-        View vName;
-        View vUser;
-        String personSelected;
-        String siteSelected;
+        private Button addPersonBtn;
+        private Button removePersonBtn;
+        private Button editPersonBtn;
+        private Button addSiteBtn;
+        private Button removeSiteBtn;
+        private Button editSiteBtn;
+        private Button addUserBtn;
+        private Button removeUserBtn;
+        private Button editUserBtn;
+        private View vSite;
+        private View vName;
+        private View vUser;
+        private String personSelected;
+        private String siteSelected;
 
         /**
          * The fragment argument representing the section number for this
@@ -193,17 +189,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
                 View siteView = inflater.inflate(R.layout.fragment_site, container, false);
                 TextView siteTextView = (TextView) siteView.findViewById(R.id.site_label);
                 Spinner siteSpinner = (Spinner) siteView.findViewById(R.id.siteSpinner);
-                siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity.siteList));
+                siteSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity._siteList));
                 siteSpinner.setOnItemSelectedListener(this);
-                siteTextView.setText("Modify sites");
+                siteTextView.setText("Изменить сайт");
                 initSiteBtn(siteView);
                 return siteView;
             }
@@ -212,20 +205,20 @@ public class SettingsActivity extends AppCompatActivity {
                 View nameView = inflater.inflate(R.layout.fragment_person, container, false);
                 TextView nameTextView = (TextView) nameView.findViewById(R.id.name_label);
                 Spinner nameSpinner = (Spinner) nameView.findViewById(R.id.personSpinner);
-                nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity.nameList));
+                nameSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, AdminActivity._nameList));
                 nameSpinner.setOnItemSelectedListener(this);
-                nameTextView.setText("Modify names");
+                nameTextView.setText("Изменить людей");
                 initNameBtn(nameView);
                 return nameView;
             }
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
-                View userView = inflater.inflate(R.layout.fragment_user, container, false);
+                View userView = inflater.inflate(R.layout.fragment_keywords, container, false);
                 TextView keywordsTextView = (TextView) userView.findViewById(R.id.keywords_label);
                 Spinner keywordsSpinner = (Spinner) userView.findViewById(R.id.keywordsSpinner);
-                keywordsSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, keywordsList));
+                keywordsSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsList));
                 keywordsSpinner.setOnItemSelectedListener(this);
-                keywordsTextView.setText("Modify keywords");
+                keywordsTextView.setText("Изменить ключевых слов");
                 initKeywordsBtn(userView);
                 return userView;
             }
@@ -263,14 +256,6 @@ public class SettingsActivity extends AppCompatActivity {
             editUserBtn.setOnClickListener(this);
         }
 
-        public static Handler mHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-                // This is where you do your work in the UI thread.
-                // Your worker tells you in the message what to do.
-            }
-        };
-
         @Override
         public void onClick(View v) {
             String currFrag = "";
@@ -290,49 +275,33 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vUser;
                     break;
                 case R.id.removeSiteBtn:
-                    currFrag = "removeSiteBtn";
-                    view = vSite;
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Remove Site")
-                            .setMessage("Are you sure to remove this site?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            .setTitle("Удалить сайт")
+                            .setMessage("Вы уверены, что хотите удалить этот сайт?")
+                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-//                                    new VolleyDeleteCustom(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
-//
-//                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
-//                                            .execute("https://api-quantisk.rhcloud.com/v1/persons/");
-
                                     int check = check(SITE);
                                     new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", check, "user1", "qwerty1");
-//                                    new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/sites/", "user1", "qwerty1");
 
                                 }
                             })
-                            .setNegativeButton("No", null)
+                            .setNegativeButton("Нет", null)
                             .create()
                             .show();
                     break;
                 case R.id.removePersonBtn:
-                    currFrag = "removePersonBtn";
-                    view = vName;
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Remove Person")
-                            .setMessage("Are you sure to remove this person?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            .setTitle("Удалить человека")
+                            .setMessage("Вы уверены, что хотите удалить этого человека?")
+                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-//                                    new VolleyDeleteCustom(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", position, "user1", "qwerty1");
-
-//                                    new DeleteWebService(getActivity(), position + 1, "user1", "qwerty1")
-//                                            .execute("https://api-quantisk.rhcloud.com/v1/persons/");
-
                                     int check = check(PERSON);
                                     new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", check, "user1", "qwerty1");
-//                                    new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/persons/", "user1", "qwerty1");
                                 }
                             })
-                            .setNegativeButton("No", null)
+                            .setNegativeButton("Нет", null)
                             .create()
                             .show();
                     break;
@@ -356,7 +325,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             AddDialog dialog = null;
             if (currFrag.equals("removeSiteBtn") || currFrag.equals("removePersonBtn") || currFrag.equals("removeUserBtn")) {
-//                dialog = new AddDialog(currFrag, view, this.position);
             } else if (currFrag.equals("editSiteBtn")) {
                 dialog = new AddDialog(currFrag, view, siteSelected, check(SITE));
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -374,13 +342,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         public int check(int id) {
             if (id == PERSON) {
-                for (Person person : personList0) {
+                for (Person person : _personList0) {
                     if (person.getName().equals(personSelected)) {
                         return person.getId();
                     }
                 }
             } else if (id == SITE) {
-                for (Sites site : siteList0) {
+                for (Sites site : _siteList0) {
                     if (site.getName().equals(siteSelected)) {
                         return site.getId();
                     }

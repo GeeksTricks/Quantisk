@@ -25,14 +25,13 @@ import java.util.Map;
  * Created by Rabat on 20.02.2016.
  */
 public class VolleyPost {
-
-    RequestQueue requestQueue;
-    JSONObject jsonObject;
-    Context context;
-    String url;
-    String username;
-    String password;
-    String nameToPost;
+    private RequestQueue requestQueue;
+    private JSONObject jsonObject;
+    private Context context;
+    private String url;
+    private String username;
+    private String password;
+    private String nameToPost;
 
     public VolleyPost(Context context, String url, String nameToPost, String username, String password) {
         requestQueue = Volley.newRequestQueue(context);
@@ -56,22 +55,20 @@ public class VolleyPost {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Успешно добавлен", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not add", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Невозможно добавить", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 if (response.statusCode == HttpStatus.SC_OK)
-//                    new VolleyGet(context, url, "user1", "qwerty1");
-                Log.i("Quantisk CODE OK", String.valueOf(response.statusCode));
-//                new VolleyGet(url, "user1", "qwerty1");
+                    Log.i("Quantisk CODE OK", String.valueOf(response.statusCode));
 
                 return super.parseNetworkResponse(response);
             }

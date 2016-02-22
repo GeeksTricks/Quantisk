@@ -23,21 +23,22 @@ import su.allabergen.quantisk.R;
 
 public class SignUpScreen extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView logo;
-    EditText usernameField;
-    EditText passwordField;
-    Button signUpBtn;
-    TextView changeModeTextView;
-    RelativeLayout signUpRelativeLayout;
+    private ImageView logo;
+    private EditText usernameField;
+    private EditText passwordField;
+    private Button signUpBtn;
+    private TextView changeModeTextView;
+    private RelativeLayout signUpRelativeLayout;
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
-    private static Set<String> tempUsername = new LinkedHashSet<>();
-    private static Set<String> tempPassword = new LinkedHashSet<>();
-    public static List<String> tempList = new ArrayList<>();
-    private static List<String> tempList2 = new ArrayList<>();
+    private Set<String> tempUsername = new LinkedHashSet<>();
+    private Set<String> tempPassword = new LinkedHashSet<>();
+    private List<String> tempList2 = new ArrayList<>();
 
-    boolean isSignUp = false;
+    public static List<String> _tempList = new ArrayList<>();
+
+    private boolean isSignUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
             sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
 
-            Toast.makeText(this, "User successfully added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Пользователь успешно создан", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -85,14 +86,14 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
         }
 
-        tempList.clear();
+        _tempList.clear();
         tempList2.clear();
-        tempList.addAll(tempUsername);
+        _tempList.addAll(tempUsername);
         tempList2.addAll(tempPassword);
 
         boolean isOK = false;
-        for (int i = 0; i < tempList.size(); i++) {
-            if (tempList.get(i).equals(uname) && tempList2.get(i).equals(upassword)) {
+        for (int i = 0; i < _tempList.size(); i++) {
+            if (_tempList.get(i).equals(uname) && tempList2.get(i).equals(upassword)) {
                 isOK = true;
                 break;
             } else {
@@ -109,15 +110,19 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Incorrect username or password.\nPlease, try again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Неправильное имя или пароль", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
     private boolean checkForSimilarity(String uname, String upassword) {
         if ((tempUsername.contains(uname) && tempPassword.contains(upassword))
-                || (uname.equals("admin") && upassword.equals("admin"))) {
-            Toast.makeText(this, "Account already taken", Toast.LENGTH_SHORT).show();
+                || (uname.equals("admin") && upassword.equals("admin"))
+                || (uname.equals("user1") && upassword.equals("qwerty1"))) {
+            Toast.makeText(this, "Пользователь уже существует", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (tempUsername.isEmpty() || tempUsername.size() == 0 || tempPassword.isEmpty() || tempPassword.size() == 0) {
+            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

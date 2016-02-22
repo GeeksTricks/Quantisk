@@ -2,6 +2,7 @@ package su.allabergen.quantisk.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -22,17 +23,18 @@ import su.allabergen.quantisk.model.Sites;
 import su.allabergen.quantisk.model.Totalrank;
 import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.personList0;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.siteList0;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.totalrankList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._personList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._siteList0;
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._totalrankList0;
 
 public class CommonStatActivity extends AppCompatActivity {
 
     private TextView lastUpdateTimeTextView;
     private TextView siteTextView;
     private ListView commonStatListView;
-    public static List<String> commonList;
-    public static ArrayAdapter<String> adapter;
+
+    public static List<String> _commonList;
+    public static ArrayAdapter<String> _commonAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +56,30 @@ public class CommonStatActivity extends AppCompatActivity {
 
         lastUpdateTimeTextView.setText(day + "/" + month + "/" + year);
 
-        Bundle extras = getIntent().getExtras();
-        String name = extras.getString("SITE");
+        Intent intent = getIntent();
+        getDailyRank(intent);
+    }
+
+    private void initVariables() {
+        lastUpdateTimeTextView = (TextView) findViewById(R.id.lastUpdateTimeTextView);
+        siteTextView = (TextView) findViewById(R.id.siteTextView);
+        commonStatListView = (ListView) findViewById(R.id.commonStatListView);
+        _commonList = new ArrayList<>();
+        _commonList.add("Loading data...");
+        _commonAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, _commonList);
+        commonStatListView.setAdapter(_commonAdapter);
+        _commonList.clear();
+    }
+
+    private void getDailyRank(Intent intent) {
+        String name = intent.getStringExtra("SITE");
         int site_id = 1;
         String url = null;
 
         siteTextView.setText("Сайт: " + name);
 
-        if (totalrankList0.isEmpty()) {
-            for (Sites site : siteList0) {
+        if (_totalrankList0.isEmpty()) {
+            for (Sites site : _siteList0) {
                 if (site.getName().equals(name)) {
                     site_id = site.getId();
                     url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
@@ -72,32 +89,21 @@ public class CommonStatActivity extends AppCompatActivity {
             }
         }
 
-        if (!totalrankList0.isEmpty()) {
+        if (!_totalrankList0.isEmpty()) {
             String personName = "No Name";
             int rate;
-            for (Totalrank totalrank : totalrankList0) {
-                for (Person person : personList0) {
+            for (Totalrank totalrank : _totalrankList0) {
+                for (Person person : _personList0) {
                     if (person.getId() == totalrank.getPerson_id()) {
                         personName = person.getName();
                         break;
                     }
                 }
                 rate = totalrank.getRate();
-                commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
+                _commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
             }
-            adapter.notifyDataSetChanged();
+            _commonAdapter.notifyDataSetChanged();
         }
-    }
-
-    private void initVariables() {
-        lastUpdateTimeTextView = (TextView) findViewById(R.id.lastUpdateTimeTextView);
-        siteTextView = (TextView) findViewById(R.id.siteTextView);
-        commonStatListView = (ListView) findViewById(R.id.commonStatListView);
-        commonList = new ArrayList<>();
-        commonList.add("Loading data...");
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, commonList);
-        commonStatListView.setAdapter(adapter);
-        commonList.clear();
     }
 
     @Override

@@ -23,15 +23,15 @@ import java.util.Map;
  * Created by Rabat on 19.02.2016.
  */
 public class VolleyPut {
-    RequestQueue requestQueue;
-    JSONObject jsonObject;
-    Context context;
-    String url0;
-    String url;
-    String username;
-    String password;
-    String nameToEdit;
-    int id;
+    private RequestQueue requestQueue;
+    private JSONObject jsonObject;
+    private Context context;
+    private String url0;
+    private String url;
+    private String username;
+    private String password;
+    private String nameToEdit;
+    private int id;
 
     public VolleyPut(Context context, String url, int id, String nameToEdit, String username, String password) {
         requestQueue = Volley.newRequestQueue(context);
@@ -49,7 +49,6 @@ public class VolleyPut {
     public void getVolley() {
         try {
             jsonObject.put("name", nameToEdit);
-            Log.i("JSONOBJECT", jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -58,16 +57,14 @@ public class VolleyPut {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Successfully Edited", Toast.LENGTH_SHORT).show();
-//                          new VolleyGet(context, url0, "user1", "qwerty1");
+                        Toast.makeText(context, "Успешно изменен", Toast.LENGTH_SHORT).show();
                         Log.i("Quantisk onResponse", response.toString());
-//                        new VolleyGet(url0, "user1", "qwerty1");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Could not edit", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Невозможно изменить", Toast.LENGTH_SHORT).show();
                         Log.i("Quantisk onErrorRes", error.toString());
                         error.printStackTrace();
                     }
