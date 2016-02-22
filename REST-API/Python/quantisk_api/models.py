@@ -10,15 +10,13 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     login = db.Column(db.String(255), unique=True, nullable=False)
     pass_hash = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.Integer)
 
-    def __init__(self, login, pass_hash, role):
+    def __init__(self, login, pass_hash):
         self.login = login
         self.pass_hash = pass_hash
-        self.role = role
 
     def __repr__(self):
-        return '<ID: {0} Login: {1} Password hash: {2} Role: {3}'.format(self.id, self.login, self.pass_hash, self.role)
+        return '<ID: {0} Login: {1} Password hash: {2}'.format(self.id, self.login, self.pass_hash)
 
 
 class PersonModel(db.Model):
@@ -27,14 +25,12 @@ class PersonModel(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
 
-    def __init__(self, name, user_id):
+    def __init__(self, name):
         self.name = name
-        self.user_id = user_id
 
     def __repr__(self):
-        return '<Person {0}>, Created by user: {1}'.format(self.name, self.user_id)
+        return '<Person {0}>'.format(self.name)
 
 
 class WordpairModel(db.Model):
@@ -68,14 +64,12 @@ class SiteModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
 
-    def __init__(self, name, user_id):
+    def __init__(self, name):
         self.name = name
-        self.user_id = user_id
 
     def __repr__(self):
-        return '<Site: {0} Created by user: {1}>'.format(self.name, self.user_id)
+        return '<Site: {0}>'.format(self.name)
 
 
 class PageModel(db.Model):
