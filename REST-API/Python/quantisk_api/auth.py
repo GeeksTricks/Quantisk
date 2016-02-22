@@ -7,7 +7,8 @@ from flask import request, jsonify, g
 def verify_password(login, password):
     user = user_repo.get_by_login(login)
     if user:
-        if check_password_hash(user.pass_hash, password):
+        pass_hash = user_repo.get_pass_hash(user.id)
+        if check_password_hash(pass_hash, password):
             return user
     return None
 
