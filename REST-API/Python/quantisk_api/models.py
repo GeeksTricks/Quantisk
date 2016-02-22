@@ -38,22 +38,22 @@ class WordpairModel(db.Model):
     __tablename__ = 'Wordpairs'
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    keyword1 = db.Column(db.String(255), nullable=False)
-    keyword2 = db.Column(db.String(255), nullable=False)
+    keyword_1 = db.Column(db.String(255), nullable=False)
+    keyword_2 = db.Column(db.String(255), nullable=False)
     distance = db.Column(db.Integer, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('Persons.id', ondelete='CASCADE'), nullable=False)
 
-    def __init__(self, keyword1, keyword2, distance, person_id):
-        self.keyword1 = keyword1
-        self.keyword2 = keyword2
+    def __init__(self, keyword_1, keyword_2, distance, person_id):
+        self.keyword_1 = keyword_1
+        self.keyword_2 = keyword_2
         self.distance = distance
         self.person_id = person_id
 
     def __repr__(self):
-        return '<PersonID: {0}, Keyword1: {1}, Keyword2: {2}, Distance: {3}>'.format(
+        return '<PersonID: {0}, keyword_1: {1}, keyword_2: {2}, Distance: {3}>'.format(
             self.person_id,
-            self.keyword1,
-            self.keyword2,
+            self.keyword_1,
+            self.keyword_2,
             self.distance,
         )
 

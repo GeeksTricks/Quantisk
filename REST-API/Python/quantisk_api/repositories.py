@@ -98,7 +98,7 @@ class PersonRepo(Repo):
 class WordPairRepo(Repo):
 
     def model_to_dto(self, wp):
-        return WordPair(wp.id, wp.keyword1, wp.keyword2, wp.distance, wp.person_id)
+        return WordPair(wp.id, wp.keyword_1, wp.keyword_2, wp.distance, wp.person_id)
 
     def get_by_person_id(self, person_id):
         query = self.model.query
@@ -118,8 +118,8 @@ class WordPairRepo(Repo):
         wp = self.model.query.get(id)
         if wp is None:
             return None
-        wp.keyword1 = keyword1
-        wp.keyword2 = keyword2
+        wp.keyword_1 = keyword1
+        wp.keyword_2 = keyword2
         wp.distance = distance
         wp.person_id = person_id
         db.session.commit()
