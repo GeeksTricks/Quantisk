@@ -5,8 +5,7 @@ from .repositories import NonUniqueError
 from .auth import requires_auth
 import arrow
 from arrow.parser import ParserError
-from . import app
-import json
+
 
 class SingleResource(Resource):
     repo = None
@@ -53,23 +52,13 @@ class UserResource(SingleResource):
     repo = user_repo
 
 
-class UserListResource(Resource):
+class UserListResource(ListResource):
     repo = user_repo
+    method_decorators = []
 
     @requires_auth
     def get(self):
-        return [i._asdict() for i in self.repo.get_all()]
-
-    def post(self):
-        body = request.get_json()
-        try:
-            item = self.repo.add(**body)
-        except TypeError as e:
-            abort(400, e)
-        except NonUniqueError as e:
-            abort(409, e)
-        else:
-            return item._asdict()
+        return super().get()
 
 
 class PersonResource(SingleResource):
@@ -85,7 +74,6 @@ class WordPairResource(SingleResource):
 
 
 class WordPairListResource(ListResource):
-    #Fixme
     repo = wordpair_repo
 
 
@@ -97,8 +85,7 @@ class SiteListResource(ListResource):
     repo = site_repo
 
 
-class WordPairsForPersonResource(Resource):
-    # Fixme
+class WordPairsForPersonListResource(Resource):
     method_decorators = [requires_auth]
 
     def get(self, person_id):
@@ -107,9 +94,18 @@ class WordPairsForPersonResource(Resource):
             abort(404)
         return [wordpair._asdict() for wordpair in wordpairs]
 
+    def post(self, person_id):
+        body = request.get_json()
+        try:
+            wordpair = wordpair_repo.add(person_id=person_id, **body)
+        except TypeError as e:
+            abort(400, e)
+        except NonUniqueError as e:
+            abort(409, e)
+        else:
+            return wordpair._asdict()
 
 class TotalRankResource(Resource):
-    # Fixme
     method_decorators = [requires_auth]
 
     def get(self, site_id):
@@ -120,7 +116,6 @@ class TotalRankResource(Resource):
 
 
 class DailyRankResource(Resource):
-    # Fixme
     method_decorators = [requires_auth]
 
     def get(self):
