@@ -46,7 +46,7 @@ from .views import *
 
 api.add_resource(PersonListResource, '/v1/persons/')
 api.add_resource(PersonResource, '/v1/persons/<int:id>/')
-api.add_resource(WordPairsForPersonResource, '/v1/persons/<int:person_id>/wordpairs/')
+api.add_resource(WordPairsForPersonListResource, '/v1/persons/<int:person_id>/wordpairs/')
 api.add_resource(WordPairListResource, '/v1/wordpairs/')
 api.add_resource(WordPairResource, '/v1/wordpairs/<int:id>/')
 api.add_resource(SiteListResource, '/v1/sites/')
