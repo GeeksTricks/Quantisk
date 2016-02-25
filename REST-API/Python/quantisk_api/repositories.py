@@ -114,14 +114,13 @@ class WordPairRepo(Repo):
         db.session.commit()
         return self.model_to_dto(wp)
 
-    def set(self, id, keyword1, keyword2, distance, person_id):
+    def set(self, id, keyword1, keyword2, distance):
         wp = self.model.query.get(id)
         if wp is None:
             return None
         wp.keyword_1 = keyword1
         wp.keyword_2 = keyword2
         wp.distance = distance
-        wp.person_id = person_id
         db.session.commit()
         return self.model_to_dto(wp)
 
