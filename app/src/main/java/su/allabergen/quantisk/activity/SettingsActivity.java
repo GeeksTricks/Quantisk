@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import su.allabergen.quantisk.dialog.AddDialog;
 import su.allabergen.quantisk.model.Person;
 import su.allabergen.quantisk.model.Sites;
 import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
+import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._personList0;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._siteList0;
@@ -41,6 +43,9 @@ public class SettingsActivity extends AppCompatActivity {
     public static final int SITE = 1;
 
     public static List<String> _keywordsList = new ArrayList<>();
+    public static List<String> _keywordsListSpinner = new ArrayList<>();
+    public static ArrayAdapter<String> _keywordAdapter;
+    public static ArrayAdapter<String> _keywordAdapterSpinner;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -165,6 +170,7 @@ public class SettingsActivity extends AppCompatActivity {
         private View vUser;
         private String personSelected;
         private String siteSelected;
+        private ListView keywordsListView;
 
         /**
          * The fragment argument representing the section number for this
@@ -213,10 +219,15 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", "user1", "qwerty1");
                 View userView = inflater.inflate(R.layout.fragment_keywords, container, false);
                 TextView keywordsTextView = (TextView) userView.findViewById(R.id.keywords_label);
                 Spinner keywordsSpinner = (Spinner) userView.findViewById(R.id.keywordsSpinner);
-                keywordsSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsList));
+                keywordsListView = (ListView) userView.findViewById(R.id.keywordsListView);
+                _keywordAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsList);
+                _keywordAdapterSpinner = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsListSpinner);
+                keywordsListView.setAdapter(_keywordAdapter);
+                keywordsSpinner.setAdapter(_keywordAdapterSpinner);
                 keywordsSpinner.setOnItemSelectedListener(this);
                 keywordsTextView.setText("Изменить ключевых слов");
                 initKeywordsBtn(userView);
