@@ -3,6 +3,7 @@ package su.allabergen.quantisk.webServiceVolley;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ import su.allabergen.quantisk.model.Dailyrank;
 import su.allabergen.quantisk.model.Person;
 import su.allabergen.quantisk.model.Sites;
 import su.allabergen.quantisk.model.Totalrank;
+import su.allabergen.quantisk.model.Wordpairs;
 
 import static su.allabergen.quantisk.activity.AdminActivity._nameAdapter;
 import static su.allabergen.quantisk.activity.AdminActivity._nameList;
@@ -34,6 +36,10 @@ import static su.allabergen.quantisk.activity.CommonStatActivity._commonAdapter;
 import static su.allabergen.quantisk.activity.CommonStatActivity._commonList;
 import static su.allabergen.quantisk.activity.DailyStatActivity._dailyAdapter;
 import static su.allabergen.quantisk.activity.DailyStatActivity._dailyList;
+import static su.allabergen.quantisk.activity.SettingsActivity._keywordAdapter;
+import static su.allabergen.quantisk.activity.SettingsActivity._keywordAdapterSpinner;
+import static su.allabergen.quantisk.activity.SettingsActivity._keywordsList;
+import static su.allabergen.quantisk.activity.SettingsActivity._keywordsListSpinner;
 
 /**
  * Created by Rabat on 19.02.2016.
@@ -43,6 +49,7 @@ public class VolleyGet {
     public static List<Sites> _siteList0 = new ArrayList<>();
     public static List<Totalrank> _totalrankList0 = new ArrayList<>();
     public static List<Dailyrank> _dailyrankList0 = new ArrayList<>();
+    public static List<Wordpairs> _keywordsList0 = new ArrayList<>();
 
     private RequestQueue requestQueue;
     private Context context;
@@ -93,7 +100,7 @@ public class VolleyGet {
                                 _nameList.add(p.getName());
                             _nameAdapter.notifyDataSetChanged();
 
-                        // Get Site name from Web Service
+                            // Get Site name from Web Service
                         } else if (url.contains("sites")) {
                             _siteList0.clear();
                             for (int i = 0; i < response.length(); i++) {
@@ -118,7 +125,7 @@ public class VolleyGet {
                             }
                             _siteAdapter.notifyDataSetChanged();
 
-                        // Get Common Statistics from Totalrank from Web Service
+                            // Get Common Statistics from Totalrank from Web Service
                         } else if (url.contains("totalrank")) {
                             _totalrankList0.clear();
                             for (int i = 0; i < response.length(); i++) {
@@ -148,11 +155,12 @@ public class VolleyGet {
                                     }
                                 }
                                 rate = totalrank.getRate();
-                                _commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
+                                _commonList.add("Имя: " + personName
+                                        + "\nСтатистика: " + rate);
                             }
                             _commonAdapter.notifyDataSetChanged();
 
-                        // Get Daily Statistics from Dailyrank from Web Service
+                            // Get Daily Statistics from Dailyrank from Web Service
                         } else if (url.contains("dailyrank")) {
                             _dailyrankList0.clear();
                             for (int i = 0; i < response.length(); i++) {
@@ -192,9 +200,54 @@ public class VolleyGet {
                                 }
                                 date = dailyrank.getDay();
                                 rate = dailyrank.getRank();
-                                _dailyList.add(date + "\nИмя: " + personName + "\nСайт: " + siteName + "\nСтатистика: " + rate);
+                                _dailyList.add(date + "\nИмя: " + personName
+                                        + "\nСайт: " + siteName
+                                        + "\nСтатистика: " + rate);
                             }
                             _dailyAdapter.notifyDataSetChanged();
+                        } else if (url.contains("wordpairs")) {
+                            _keywordsList0.clear();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonPart = null;
+                                try {
+                                    jsonPart = response.getJSONObject(i);
+                                    Wordpairs wordpairs = new Wordpairs();
+
+                                    wordpairs.setDistance(jsonPart.getInt("distance"));
+                                    wordpairs.setId(jsonPart.getInt("id"));
+                                    wordpairs.setKeyword1(jsonPart.getString("keyword1"));
+                                    wordpairs.setKeyword2(jsonPart.getString("keyword2"));
+                                    wordpairs.setPerson_id(jsonPart.getInt("person_id"));
+
+                                    _keywordsList0.add(wordpairs);
+
+                                    progressDialog.dismiss();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            String personName = "No Name";
+                            _keywordsList.clear();
+                            _keywordsListSpinner.clear();
+                            for (Wordpairs keyword : _keywordsList0) {
+                                for (Person person : _personList0) {
+                                    if (person.getId() == keyword.getPerson_id()) {
+                                        personName = person.getName();
+                                        break;
+                                    }
+                                }
+                                _keywordsList.add("Person: " + personName
+                                        + "\nKeyword 1: " + keyword.getKeyword1()
+                                        + "\nKeyword 2: " + keyword.getKeyword2()
+                                        + "\nDistance: " + keyword.getDistance());
+                                _keywordsListSpinner.add(personName);
+                                Log.i("KEYWORD LIST", "Person: " + personName
+                                        + "\nKeyword 1: " + keyword.getKeyword1()
+                                        + "\nKeyword 2: " + keyword.getKeyword2()
+                                        + "\nDistance: " + keyword.getDistance());
+                            }
+                            _keywordAdapter.notifyDataSetChanged();
+                            _keywordAdapterSpinner.notifyDataSetChanged();
                         }
                     }
                 },
