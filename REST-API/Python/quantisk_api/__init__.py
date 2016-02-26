@@ -1,32 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, got_request_exception
 from flask_restful import Api
 from .models import db
 import os
-from werkzeug.exceptions import default_exceptions
-from werkzeug.exceptions import HTTPException
 
-
-def make_json_app(import_name, **kwargs):
-    def make_json_error(ex):
-        response = jsonify(message=str(ex.description)
-                            if isinstance(ex, HTTPException)
-                            else str(ex))
-        response.status_code = (ex.code
-                                if isinstance(ex, HTTPException)
-                                else 500)
-        return response
-
-    app = Flask(import_name, **kwargs)
-
-    for code in default_exceptions.keys():
-        app.error_handler_spec[None][code] = make_json_error
-
-    return app
-
-
-# app = Flask(__name__)
-app = make_json_app(__name__)
-api = Api(app)
+app = Flask(__name__)
+api = Api(app, catch_all_404s=True, prefix='/v1')
 db.app = app
 db.init_app(app)
 
@@ -39,19 +17,36 @@ if mysql_openshift:
 app.config['SQLALCHEMY_DATABASE_URI'] = mysql_openshift or mysql_local
 # app.config['SQLALCHEMY_ECHO'] = True
 
-
 db.create_all()
+
+
+if not app.debug:
+    import logging
+    import sys
+    handler = logging.StreamHandler(sys.stderr)
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s')
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
+
+
+def log_exception(sender, exception):
+    url = request.path
+    data = request.data
+    sender.logger.error('Got exception at %s: %s. Request: %s', url, exception, data)
+
+got_request_exception.connect(log_exception, app)
 
 from .views import *
 
-api.add_resource(PersonListResource, '/v1/persons/')
-api.add_resource(PersonResource, '/v1/persons/<int:id>/')
-api.add_resource(WordPairsForPersonListResource, '/v1/persons/<int:person_id>/wordpairs/')
-api.add_resource(WordPairListResource, '/v1/wordpairs/')
-api.add_resource(WordPairResource, '/v1/wordpairs/<int:id>/')
-api.add_resource(SiteListResource, '/v1/sites/')
-api.add_resource(SiteResource, '/v1/sites/<int:id>/')
-api.add_resource(TotalRankResource, '/v1/totalrank/<int:site_id>/')
-api.add_resource(DailyRankResource, '/v1/dailyrank/')
-api.add_resource(UserListResource, '/v1/users/')
-api.add_resource(UserResource, '/v1/users/<int:id>/')
+api.add_resource(PersonListResource, '/persons/')
+api.add_resource(PersonResource, '/persons/<int:id>/')
+api.add_resource(WordPairsForPersonListResource, '/persons/<int:person_id>/wordpairs/')
+api.add_resource(WordPairListResource, '/wordpairs/')
+api.add_resource(WordPairResource, '/wordpairs/<int:id>/')
+api.add_resource(SiteListResource, '/sites/')
+api.add_resource(SiteResource, '/sites/<int:id>/')
+api.add_resource(TotalRankResource, '/totalrank/<int:site_id>/')
+api.add_resource(DailyRankResource, '/dailyrank/')
+api.add_resource(UserListResource, '/users/')
+api.add_resource(UserResource, '/users/<int:id>/')

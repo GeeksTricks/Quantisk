@@ -1,10 +1,11 @@
-from flask import request, abort
-from flask_restful import Resource
+from flask import request
+from flask_restful import Resource, abort
 from .repositories import person_repo, wordpair_repo, site_repo, rank_repo, user_repo
 from .repositories import NonUniqueError
-from .auth import requires_auth
+from .auth import requires_auth, g
 import arrow
 from arrow.parser import ParserError
+from . import app
 
 
 class SingleResource(Resource):
@@ -19,14 +20,19 @@ class SingleResource(Resource):
 
     def put(self, id):
         body = request.get_json()
+        app.logger.info('PUT request at %s by %s. Body: %s', request.path, g.user, body)
         item = self.repo.set(id, **body)
         if item is None:
             abort(404)
+        app.logger.info('Success. Returned: %s', item._asdict())
         return item._asdict()
 
     def delete(self, id):
+        app.logger.info('DELETE request at %s by %s', request.path, g.user)
         if self.repo.delete(id) is None:
+            app.logger.error('404: Not found.')
             abort(404)
+        app.logger.info('Success.')
         return None, 204
 
 
@@ -39,13 +45,15 @@ class ListResource(Resource):
 
     def post(self):
         body = request.get_json()
+        app.logger.info('POST request at %s by %s. Body: %s', request.path, g.user, body)
         try:
             item = self.repo.add(**body)
-        except TypeError as e:
-            abort(400, e)
-        except NonUniqueError as e:
-            abort(409, e)
+        except TypeError:
+            abort(400)
+        except NonUniqueError:
+            abort(409)
         else:
+            app.logger.info('Success. Returned: %s', item._asdict())
             return item._asdict()
 
 class UserResource(SingleResource):
@@ -96,13 +104,15 @@ class WordPairsForPersonListResource(Resource):
 
     def post(self, person_id):
         body = request.get_json()
+        app.logger.info('POST request at %s by %s. Body: %s', request.path, g.user, body)
         try:
             wordpair = wordpair_repo.add(person_id=person_id, **body)
         except TypeError as e:
-            abort(400, e)
+            abort(400)
         except NonUniqueError as e:
-            abort(409, e)
+            abort(409)
         else:
+            app.logger.info('Success. Returned: %s', wordpair._asdict())
             return wordpair._asdict()
 
 class TotalRankResource(Resource):
