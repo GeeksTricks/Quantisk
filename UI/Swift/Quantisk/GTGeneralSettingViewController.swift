@@ -11,6 +11,7 @@ import UIKit
 
 class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource{
   
+    @IBOutlet var graphSwitch: UISwitch!
     @IBOutlet var userName: UINavigationItem!
     @IBOutlet var imageToDate: UIImageView!
     @IBOutlet var imagePerson: UIImageView!
@@ -20,12 +21,45 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
    //push button statsic
     @IBAction func getStatistic(sender: AnyObject) {
   
-     
+   if(!self.graphSwitch.on){
       let vc = self.storyboard!.instantiateViewControllerWithIdentifier("static") as! GTStaticViewController
-        vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
-        vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
+    vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
+    vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
+    vc.perosnId =  GTDBManager.sharedInstance.getPersonIDFromName(self.persons[self.personPicker.selectedRowInComponent(0)])
+    
+    //2016-02-11
+    self.toDatePicker.datePickerMode = UIDatePickerMode.Date
+    self.fromDatePicker.datePickerMode = UIDatePickerMode.Date
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let toDatePickerString = dateFormatter.stringFromDate(toDatePicker.date)
+    let fromDatePickerString = dateFormatter.stringFromDate(fromDatePicker.date)
+    
+    vc.startDate = fromDatePickerString
+    vc.endDate = toDatePickerString
+    
+    self.navigationController!.pushViewController(vc, animated: true)
+   } else{
+    let vc = self.storyboard!.instantiateViewControllerWithIdentifier("graph") as! GTGrapViewController
+    vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
+    vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
+    vc.perosnId =  GTDBManager.sharedInstance.getPersonIDFromName(self.persons[self.personPicker.selectedRowInComponent(0)])
+    
+    //2016-02-11
+    self.toDatePicker.datePickerMode = UIDatePickerMode.Date
+    self.fromDatePicker.datePickerMode = UIDatePickerMode.Date
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let toDatePickerString = dateFormatter.stringFromDate(toDatePicker.date)
+    let fromDatePickerString = dateFormatter.stringFromDate(fromDatePicker.date)
+    
+    vc.startDate = fromDatePickerString
+    vc.endDate = toDatePickerString
+    
+    self.navigationController!.pushViewController(vc, animated: true)
+        }
         
-        self.navigationController!.pushViewController(vc, animated: true)
+    
 
         
         

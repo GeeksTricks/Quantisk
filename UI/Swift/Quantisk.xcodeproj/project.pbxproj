@@ -23,6 +23,7 @@
 		88AA18F41C6052E2009877C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88AA18F31C6052E2009877C8 /* UIKit.framework */; };
 		88E8C5BF1C78D3B600838C9C /* GTStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E8C5BE1C78D3B600838C9C /* GTStat.swift */; };
 		88F0B7F21C6F3CF600B20796 /* GTDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F0B7F11C6F3CF600B20796 /* GTDBManager.swift */; };
+		88F4D7331C7F65070027E578 /* GTGrapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F4D7321C7F65070027E578 /* GTGrapViewController.swift */; };
 		88F5F2211C6D1F4500A9919B /* GTPersons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5F2201C6D1F4500A9919B /* GTPersons.swift */; };
 		88F5F2231C6D1F5900A9919B /* GTSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5F2221C6D1F5900A9919B /* GTSites.swift */; };
 		88F7B1AE1C6A513D0096D96C /* user2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F7B1AD1C6A513D0096D96C /* user2.png */; };
@@ -62,6 +63,7 @@
 		88AA18F31C6052E2009877C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		88E8C5BE1C78D3B600838C9C /* GTStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTStat.swift; sourceTree = "<group>"; };
 		88F0B7F11C6F3CF600B20796 /* GTDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTDBManager.swift; sourceTree = "<group>"; };
+		88F4D7321C7F65070027E578 /* GTGrapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTGrapViewController.swift; sourceTree = "<group>"; };
 		88F5F2201C6D1F4500A9919B /* GTPersons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTPersons.swift; sourceTree = "<group>"; };
 		88F5F2221C6D1F5900A9919B /* GTSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTSites.swift; sourceTree = "<group>"; };
 		88F7B1AD1C6A513D0096D96C /* user2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user2.png; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				88F7B1C51C6A79BB0096D96C /* GTSingInViewController.swift */,
 				88F7B1C71C6A7A020096D96C /* GTGeneralSettingViewController.swift */,
 				88F7B1C91C6A7A5F0096D96C /* GTSettingViewController.swift */,
+				88F4D7321C7F65070027E578 /* GTGrapViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88F7B1C61C6A79BB0096D96C /* GTSingInViewController.swift in Sources */,
+				88F4D7331C7F65070027E578 /* GTGrapViewController.swift in Sources */,
 				88E8C5BF1C78D3B600838C9C /* GTStat.swift in Sources */,
 				88F0B7F21C6F3CF600B20796 /* GTDBManager.swift in Sources */,
 				88F5F2211C6D1F4500A9919B /* GTPersons.swift in Sources */,

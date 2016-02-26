@@ -160,14 +160,14 @@
                                     <action selector="getStatistic:" destination="612-9x-IbB" eventType="touchUpInside" id="Rm8-yl-OzU"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bhf-8O-Hqw">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bhf-8O-Hqw">
                                 <rect key="frame" x="236" y="436" width="51" height="31"/>
-                                <color key="onTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <color key="onTintColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use Diagrams" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwA-9n-T1b">
                                 <rect key="frame" x="77" y="439" width="137" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -190,6 +190,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="fromDatePicker" destination="gvi-WP-4iW" id="2Xa-hD-I7S"/>
+                        <outlet property="graphSwitch" destination="bhf-8O-Hqw" id="VNW-Kw-g1C"/>
                         <outlet property="imageFromDate" destination="aZU-PZ-K3J" id="GdW-eE-6C3"/>
                         <outlet property="imagePerson" destination="z9t-DT-9Qq" id="tB3-dT-PcT"/>
                         <outlet property="imageToDate" destination="tm6-Ul-aaJ" id="T9X-5J-Txa"/>
@@ -261,7 +262,37 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDz-Ys-Haa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="150" y="41"/>
+            <point key="canvasLocation" x="-256" y="16"/>
+        </scene>
+        <!--Grap View Controller-->
+        <scene sceneID="TOE-Sv-HQC">
+            <objects>
+                <viewController storyboardIdentifier="graph" id="uoL-RY-AaG" customClass="GTGrapViewController" customModule="Quantisk" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vc0-mE-MBa"/>
+                        <viewControllerLayoutGuide type="bottom" id="hbe-Ai-kKt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AHY-Jw-nPa">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UserName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jKL-Jk-p3Y">
+                                <rect key="frame" x="105" y="103" width="110" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="userNameLabel" destination="jKL-Jk-p3Y" id="fMy-c9-0wL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c8Y-Uc-nec" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="150" y="16"/>
         </scene>
         <!--Setting-->
         <scene sceneID="Ngv-Pq-eCf">
@@ -278,14 +309,14 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="database.png" translatesAutoresizingMaskIntoConstraints="NO" id="5kN-dg-Ho1">
                                 <rect key="frame" x="20" y="72" width="32" height="32"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="7RX-EG-P5u">
-                                <rect key="frame" x="20" y="112" width="32" height="32"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="work.png" translatesAutoresizingMaskIntoConstraints="NO" id="w8I-Oq-8UN">
                                 <rect key="frame" x="20" y="152" width="32" height="32"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="changeUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="mOJ-Ik-QNx">
                                 <rect key="frame" x="20" y="230" width="32" height="32"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="7RX-EG-P5u">
+                                <rect key="frame" x="20" y="112" width="32" height="32"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jga-eB-7eB">
                                 <rect key="frame" x="81" y="74" width="159" height="30"/>
@@ -316,7 +347,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="URL API" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-vN-Tzj">
                                 <rect key="frame" x="125" y="157" width="70" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://api-quantisk.rhcloud.com/" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l4X-uF-eud">

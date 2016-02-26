@@ -43,7 +43,9 @@ class GTDBManager{
         
         
         // Get the default Realm
+        //https://user1:qwerty1"@api-quantisk.rhcloud.com/v1/persons/
         
+        //https://api-quantisk.rhcloud.com/v1/users/
              let URL = "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/persons/"
         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
             response in
@@ -76,7 +78,7 @@ class GTDBManager{
     //get refresh sites
     func refreshSites()->(Bool){
         self.deleteAllSites()
-      
+      //"https://user1:qwerty1@api-quantisk.rhcloud.com/v1/sites/"
         let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/sites/"
         Alamofire.request(.GET, URL , parameters: nil).responseJSON {
             response in
@@ -138,7 +140,11 @@ class GTDBManager{
         return currentPerson!.Name
   
     }
-    
+    //getPersonFromName
+    func getPersonIDFromName(NamePerson: String) -> Int{
+        let currentPerson = self.realm.objects(GTPersons).filter("Name == %@",NamePerson).first
+        return currentPerson!.ID
+    }
     
     // get login
     func getCurrentLogin() -> String{
@@ -156,9 +162,9 @@ class GTDBManager{
     
     
     // getTotalStat
-    func GetLoadlStat(siteId: Int) {
+    func getLoadlStat(siteId: Int) {
       //  /v1/totalrank/<site_id>/
-        
+        //  let URL =    "https:user1:qwerty1@api-quantisk.rhcloud.com/v1/totalrank/1/"
         let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/totalrank/" + String(siteId) + "/"
         print(URL)
      
@@ -196,9 +202,10 @@ class GTDBManager{
         }
        
     }
-    func GetLoadlStatPersond(siteId: Int, personId: Int, startDate: NSDate , endDate: NSDate) {
+    func getLoadlStatPersonId(siteId: Int, personId: Int, startDate: String , endDate: String) {
      /*
         /v1/dailyrank/?person_id=<person_id>&site_id=<site_id>&start_date=<start_date>&end_date=<end_date>
+    https://user1:qwerty1@api-quantisk.rhcloud.com/v1/dailyrank/?site_id=1&person_id=1&start_date=2016-02-01&end_date=2016-02-11
         
         GET: Возвращает статистику по дням для конкретной личности на конкретном сайте в промежутке между двумя датами.
         Принимает аргументы в урле. Даты ожидаются в ISO-формате (например: 2005-08-09T18:31:42). Таймзоны пока не работают.
@@ -214,29 +221,37 @@ class GTDBManager{
         */
         
         
-        let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/totalrank/" + String(siteId) + "/"
+       let URL =    "https://" + self.getCurrentLogin() + ":" + self.getCurrentPassword() + "@api-quantisk.rhcloud.com/v1/dailyrank/"
+        
         print(URL)
         
         let stats = self.realm.objects(GTStat)
         try! realm.write {
             realm.delete(stats)
         }
-         let param = ["person_id":  personId, "site_id": siteId,  "start_date": startDate,  "site_id": endDate]
-        Alamofire.request(.GET, URL , parameters: param).responseJSON {
+        let param: [String: AnyObject] = ["site_id":siteId,"person_id":personId,"start_date":startDate,"end_date":endDate]
+        Alamofire.request(.GET, URL , parameters: param  ).responseJSON {
             response in
+            
+            print(response.request)  // original URL request
+            print(response.response) // URL response
+            print(response.data)     // server data
+            print(response.result)   // result of response serialization
+            
             switch response.result {
             case .Success:
                 if let value = response.result.value {
                     let json = JSON(value)
-                    
+                    print("enter")
                     for (_,subJson):(String, JSON) in json {
-                        print(subJson["rank"].int!," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ")
+                        print(subJson["rank"].int!)//," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ",subJson["day"].int!)
                         
                         let stat = GTStat()
                         stat.person = self.getPersonNameFromId(subJson["person_id"].int!)
                         stat.stat = subJson["rank"].int!
                         stat.date = subJson["day"].string!
                         
+                      
                         try! self.realm.write {
                             self.realm.add(stat)
                         }
@@ -259,6 +274,7 @@ class GTDBManager{
         
         var text_list: [String] = []
         for var i = 0; i < text.count; i++ {
+            print(text[i].person)
             text_list.append(text[i].person)
         }
         return text_list
@@ -271,6 +287,7 @@ class GTDBManager{
         var text_list: [String] = []
         for var i = 0; i < text.count; i++ {
             if type == 0 {
+            print(String(text[i].date))
             text_list.append(String(text[i].date) + " " + String(text[i].stat)  )
             } else{
             text_list.append(String(text[i].stat)  )

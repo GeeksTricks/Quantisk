@@ -10,13 +10,16 @@ import Foundation
 import UIKit
 
 class GTStaticViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
-    
-    @IBOutlet var table: UITableView!
     var typeStatic:Int = 0
-    var siteID:Int?
-    var perosnId:Int?
-     var personsName: [String] = [""]
+    var siteID:Int = 0
+    var perosnId:Int = 0
+    var startDate: String = ""
+    var endDate: String = ""
+    
+    var personsName: [String] = [""]
     var personRate: [String] = [""]
+    @IBOutlet var table: UITableView!
+   
     
     func methodOfReceivedNotification(notification: NSNotification){
         self.personsName =  GTDBManager.sharedInstance.getTotalStatText()
@@ -30,10 +33,11 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if self.typeStatic ==0 {
-        GTDBManager.sharedInstance.GetLoadlStat(self.siteID!)
-        } else{
-            
+        if self.typeStatic == 1 {
+        GTDBManager.sharedInstance.getLoadlStat(self.siteID)
+        } else {
+            GTDBManager.sharedInstance.getLoadlStatPersonId(self.siteID, personId: self.perosnId, startDate: self.startDate, endDate: self.endDate)
+            print("start date = \(self.startDate) end date = \(self.endDate)")
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "methodOfReceivedNotification:", name:"NotificationIdentifierStat", object: nil)
