@@ -103,6 +103,7 @@ public class VolleyGet {
                             _nameList.clear();
                             for (Person p : _personList0)
                                 _nameList.add(p.getName());
+
                             _nameAdapter.notifyDataSetChanged();
 
                             // Get Site name from Web Service
@@ -245,48 +246,18 @@ public class VolleyGet {
                                     progressDialog.dismiss();
                                 }
                             }
-                            String personName = "No Name";
+
                             Set<String> keywordSet = new HashSet<>();
                             _keywordsListSpinner.clear();
-                            for (Wordpairs keyword : _keywordsList0) {
-                                for (Person person : _personList0) {
-                                    if (person.getId() == keyword.getPerson_id()) {
-                                        personName = person.getName();
-                                        break;
-                                    }
-                                }
-                                keywordSet.add(personName);
-                            }
+
+                            for (Person person : _personList0)
+                                keywordSet.add(person.getName());
+
                             for (String set : keywordSet)
                                 _keywordsListSpinner.add(set);
 
                             _keywordAdapterSpinner.notifyDataSetChanged();
                             _keywordAdapter.notifyDataSetChanged();
-
-                            // Get Users from Web Service
-                        } else if (url.contains("users")) {
-                            _userList0.clear();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jsonPart = null;
-                                try {
-                                    jsonPart = response.getJSONObject(i);
-                                    Users user = new Users();
-
-                                    user.setId(jsonPart.getInt("id"));
-                                    user.setLogin(jsonPart.getString("login"));
-
-                                    _userList0.add(user);
-                                    progressDialog.dismiss();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    progressDialog.dismiss();
-                                }
-                            }
-                            _nameList.clear();
-                            for (Users u : _userList0)
-                                _nameList.add(u.getLogin());
-
-                            _isDone = true;
                         }
                     }
                 },

@@ -1,8 +1,11 @@
 package su.allabergen.quantisk.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,8 +16,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import su.allabergen.quantisk.R;
+import su.allabergen.quantisk.model.Users;
 import su.allabergen.quantisk.webServiceVolley.VolleyPostUser;
+
+import static su.allabergen.quantisk.activity.AdminActivity._nameList;
 
 public class SignUpScreen extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,13 +48,7 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
     private TextView changeModeTextView;
     private RelativeLayout signUpRelativeLayout;
 
-//    private SharedPreferences sharedPreferences;
-//
-//    private Set<String> tempUsername = new LinkedHashSet<>();
-//    private Set<String> tempPassword = new LinkedHashSet<>();
-//    private List<String> tempList2 = new ArrayList<>();
-//
-//    public static List<String> _tempList = new ArrayList<>();
+    public static List<Users> _userList0 = new ArrayList<>();
 
     private boolean isSignUp = false;
 
@@ -62,96 +79,16 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
         }
-
-//        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
-//        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
-//            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
-//            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
-//        }
-//
-//        if (checkForSimilarity(uname, upassword)) {
-//            sharedPreferences.edit().remove("USERNAME").apply();
-//            sharedPreferences.edit().remove("PASSWORD").apply();
-//            tempUsername.add(uname);
-//            tempPassword.add(upassword);
-//            sharedPreferences.edit().putStringSet("USERNAME", tempUsername).apply();
-//            sharedPreferences.edit().putStringSet("PASSWORD", tempPassword).apply();
-//
-//            Toast.makeText(this, "Пользователь успешно создан", Toast.LENGTH_SHORT).show();
-//        }
     }
 
     private void checkUserAccount(String uname, String upassword) {
 
-//        if ((!uname.isEmpty() || uname.length() > 0) && (!upassword.isEmpty() || upassword.length() > 0)) {
-//            new VolleyGet(this, "https://api-quantisk.rhcloud.com/v1/users/", uname, upassword);
-//        } else {
-//            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        if (!_nameList.isEmpty()) {
-//            for (Users u : _userList0) {
-//                if (u.getLogin().equals(uname)) {
-//                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            }
-//        }
-
-        if (uname.equals("user1") && upassword.equals("qwerty1")) {
-            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-            startActivity(intent);
-            finish();
+        if ((!uname.isEmpty() || uname.length() > 0) && (!upassword.isEmpty() || upassword.length() > 0)) {
+            new VolleyGetUser(this, "https://api-quantisk.rhcloud.com/v1/users/", uname, upassword);
+        } else {
+            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
         }
-
-//        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);
-//        if (tempUsername.isEmpty() && tempPassword.isEmpty()) {
-//            tempUsername = sharedPreferences.getStringSet("USERNAME", tempUsername);
-//            tempPassword = sharedPreferences.getStringSet("PASSWORD", tempPassword);
-//        }
-//
-//        _tempList.clear();
-//        tempList2.clear();
-//        _tempList.addAll(tempUsername);
-//        tempList2.addAll(tempPassword);
-//
-//        boolean isOK = false;
-//        for (int i = 0; i < _tempList.size(); i++) {
-//            if (_tempList.get(i).equals(uname) && tempList2.get(i).equals(upassword)) {
-//                isOK = true;
-//                break;
-//            } else {
-//                isOK = false;
-//            }
-//        }
-//
-//        if (isOK) {
-//            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-//            startActivity(intent);
-//            finish();
-//        } else if ((uname.equals("user1") && upassword.equals("qwerty1")) || (uname.equals("admin") && upassword.equals("admin"))) {
-//            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            Toast.makeText(this, "Неправильное имя или пароль", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
     }
-
-//    private boolean checkForSimilarity(String uname, String upassword) {
-//        if ((tempUsername.contains(uname) && tempPassword.contains(upassword))
-//                || (uname.equals("admin") && upassword.equals("admin"))
-//                || (uname.equals("user1") && upassword.equals("qwerty1"))) {
-//            Toast.makeText(this, "Пользователь уже существует", Toast.LENGTH_SHORT).show();
-//            return false;
-//        } else if (tempUsername.isEmpty() || tempUsername.size() == 0 || tempPassword.isEmpty() || tempPassword.size() == 0) {
-//            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;
-//    }
 
     private void setLogo() {
         ImageView imageView = (ImageView) findViewById(R.id.logo);
@@ -194,6 +131,91 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.logo || v.getId() == R.id.signUpRelativeLayout) {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    class VolleyGetUser {
+
+        private RequestQueue requestQueue;
+        private Context context;
+        private String url;
+        private String username;
+        private String password;
+
+        ProgressDialog progressDialog;
+
+        public VolleyGetUser(Context context, String url, String username, String password) {
+            requestQueue = Volley.newRequestQueue(context);
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setIndeterminate(true);
+            this.context = context;
+            this.username = username;
+            this.password = password;
+            this.url = url;
+            getVolley();
+        }
+
+        public void getVolley() {
+            progressDialog.show();
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            // Get Users from Web Service
+
+                            if (url.contains("users")) {
+                                _userList0.clear();
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject jsonPart = null;
+                                    try {
+                                        jsonPart = response.getJSONObject(i);
+                                        Users user = new Users();
+
+                                        user.setId(jsonPart.getInt("id"));
+                                        user.setLogin(jsonPart.getString("login"));
+
+                                        _userList0.add(user);
+                                        progressDialog.dismiss();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                                _nameList.clear();
+                                for (Users u : _userList0)
+                                    _nameList.add(u.getLogin());
+
+                                if (!_nameList.isEmpty()) {
+                                    for (Users u : _userList0) {
+                                            if (u.getLogin().equals(username)) {
+                                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            error.printStackTrace();
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = username + ":" + password;
+                    String auth = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json, charset=UTF-8");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            requestQueue.add(jsonArrayRequest);
         }
     }
 }
