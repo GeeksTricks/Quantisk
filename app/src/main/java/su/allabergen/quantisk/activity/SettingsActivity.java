@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -53,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
     public static List<String> _keywordsList = new ArrayList<>();
     public static List<String> _keywordsListSpinner = new ArrayList<>();
     public static ArrayAdapter<String> _keywordAdapter;
-    //    public static KeywordAdapter _keywordAdapter;
     public static ArrayAdapter<String> _keywordAdapterSpinner;
 
     /**
@@ -182,7 +179,6 @@ public class SettingsActivity extends AppCompatActivity {
         private String siteSelected;
         private String keywordsSelected;
         private ListView keywordsListView;
-        private RadioButton keywordsRadio;
 
         /**
          * The fragment argument representing the section number for this
@@ -240,7 +236,6 @@ public class SettingsActivity extends AppCompatActivity {
                 _keywordAdapterSpinner = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsListSpinner);
                 keywordsListView.setAdapter(_keywordAdapter);
                 keywordsSpinner.setAdapter(_keywordAdapterSpinner);
-                Log.i("QUANTISK", _keywordsList0.toString());
 
                 if (_keywordsList0.isEmpty())
                     new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", "user1", "qwerty1");
@@ -303,6 +298,7 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vUser;
                     break;
                 case R.id.removeSiteBtn:
+                    currFrag = "removeSiteBtn";
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Удалить сайт")
                             .setMessage("Вы уверены, что хотите удалить этот сайт?")
@@ -319,6 +315,7 @@ public class SettingsActivity extends AppCompatActivity {
                             .show();
                     break;
                 case R.id.removePersonBtn:
+                    currFrag = "removePersonBtn";
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Удалить человека")
                             .setMessage("Вы уверены, что хотите удалить этого человека?")
@@ -348,19 +345,15 @@ public class SettingsActivity extends AppCompatActivity {
                                         String pattern1 = "Id:";
                                         String pattern2 = "end";
                                         String rowToDelete = _keywordsList.get(positionToDelete);
-                                        Log.i("QUANTISK ROW", rowToDelete);
 
                                         Pattern pattern = Pattern.compile(Pattern.quote(pattern1) + "(?s)(.*?)" + Pattern.quote(pattern2));
                                         Matcher matcher = pattern.matcher(rowToDelete);
 
-                                        while (matcher.find()) {
+                                        while (matcher.find())
                                             key1 = matcher.group(1);
-                                            Log.i("QUANTISK SPLIT", key1);
-                                        }
 
-                                        if (key1 != null) {
+                                        if (key1 != null)
                                             new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", Integer.parseInt(key1), "user1", "qwerty1");
-                                        }
                                     }
                                 }
                             })
@@ -429,8 +422,6 @@ public class SettingsActivity extends AppCompatActivity {
                         distance = m3.group(1).trim();
                     while (m4.find())
                         id = m4.group(1).trim();
-
-                    Log.i("QUANTISK", key1 + " : " + key2 + " : " + distance + " : " + id);
                 }
 
                 if (key1 != null && key2 != null && distance != null && id != null) {
@@ -467,11 +458,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
                 if (checkPersonId != -1) {
-                    for (Wordpairs keyword : _keywordsList0) {
-                        if (keyword.getPerson_id() == checkPersonId) {
-                            return checkPersonId;
-                        }
-                    }
+                    return checkPersonId;
                 }
             }
             return -1;
@@ -489,7 +476,7 @@ public class SettingsActivity extends AppCompatActivity {
                     siteSelected = spinner.getSelectedItem().toString();
                     break;
                 case R.id.keywordsSpinner:
-                    keywordsSelected = spinner.getSelectedItem().toString();
+                    keywordsSelected = spinner.getSelectedItem().toString().trim();
                     int personId = check(KEYWORD);
                     _keywordsList.clear();
                     for (Wordpairs keyword : _keywordsList0) {
