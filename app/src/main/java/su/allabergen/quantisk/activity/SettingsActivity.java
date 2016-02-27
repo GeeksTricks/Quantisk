@@ -81,6 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        _keywordsList0.clear();
         _keywordsList.clear();
         _keywordsList.add("No Keywords");
 
@@ -230,7 +231,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
-                new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", "user1", "qwerty1");
                 View userView = inflater.inflate(R.layout.fragment_keywords, container, false);
                 TextView keywordsTextView = (TextView) userView.findViewById(R.id.keywords_label);
                 Spinner keywordsSpinner = (Spinner) userView.findViewById(R.id.keywordsSpinner);
@@ -240,6 +240,11 @@ public class SettingsActivity extends AppCompatActivity {
                 _keywordAdapterSpinner = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsListSpinner);
                 keywordsListView.setAdapter(_keywordAdapter);
                 keywordsSpinner.setAdapter(_keywordAdapterSpinner);
+                Log.i("QUANTISK", _keywordsList0.toString());
+
+                if (_keywordsList0.isEmpty())
+                    new VolleyGet(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", "user1", "qwerty1");
+
                 keywordsSpinner.setOnItemSelectedListener(this);
                 keywordsTextView.setText("Изменить ключевых слов");
                 initKeywordsBtn(userView);

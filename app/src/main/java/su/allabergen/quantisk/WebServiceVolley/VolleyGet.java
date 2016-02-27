@@ -38,8 +38,8 @@ import static su.allabergen.quantisk.activity.CommonStatActivity._commonAdapter;
 import static su.allabergen.quantisk.activity.CommonStatActivity._commonList;
 import static su.allabergen.quantisk.activity.DailyStatActivity._dailyAdapter;
 import static su.allabergen.quantisk.activity.DailyStatActivity._dailyList;
+import static su.allabergen.quantisk.activity.SettingsActivity._keywordAdapter;
 import static su.allabergen.quantisk.activity.SettingsActivity._keywordAdapterSpinner;
-import static su.allabergen.quantisk.activity.SettingsActivity._keywordsList;
 import static su.allabergen.quantisk.activity.SettingsActivity._keywordsListSpinner;
 
 /**
@@ -247,7 +247,6 @@ public class VolleyGet {
                             }
                             String personName = "No Name";
                             Set<String> keywordSet = new HashSet<>();
-                            _keywordsList.clear();
                             _keywordsListSpinner.clear();
                             for (Wordpairs keyword : _keywordsList0) {
                                 for (Person person : _personList0) {
@@ -262,6 +261,7 @@ public class VolleyGet {
                                 _keywordsListSpinner.add(set);
 
                             _keywordAdapterSpinner.notifyDataSetChanged();
+                            _keywordAdapter.notifyDataSetChanged();
 
                             // Get Users from Web Service
                         } else if (url.contains("users")) {
