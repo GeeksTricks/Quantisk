@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/signUpRelativeLayout"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="su.allabergen.quantisk.activity.SignUpScreen"
+    tools:showIn="@layout/activity_sign_up_screen">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="185dp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/usernameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-thin"
+        android:hint="username" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usernameField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ems="10"
+        android:fontFamily="sans-serif-thin"
+        android:hint="password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/changeModeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:fontFamily="sans-serif-thin"
+        android:text="Регистрация"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/signUpBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/changeModeTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorAccent"
+        android:fontFamily="sans-serif-thin"
+        android:onClick="signUpOnClick"
+        android:text="Войти"
+        android:textStyle="bold" />
+</RelativeLayout>

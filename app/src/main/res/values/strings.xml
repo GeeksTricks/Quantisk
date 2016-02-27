@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Quantisk</string>
+    <string name="action_settings">Settings</string>
+    <string name="about">About</string>
+
+    <string-array name="sites">
+        <item>biography.com</item>
+        <item>fandago.com</item>
+        <item>famousbirthdays.com</item>
+        <item>thefamouspeople.com</item>
+        <item>mentalfloss.com</item>
+        <item>backstage.com</item>
+        <item>screenrant.com</item>
+    </string-array>
+
+    <string-array name="stats">
+        <item>Общая Статистика</item>
+        <item>Ежедневная Статистика</item>
+    </string-array>
+
+    <string-array name="names">
+        <item>Leonardo</item>
+        <!--<item>Will</item>
+        <item>Tom</item>
+        <item>Mike</item>
+        <item>Rob</item>
+        <item>Bob</item>-->
+    </string-array>
+
+    <string name="title_activity_common_stat">CommonStatActivity</string>
+    <string name="title_activity_daily_stat">DailyStatActivity</string>
+    <string name="title_activity_sign_up_screen">Quantisk</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_admin">Admin</string>
+</resources>
