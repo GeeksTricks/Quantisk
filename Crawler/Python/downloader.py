@@ -1,39 +1,36 @@
 #!/usr/bin/python3
 
 from urllib import request
-from urllib import error
 import shutil
 import re
-
-# TODO: добавить логирование операций и возможных ошибок
+import gzip
+import os
 
 
 class Downloader():
-    def download_sitemap(self, link):
-        sitemap = str(re.findall(r'.*\/(.+\..{2,4})', link)[0])
+
+    def _ungz_file(self, file_name):
+        out_file_name = str(re.findall(r'(.+)\..{2,4}', file_name)[0])
+        with gzip.open(file_name, 'rb') as archive, \
+                open(out_file_name, 'wb') as target_file:
+            shutil.copyfileobj(archive, target_file)
+        os.remove('file_name')
+        return out_file_name
+
+    def download_file(self, url):
+        split_url = url.split('/')
+        if split_url[-1]:
+            name = split_url[-1]
+        else:
+            name = split_url[-2]
+        # try download file
         try:
-            with request.urlopen(link) as response,\
-                 open(sitemap, 'wb') as out_file:
+            with request.urlopen(url) as response, open(name, 'wb') as out_file:
                 shutil.copyfileobj(response, out_file)
-            return sitemap
-        except error.HTTPError:
-            print('Неполучилось скачать sitemap.')
+                if name.endswith('.gz'):
+                    file_name = self._ungz_file(name)
+                    return file_name
+                else:
+                    return name
+        except:
             return False
-            
-    def download_html(self, link):
-        html_file = 'pages'
-        try:
-            with request.urlopen(link) as response,\
-                 open(html_file, 'wb') as out_file:
-                shutil.copyfileobj(response, out_file)
-            return html_file
-        except error.HTTPError:
-            print('Неполучилось скачать html.')
-            return False
-
-
-
-
-
-
-
