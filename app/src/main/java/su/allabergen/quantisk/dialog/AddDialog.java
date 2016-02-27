@@ -62,7 +62,7 @@ public class AddDialog extends DialogFragment {
                                         addEditText.getText().toString(), "user1", "qwerty1");
                                 break;
 
-                            case "addUserBtn":
+                            case "addKeywordBtn":
                                 title = "Добавить ключевого слово";
                                 break;
 
@@ -78,7 +78,7 @@ public class AddDialog extends DialogFragment {
                                         id, addEditText.getText().toString(), "user1", "qwerty1");
                                 break;
 
-                            case "editUserBtn":
+                            case "editKeywordBtn":
                                 title = "Изменить ключевого слово";
                                 break;
                         }

@@ -71,6 +71,7 @@
         android:layout_alignRight="@+id/keywordsSpinner"
         android:layout_alignStart="@+id/keywordsSpinner"
         android:layout_below="@+id/keywordsSpinner"
+        android:choiceMode="singleChoice"
         android:layout_marginBottom="48dp" />
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,19 +22,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import su.allabergen.quantisk.R;
 import su.allabergen.quantisk.dialog.AddDialog;
+import su.allabergen.quantisk.dialog.AddDialogKeyword;
 import su.allabergen.quantisk.model.Person;
 import su.allabergen.quantisk.model.Sites;
+import su.allabergen.quantisk.model.Wordpairs;
 import su.allabergen.quantisk.webServiceVolley.VolleyDelete;
 import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 
+import static su.allabergen.quantisk.webServiceVolley.VolleyGet._keywordsList0;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._personList0;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._siteList0;
 
@@ -41,10 +48,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final int PERSON = 0;
     public static final int SITE = 1;
+    public static final int KEYWORD = 2;
 
     public static List<String> _keywordsList = new ArrayList<>();
     public static List<String> _keywordsListSpinner = new ArrayList<>();
     public static ArrayAdapter<String> _keywordAdapter;
+    //    public static KeywordAdapter _keywordAdapter;
     public static ArrayAdapter<String> _keywordAdapterSpinner;
 
     /**
@@ -170,7 +179,9 @@ public class SettingsActivity extends AppCompatActivity {
         private View vUser;
         private String personSelected;
         private String siteSelected;
+        private String keywordsSelected;
         private ListView keywordsListView;
+        private RadioButton keywordsRadio;
 
         /**
          * The fragment argument representing the section number for this
@@ -224,9 +235,16 @@ public class SettingsActivity extends AppCompatActivity {
                 TextView keywordsTextView = (TextView) userView.findViewById(R.id.keywords_label);
                 Spinner keywordsSpinner = (Spinner) userView.findViewById(R.id.keywordsSpinner);
                 keywordsListView = (ListView) userView.findViewById(R.id.keywordsListView);
-                _keywordAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsList);
+                _keywordAdapter = new ArrayAdapter<>(getActivity(), R.layout.keywords_layout, _keywordsList);
+//                _keywordAdapter = new KeywordAdapter(getActivity());
                 _keywordAdapterSpinner = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsListSpinner);
                 keywordsListView.setAdapter(_keywordAdapter);
+                keywordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                });
                 keywordsSpinner.setAdapter(_keywordAdapterSpinner);
                 keywordsSpinner.setOnItemSelectedListener(this);
                 keywordsTextView.setText("Изменить ключевых слов");
@@ -282,7 +300,7 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vName;
                     break;
                 case R.id.addKeywordsBtn:
-                    currFrag = "addUserBtn";
+                    currFrag = "addKeywordBtn";
                     view = vUser;
                     break;
                 case R.id.removeSiteBtn:
@@ -317,8 +335,39 @@ public class SettingsActivity extends AppCompatActivity {
                             .show();
                     break;
                 case R.id.removeKeywordsBtn:
-                    currFrag = "removeUserBtn";
-                    view = vUser;
+                    currFrag = "removeKeywordsBtn";
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Удалить ключевого слово")
+                            .setMessage("Вы уверены, что хотите удалить это ключевое слово?")
+                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int positionToDelete = keywordsListView.getCheckedItemPosition();
+
+                                    if (positionToDelete > -1) {
+                                        String key1 = null;
+                                        String pattern1 = "Id:";
+                                        String pattern2 = "end";
+                                        String rowToDelete = _keywordsList.get(positionToDelete);
+                                        Log.i("QUANTISK ROW", rowToDelete);
+
+                                        Pattern pattern = Pattern.compile(Pattern.quote(pattern1) + "(?s)(.*?)" + Pattern.quote(pattern2));
+                                        Matcher matcher = pattern.matcher(rowToDelete);
+
+                                        while (matcher.find()) {
+                                            key1 = matcher.group(1);
+                                            Log.i("QUANTISK SPLIT", key1);
+                                        }
+
+                                        if (key1 != null) {
+                                            new VolleyDelete(getActivity(), "https://api-quantisk.rhcloud.com/v1/wordpairs/", Integer.parseInt(key1), "user1", "qwerty1");
+                                        }
+                                    }
+                                }
+                            })
+                            .setNegativeButton("Нет", null)
+                            .create()
+                            .show();
                     break;
                 case R.id.editSiteBtn:
                     currFrag = "editSiteBtn";
@@ -329,13 +378,14 @@ public class SettingsActivity extends AppCompatActivity {
                     view = vName;
                     break;
                 case R.id.editKeywordsBtn:
-                    currFrag = "editUserBtn";
+                    currFrag = "editKeywordBtn";
                     view = vUser;
                     break;
             }
 
             AddDialog dialog = null;
-            if (currFrag.equals("removeSiteBtn") || currFrag.equals("removePersonBtn") || currFrag.equals("removeUserBtn")) {
+            AddDialogKeyword dialogKeyword = null;
+            if (currFrag.equals("removeSiteBtn") || currFrag.equals("removePersonBtn") || currFrag.equals("removeKeywordsBtn")) {
             } else if (currFrag.equals("editSiteBtn")) {
                 dialog = new AddDialog(currFrag, view, siteSelected, check(SITE));
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -344,6 +394,51 @@ public class SettingsActivity extends AppCompatActivity {
                 dialog = new AddDialog(currFrag, view, personSelected, check(PERSON));
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialog.show(ft, "Add Dialog");
+            } else if (currFrag.equals("addKeywordBtn")) {
+                dialogKeyword = new AddDialogKeyword(currFrag, view, check(KEYWORD));
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialogKeyword.show(ft, "Add Keyword Dialog");
+            } else if (currFrag.equals("editKeywordBtn")) {
+                int positionToDelete = keywordsListView.getCheckedItemPosition();
+                String key1 = null;
+                String key2 = null;
+                String distance = null;
+                String id = null;
+
+                if (positionToDelete > -1) {
+                    String pattern1 = "Keyword 1: ";
+                    String pattern2 = "Keyword 2: ";
+                    String pattern3 = "Distance: ";
+                    String pattern4 = "Id:";
+                    String pattern5 = "end";
+                    String rowToDelete = _keywordsList.get(positionToDelete);
+
+                    Pattern p1 = Pattern.compile(Pattern.quote(pattern1) + "(?s)(.*?)" + Pattern.quote(pattern2));
+                    Matcher m1 = p1.matcher(rowToDelete);
+                    Pattern p2 = Pattern.compile(Pattern.quote(pattern2) + "(?s)(.*?)" + Pattern.quote(pattern3));
+                    Matcher m2 = p2.matcher(rowToDelete);
+                    Pattern p3 = Pattern.compile(Pattern.quote(pattern3) + "(?s)(.*?)" + Pattern.quote(pattern4));
+                    Matcher m3 = p3.matcher(rowToDelete);
+                    Pattern p4 = Pattern.compile(Pattern.quote(pattern4) + "(?s)(.*?)" + Pattern.quote(pattern5));
+                    Matcher m4 = p4.matcher(rowToDelete);
+
+                    while (m1.find())
+                        key1 = m1.group(1).trim();
+                    while (m2.find())
+                        key2 = m2.group(1).trim();
+                    while (m3.find())
+                        distance = m3.group(1).trim();
+                    while (m4.find())
+                        id = m4.group(1).trim();
+
+                    Log.i("QUANTISK", key1 + " : " + key2 + " : " + distance + " : " + id);
+                }
+
+                if (key1 != null && key2 != null && distance != null && id != null) {
+                    dialogKeyword = new AddDialogKeyword(currFrag, view, key1, key2, distance, Integer.parseInt(id));
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialogKeyword.show(ft, "Add Keyword Dialog");
+                }
             } else {
                 dialog = new AddDialog(currFrag, view);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -364,6 +459,21 @@ public class SettingsActivity extends AppCompatActivity {
                         return site.getId();
                     }
                 }
+            } else if (id == KEYWORD) {
+                int checkPersonId = -1;
+                for (Person person : _personList0) {
+                    if (person.getName().equals(keywordsSelected)) {
+                        checkPersonId = person.getId();
+                        break;
+                    }
+                }
+                if (checkPersonId != -1) {
+                    for (Wordpairs keyword : _keywordsList0) {
+                        if (keyword.getPerson_id() == checkPersonId) {
+                            return checkPersonId;
+                        }
+                    }
+                }
             }
             return -1;
         }
@@ -380,6 +490,18 @@ public class SettingsActivity extends AppCompatActivity {
                     siteSelected = spinner.getSelectedItem().toString();
                     break;
                 case R.id.keywordsSpinner:
+                    keywordsSelected = spinner.getSelectedItem().toString();
+                    int personId = check(KEYWORD);
+                    _keywordsList.clear();
+                    for (Wordpairs keyword : _keywordsList0) {
+                        if (keyword.getPerson_id() == personId) {
+                            _keywordsList.add("Keyword 1: " + keyword.getKeyword1()
+                                    + "\nKeyword 2: " + keyword.getKeyword2()
+                                    + "\nDistance: " + keyword.getDistance()
+                                    + "\nId:" + keyword.getId() + "end");
+                        }
+                    }
+                    _keywordAdapter.notifyDataSetChanged();
                     break;
             }
         }

@@ -78,32 +78,32 @@ public class CommonStatActivity extends AppCompatActivity {
 
         siteTextView.setText("Сайт: " + name);
 
-        if (_totalrankList0.isEmpty()) {
-            for (Sites site : _siteList0) {
-                if (site.getName().equals(name)) {
-                    site_id = site.getId();
-                    url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
-                    new VolleyGet(this, url, "user1", "qwerty1");
-                    break;
-                }
+        _totalrankList0.clear();
+        for (Sites site : _siteList0) {
+            if (site.getName().equals(name)) {
+                site_id = site.getId();
+                url = "https://api-quantisk.rhcloud.com/v1/totalrank/" + site_id + "/";
+                new VolleyGet(this, url, "user1", "qwerty1");
+                break;
             }
         }
 
-        if (!_totalrankList0.isEmpty()) {
-            String personName = "No Name";
-            int rate;
-            for (Totalrank totalrank : _totalrankList0) {
-                for (Person person : _personList0) {
-                    if (person.getId() == totalrank.getPerson_id()) {
+        String personName = "No Name";
+        int rate;
+        for (Totalrank totalrank : _totalrankList0) {
+            for (Person person : _personList0) {
+                if (person.getId() == totalrank.getPerson_id()) {
+                    if (person.getName() != null)
                         personName = person.getName();
-                        break;
-                    }
+                    break;
                 }
-                rate = totalrank.getRate();
-                _commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
             }
-            _commonAdapter.notifyDataSetChanged();
+            if (totalrank.getRate() > 0)
+                rate = totalrank.getRate();
+            else rate = 0;
+            _commonList.add("Имя: " + personName + "\nСтатистика: " + rate);
         }
+        _commonAdapter.notifyDataSetChanged();
     }
 
     @Override

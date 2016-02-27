@@ -24,7 +24,6 @@ import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._dailyrankList0;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._personList0;
 import static su.allabergen.quantisk.webServiceVolley.VolleyGet._siteList0;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet._totalrankList0;
 
 public class DailyStatActivity extends AppCompatActivity {
 
@@ -67,47 +66,44 @@ public class DailyStatActivity extends AppCompatActivity {
         int site_id = -1;
         int person_id = -1;
 
-        if (_dailyrankList0.isEmpty()) {
+        _dailyrankList0.clear();
+        for (Person person : _personList0) {
+            if (person.getName().equals(username)) {
+                person_id = person.getId();
+                break;
+            }
+        }
+        for (Sites site : _siteList0) {
+            if (site.getName().equals(sitename)) {
+                site_id = site.getId();
+                break;
+            }
+        }
+        url = "https://api-quantisk.rhcloud.com/v1/dailyrank/?person_id=" + person_id + "&site_id=" + site_id + "&start_date=" + dateFrom + "&end_date=" + dateTo;
+        new VolleyGet(this, url, "user1", "qwerty1");
+
+        String personName = "No Name";
+        String siteName = "No Site";
+        String date = "yyyy-MM-dd";
+        int rate;
+        for (Dailyrank dailyrank : _dailyrankList0) {
             for (Person person : _personList0) {
-                if (person.getName().equals(username)) {
-                    person_id = person.getId();
+                if (person.getId() == dailyrank.getPerson_id()) {
+                    personName = person.getName();
                     break;
                 }
             }
             for (Sites site : _siteList0) {
-                if (site.getName().equals(sitename)) {
-                    site_id = site.getId();
+                if (site.getId() == dailyrank.getSite_id()) {
+                    siteName = site.getName();
                     break;
                 }
             }
-            url = "https://api-quantisk.rhcloud.com/v1/dailyrank/?person_id=" + person_id + "&site_id=" + site_id + "&start_date=" + dateFrom + "&end_date=" + dateTo;
-            new VolleyGet(this, url, "user1", "qwerty1");
+            date = dailyrank.getDay();
+            rate = dailyrank.getRank();
+            _dailyList.add(date + "\nИмя: " + personName + "\nСайт: " + siteName + "\nСтатистика: " + rate);
         }
-
-        if (!_totalrankList0.isEmpty()) {
-            String personName = "No Name";
-            String siteName = "No Site";
-            String date = "yyyy-MM-dd";
-            int rate;
-            for (Dailyrank dailyrank : _dailyrankList0) {
-                for (Person person : _personList0) {
-                    if (person.getId() == dailyrank.getPerson_id()) {
-                        personName = person.getName();
-                        break;
-                    }
-                }
-                for (Sites site : _siteList0) {
-                    if (site.getId() == dailyrank.getSite_id()) {
-                        siteName = site.getName();
-                        break;
-                    }
-                }
-                date = dailyrank.getDay();
-                rate = dailyrank.getRank();
-                _dailyList.add(date + "\nИмя: " + personName + "\nСайт: " + siteName + "\nСтатистика: " + rate);
-            }
-            _dailyAdapter.notifyDataSetChanged();
-        }
+        _dailyAdapter.notifyDataSetChanged();
     }
 
     @Override
