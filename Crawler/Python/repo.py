@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from model import Persons
 from model import Sites
 from model import Pages
@@ -17,7 +15,7 @@ class Repo():
         self.engine = create_engine(
             'mysql+pymysql://Crawler:probation2016@178.218.115.116:64004'
             '/GeeksTricks2?charset=utf8',
-            echo=False)
+            echo=True)
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
 
@@ -62,14 +60,11 @@ class PageRepo(Repo):
         self.session.commit()
 
     def get_not_scan_urls(self):
-        result_tuple_list = self.session.query(Pages).filter(
+        result_set = self.session.query(Pages.id, Pages.url).filter(
             or_(Pages.last_scan_date == None, Pages.last_scan_date +
                 timedelta(days=1) < datetime.utcnow())).all()
-        return result_tuple_list
+        return result_set
 
-    def del_bad_url(self, url_id):
-        self.session.query(Pages).filter(Pages.id == url_id).delete()
-        self.session.commit()
 
 
 class PersonsPageRankRepo(Repo):
@@ -87,8 +82,5 @@ class PersonsPageRankRepo(Repo):
 
 class WordpairsRepo(Repo):
     def get_query(self):
-        result_tuple_list = self.session.query(Wordpairs.keyword_1,
-                                               Wordpairs.keyword_2,
-                                               Wordpairs.distance,
-                                               Wordpairs.person_id).all()
+        result_tuple_list = self.session.query(Wordpairs).all()
         return result_tuple_list

@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from urllib import request
 import shutil
 import re
@@ -29,6 +27,7 @@ class Downloader():
                 shutil.copyfileobj(response, out_file)
                 if name.endswith('.gz'):
                     file_name = self._ungz_file(name)
+                    print('разархивируем...')
                     return file_name
                 else:
                     return name

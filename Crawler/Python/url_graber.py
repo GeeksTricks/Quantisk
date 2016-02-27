@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from bs4 import BeautifulSoup
 import crawl_parser
 import downloader

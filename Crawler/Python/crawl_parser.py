@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import re
 from reppy.cache import RobotsCache
 import xml.etree.ElementTree as ET
@@ -59,6 +57,3 @@ class HtmlParser():
             count = len(re.findall(search_regul, text))
             if count:
                 self.rank.add_rank(count, id_url, query.person_id)
-
-    def get_url_from_pages(self, html_file):
-        soup = BeautifulSoup(open(html_file))
