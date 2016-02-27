@@ -14,12 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import su.allabergen.quantisk.R;
-import su.allabergen.quantisk.model.Users;
-import su.allabergen.quantisk.webServiceVolley.VolleyGet;
 import su.allabergen.quantisk.webServiceVolley.VolleyPostUser;
-
-import static su.allabergen.quantisk.activity.AdminActivity._nameList;
-import static su.allabergen.quantisk.webServiceVolley.VolleyGet.*;
 
 public class SignUpScreen extends AppCompatActivity implements View.OnClickListener {
 
@@ -88,20 +83,26 @@ public class SignUpScreen extends AppCompatActivity implements View.OnClickListe
 
     private void checkUserAccount(String uname, String upassword) {
 
-        if ((!uname.isEmpty() || uname.length() > 0) && (!upassword.isEmpty() || upassword.length() > 0)) {
-            new VolleyGet(this, "https://api-quantisk.rhcloud.com/v1/users/", uname, upassword);
-        } else {
-            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
-        }
-        
-        if (!_nameList.isEmpty()) {
-            for (Users u : _userList0) {
-                if (u.getLogin().equals(uname)) {
-                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
+//        if ((!uname.isEmpty() || uname.length() > 0) && (!upassword.isEmpty() || upassword.length() > 0)) {
+//            new VolleyGet(this, "https://api-quantisk.rhcloud.com/v1/users/", uname, upassword);
+//        } else {
+//            Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
+//        }
+//
+//        if (!_nameList.isEmpty()) {
+//            for (Users u : _userList0) {
+//                if (u.getLogin().equals(uname)) {
+//                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//        }
+
+        if (uname.equals("user1") && upassword.equals("qwerty1")) {
+            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
+            finish();
         }
 
 //        sharedPreferences = this.getSharedPreferences("user_accounts", MODE_PRIVATE);

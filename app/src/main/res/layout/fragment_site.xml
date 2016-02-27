@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:fontFamily="sans-serif-thin"
-            android:text="ADD"
+            android:text="ДОБАВИТЬ"
             android:textStyle="bold" />
 
         <Button
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:fontFamily="sans-serif-thin"
-            android:text="REMOVE"
+            android:text="УДАЛИТЬ"
             android:textStyle="bold" />
 
         <Button
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:fontFamily="sans-serif-thin"
-            android:text="EDIT"
+            android:text="РЕДАКТИРОВАТЬ"
             android:textStyle="bold" />
     </LinearLayout>
 

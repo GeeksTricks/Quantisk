@@ -239,12 +239,6 @@ public class SettingsActivity extends AppCompatActivity {
 //                _keywordAdapter = new KeywordAdapter(getActivity());
                 _keywordAdapterSpinner = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, _keywordsListSpinner);
                 keywordsListView.setAdapter(_keywordAdapter);
-                keywordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-                });
                 keywordsSpinner.setAdapter(_keywordAdapterSpinner);
                 keywordsSpinner.setOnItemSelectedListener(this);
                 keywordsTextView.setText("Изменить ключевых слов");
