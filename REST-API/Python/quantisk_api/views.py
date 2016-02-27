@@ -20,7 +20,8 @@ class SingleResource(Resource):
 
     def put(self, id):
         body = request.get_json()
-        app.logger.info('PUT request at %s by %s. Body: %s', request.path, g.user, body)
+        user = getattr(g, 'user', 'unknown')
+        app.logger.info('PUT request at %s by %s. Body: %s', request.path, user, body)
         item = self.repo.set(id, **body)
         if item is None:
             abort(404)
@@ -28,7 +29,8 @@ class SingleResource(Resource):
         return item._asdict()
 
     def delete(self, id):
-        app.logger.info('DELETE request at %s by %s', request.path, g.user)
+        user = getattr(g, 'user', 'unknown')
+        app.logger.info('DELETE request at %s by %s', request.path, user)
         if self.repo.delete(id) is None:
             app.logger.error('404: Not found.')
             abort(404)
@@ -45,7 +47,8 @@ class ListResource(Resource):
 
     def post(self):
         body = request.get_json()
-        app.logger.info('POST request at %s by %s. Body: %s', request.path, g.user, body)
+        user = getattr(g, 'user', 'unknown')
+        app.logger.info('POST request at %s by %s. Body: %s', request.path, user, body)
         try:
             item = self.repo.add(**body)
         except TypeError:
@@ -104,7 +107,8 @@ class WordPairsForPersonListResource(Resource):
 
     def post(self, person_id):
         body = request.get_json()
-        app.logger.info('POST request at %s by %s. Body: %s', request.path, g.user, body)
+        user = getattr(g, 'user', 'unknown')
+        app.logger.info('POST request at %s by %s. Body: %s', request.path, user, body)
         try:
             wordpair = wordpair_repo.add(person_id=person_id, **body)
         except TypeError as e:
