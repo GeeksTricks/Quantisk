@@ -1,0 +1,20 @@
+/*#statAll, #statDaily {
+	background-color: #877FEB
+}
+*/
+h1 {
+	text-align: center;
+}
+.firstRow {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.secondRow {
+	margin-top: -15px;
+}
+.secondNav {
+	margin-left: 17px;
+}
+.addButton {
+	margin-left: 15px;
+}

@@ -1,0 +1,9 @@
+table, td {
+	border: 1px solid black;
+}
+
+div.left {
+	float: left;
+	width: 200px;
+	height: 500px;
+}
