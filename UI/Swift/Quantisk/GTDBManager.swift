@@ -135,9 +135,14 @@ class GTDBManager{
     }
     
     //getPersonFromID
-    func getPersonNameFromId(IDPerson: Int) -> (String){
-        let currentPerson = self.realm.objects(GTPersons).filter("ID == %@",IDPerson).first
+    func getPersonNameFromId(IDPerson: Int?) -> (String){
+        
+        if let ID = IDPerson {
+         let currentPerson = self.realm.objects(GTPersons).filter("ID == %@",ID).first
         return currentPerson!.Name
+        } else{
+            return ""
+        }
   
     }
     //getPersonFromName
@@ -244,16 +249,22 @@ class GTDBManager{
                     let json = JSON(value)
                     print("enter")
                     for (_,subJson):(String, JSON) in json {
-                        print(subJson["rank"].int!)//," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ",subJson["day"].int!)
+    //                    print(subJson["rank"].int!)//," ",subJson["person_id"].int!," ",self.getPersonNameFromId(subJson["person_id"].int!)," ",subJson["day"].int!)
                         
                         let stat = GTStat()
+                        if self.getPersonNameFromId(subJson["person_id"].int) == ""{
+                          continue
+                        } else{
                         stat.person = self.getPersonNameFromId(subJson["person_id"].int!)
+                            
+                        
                         stat.stat = subJson["rank"].int!
                         stat.date = subJson["day"].string!
                         
                       
                         try! self.realm.write {
                             self.realm.add(stat)
+                        }
                         }
                         
                     }
@@ -288,7 +299,7 @@ class GTDBManager{
         for var i = 0; i < text.count; i++ {
             if type == 0 {
             print(String(text[i].date))
-            text_list.append(String(text[i].date) + " " + String(text[i].stat)  )
+            text_list.append(String(text[i].date) + " number of articles " + String(text[i].stat)  )
             } else{
             text_list.append(String(text[i].stat)  )
             }

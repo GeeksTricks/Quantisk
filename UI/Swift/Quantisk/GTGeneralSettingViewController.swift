@@ -11,59 +11,12 @@ import UIKit
 
 class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource{
   
-    @IBOutlet var graphSwitch: UISwitch!
+    
     @IBOutlet var userName: UINavigationItem!
     @IBOutlet var imageToDate: UIImageView!
     @IBOutlet var imagePerson: UIImageView!
     @IBOutlet var imageFromDate: UIImageView!
     
-    
-   //push button statsic
-    @IBAction func getStatistic(sender: AnyObject) {
-  
-   if(!self.graphSwitch.on){
-      let vc = self.storyboard!.instantiateViewControllerWithIdentifier("static") as! GTStaticViewController
-    vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
-    vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
-    vc.perosnId =  GTDBManager.sharedInstance.getPersonIDFromName(self.persons[self.personPicker.selectedRowInComponent(0)])
-    
-    //2016-02-11
-    self.toDatePicker.datePickerMode = UIDatePickerMode.Date
-    self.fromDatePicker.datePickerMode = UIDatePickerMode.Date
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let toDatePickerString = dateFormatter.stringFromDate(toDatePicker.date)
-    let fromDatePickerString = dateFormatter.stringFromDate(fromDatePicker.date)
-    
-    vc.startDate = fromDatePickerString
-    vc.endDate = toDatePickerString
-    
-    self.navigationController!.pushViewController(vc, animated: true)
-   } else{
-    let vc = self.storyboard!.instantiateViewControllerWithIdentifier("graph") as! GTGrapViewController
-    vc.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
-    vc.siteID = self.sitePicker.selectedRowInComponent(0) + 1
-    vc.perosnId =  GTDBManager.sharedInstance.getPersonIDFromName(self.persons[self.personPicker.selectedRowInComponent(0)])
-    
-    //2016-02-11
-    self.toDatePicker.datePickerMode = UIDatePickerMode.Date
-    self.fromDatePicker.datePickerMode = UIDatePickerMode.Date
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let toDatePickerString = dateFormatter.stringFromDate(toDatePicker.date)
-    let fromDatePickerString = dateFormatter.stringFromDate(fromDatePicker.date)
-    
-    vc.startDate = fromDatePickerString
-    vc.endDate = toDatePickerString
-    
-    self.navigationController!.pushViewController(vc, animated: true)
-        }
-        
-    
-
-        
-        
-    }
     @IBOutlet var toDatePicker: UIDatePicker!
     @IBOutlet var fromDatePicker: UIDatePicker!
     @IBOutlet var personPicker: UIPickerView!
@@ -71,6 +24,45 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
     @IBOutlet var typeStatPicker: UIPickerView!
     var site = GTDBManager.sharedInstance.getAllSites()
     var persons = GTDBManager.sharedInstance.getAllPersons()
+    
+    
+   //push button statsic
+    @IBAction func getStatistic(sender: AnyObject) {
+  
+      var vc = self.storyboard!.instantiateViewControllerWithIdentifier("static") as! GTStaticViewController
+    self.createVC(&vc)
+     self.navigationController!.pushViewController(vc, animated: true)
+
+ 
+        
+       
+        
+
+
+        
+        
+    }
+    
+    func  createVC<T:statView>(inout viewcontroller: T){
+        viewcontroller.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
+        viewcontroller.siteID = self.sitePicker.selectedRowInComponent(0) + 1
+        viewcontroller.perosnId =  GTDBManager.sharedInstance.getPersonIDFromName(self.persons[self.personPicker.selectedRowInComponent(0)])
+        
+        //2016-02-11
+        self.toDatePicker.datePickerMode = UIDatePickerMode.Date
+        self.fromDatePicker.datePickerMode = UIDatePickerMode.Date
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let toDatePickerString = dateFormatter.stringFromDate(toDatePicker.date)
+        let fromDatePickerString = dateFormatter.stringFromDate(fromDatePicker.date)
+        
+        viewcontroller.startDate = fromDatePickerString
+        viewcontroller.endDate = toDatePickerString
+        
+     
+    }
+    
+
     
     override func viewDidAppear(animated: Bool){
         super.viewDidAppear(animated)
