@@ -22,27 +22,27 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
     @IBOutlet var personPicker: UIPickerView!
     @IBOutlet var sitePicker: UIPickerView!
     @IBOutlet var typeStatPicker: UIPickerView!
+    let typeStat = ["Daily Statistics","General Statistics"]
     var site = GTDBManager.sharedInstance.getAllSites()
     var persons = GTDBManager.sharedInstance.getAllPersons()
     
     
-   //push button statsic
+    
+    
+    
+    
+   //push button static
     @IBAction func getStatistic(sender: AnyObject) {
   
       var vc = self.storyboard!.instantiateViewControllerWithIdentifier("static") as! GTStaticViewController
     self.createVC(&vc)
      self.navigationController!.pushViewController(vc, animated: true)
-
- 
-        
        
-        
-
-
-        
         
     }
     
+    
+    //set parametr for controller
     func  createVC<T:statView>(inout viewcontroller: T){
         viewcontroller.typeStatic = self.typeStatPicker.selectedRowInComponent(0)
         viewcontroller.siteID = self.sitePicker.selectedRowInComponent(0) + 1
@@ -75,7 +75,7 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
      //   print(self.persons)
     }
     
-    let typeStat = ["Daily Statistics","General Statistics"]
+    
   
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -91,7 +91,7 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
         }
     }
     
-    //MARK: Delegates
+    //get Data for picker
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == typeStatPicker{
             return typeStat[row]
@@ -103,10 +103,8 @@ class GTGeneralSettingViewController: UIViewController , UIPickerViewDelegate, U
     }
     
 
-//    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return pickerData[row]
-//    }
-    
+
+    //hidden picker on_of
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == typeStatPicker{
             if row == 0 {

@@ -11,9 +11,12 @@ import RealmSwift
 import UIKit
 
 class GTSignInViewController: UIViewController {
+    @IBOutlet var textUserName: UITextField!
+    @IBOutlet var textPassword: UITextField!
+    
     @IBAction func logIn(sender: AnyObject) {
      
-        // Get the default Realm
+        // Save login and password for current
         let realm = try! Realm()
         
         let username = GTSetting()
@@ -50,8 +53,9 @@ class GTSignInViewController: UIViewController {
      
         
     }
-    @IBOutlet var textUserName: UITextField!
-    @IBOutlet var textPassword: UITextField!
+    
+    
+  
     override func viewDidLoad() {
        
     

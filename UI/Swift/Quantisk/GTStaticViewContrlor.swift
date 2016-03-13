@@ -31,11 +31,18 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
     
     var personsName: [String] = [""]
     var personRate: [String] = [""]
+    var personRateCount : [String] = [""]
     @IBOutlet var table: UITableView!
-    @IBOutlet weak var graphView: GraphView!
+    @IBOutlet weak var graphView: GTGraphStat!
     var isGraphViewShowing = false
-   
+   @IBOutlet weak var namePerson: UILabel!
     
+    
+       
+    
+    
+    
+    //transmision view
     
     @IBAction func counterViewTap(gesture:UITapGestureRecognizer?) {
         if (isGraphViewShowing) {
@@ -47,7 +54,7 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
                 options: [UIViewAnimationOptions.TransitionFlipFromLeft , UIViewAnimationOptions.ShowHideTransitionViews],
                 completion:nil)
         } else {
-            setupGraphDisplay()
+          
             //show Graph
             UIView.transitionFromView(table,
                 toView: graphView,
@@ -59,71 +66,33 @@ class GTStaticViewController: UIViewController,UITableViewDataSource, UITableVie
     }
     
     
-    func setupGraphDisplay() {
-//        
-//        //Use 7 days for graph - can use any number,
-//        //but labels and sample data are set up for 7 days
-//        let noOfDays:Int = 7
-//        
-//        //1 - replace last day with today's actual data
-//        graphView.graphPoints[graphView.graphPoints.count-1] = counterView.counter
-//        
-//        //2 - indicate that the graph needs to be redrawn
-//        graphView.setNeedsDisplay()
-//        
-//        maxLabel.text = "\(graphView.graphPoints.maxElement()!)"
-//        
-//        //3 - calculate average from graphPoints
-//        let average = graphView.graphPoints.reduce(0, combine: +) / graphView.graphPoints.count
-//        averageWaterDrunk.text = "\(average)"
-//        
-//        //set up labels
-//        //day of week labels are set up in storyboard with tags
-//        //today is last day of the array need to go backwards
-//        
-//        //4 - get today's day number
-//        let dateFormatter = NSDateFormatter()
-//        let calendar = NSCalendar.currentCalendar()
-//        let componentOptions:NSCalendarUnit = .Weekday
-//        let components = calendar.components(componentOptions,
-//            fromDate: NSDate())
-//        var weekday = components.weekday
-//        
-//        let days = ["S", "S", "M", "T", "W", "T", "F"]
-//        
-//        //5 - set up the day name labels with correct day
-//        for i in (1...days.count).reverse() {
-//            if let labelView = graphView.viewWithTag(i) as? UILabel {
-//                if weekday == 7 {
-//                    weekday = 0
-//                }
-//                labelView.text = days[weekday--]
-//                if weekday < 0 {
-//                    weekday = days.count - 1
-//                }
-//            }
-//        }
-    }
-    
+   
+    //func Notification
     func methodOfReceivedNotification(notification: NSNotification){
         self.personsName =  GTDBManager.sharedInstance.getTotalStatText()
         self.personRate =  GTDBManager.sharedInstance.getTotalStatSubText(self.typeStatic)
+        self.graphView.graphPoints = GTDBManager.sharedInstance.getTotalStatSubText(1)
+        
+        
+        
         self.table.reloadData()
         
-        print("hello")
+        
        NSNotificationCenter.defaultCenter().removeObserver(self, name: "NotificationIdentifierStat", object: nil)
     }
    
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        namePerson.text = GTDBManager.sharedInstance.getPersonNameFromId(perosnId)
         if self.typeStatic == 1 {
         GTDBManager.sharedInstance.getLoadlStat(self.siteID)
         } else {
             GTDBManager.sharedInstance.getLoadlStatPersonId(self.siteID, personId: self.perosnId, startDate: self.startDate, endDate: self.endDate)
-            print("start date = \(self.startDate) end date = \(self.endDate)")
+          
         }
-        
+        //add notification
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "methodOfReceivedNotification:", name:"NotificationIdentifierStat", object: nil)
         
 

@@ -238,11 +238,11 @@ class GTDBManager{
         Alamofire.request(.GET, URL , parameters: param  ).responseJSON {
             response in
             
-            print(response.request)  // original URL request
-            print(response.response) // URL response
-            print(response.data)     // server data
-            print(response.result)   // result of response serialization
-            
+//            print(response.request)  // original URL request
+//            print(response.response) // URL response
+//            print(response.data)     // server data
+//            print(response.result)   // result of response serialization
+//            
             switch response.result {
             case .Success:
                 if let value = response.result.value {

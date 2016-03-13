@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		37765AFA699978520A963C17 /* Pods_Quantisk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9A8F551C3351889A69C8D37 /* Pods_Quantisk.framework */; };
+		880097521C93E1AB00F31627 /* GTGraphStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880097511C93E1AB00F31627 /* GTGraphStat.swift */; };
 		8808BC981C764A5B00AD0D6B /* GTSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8808BC971C764A5B00AD0D6B /* GTSetting.swift */; };
 		8808BC9A1C764C3C00AD0D6B /* api.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC991C764C3C00AD0D6B /* api.png */; };
 		8808BC9C1C764C5600AD0D6B /* api2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8808BC9B1C764C5600AD0D6B /* api2.png */; };
@@ -23,14 +24,8 @@
 		88AA18F41C6052E2009877C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88AA18F31C6052E2009877C8 /* UIKit.framework */; };
 		88E8C5BF1C78D3B600838C9C /* GTStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E8C5BE1C78D3B600838C9C /* GTStat.swift */; };
 		88F0B7F21C6F3CF600B20796 /* GTDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F0B7F11C6F3CF600B20796 /* GTDBManager.swift */; };
-		88F0CF5E1C91B80800114D44 /* MedalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F0CF5D1C91B80800114D44 /* MedalView.swift */; };
-		88F1E86C1C8951A100BCB6A5 /* BackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F1E86B1C8951A100BCB6A5 /* BackGroundView.swift */; };
-		88F4D7331C7F65070027E578 /* GTGrapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F4D7321C7F65070027E578 /* GTGrapViewController.swift */; };
 		88F5F2211C6D1F4500A9919B /* GTPersons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5F2201C6D1F4500A9919B /* GTPersons.swift */; };
 		88F5F2231C6D1F5900A9919B /* GTSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5F2221C6D1F5900A9919B /* GTSites.swift */; };
-		88F63FC81C84899E00FEB570 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F63FC71C84899E00FEB570 /* GraphView.swift */; };
-		88F649311C84070000BE3810 /* PushButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F649301C84070000BE3810 /* PushButtonView.swift */; };
-		88F649341C8415FD00BE3810 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F649331C8415FD00BE3810 /* ContainerView.swift */; };
 		88F7B1AE1C6A513D0096D96C /* user2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F7B1AD1C6A513D0096D96C /* user2.png */; };
 		88F7B1B01C6A51540096D96C /* lock3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F7B1AF1C6A51540096D96C /* lock3.png */; };
 		88F7B1B21C6A51840096D96C /* user4.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F7B1B11C6A51840096D96C /* user4.png */; };
@@ -51,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		52073D08DC13302DF3879579 /* Pods-Quantisk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quantisk.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quantisk/Pods-Quantisk.release.xcconfig"; sourceTree = "<group>"; };
+		880097511C93E1AB00F31627 /* GTGraphStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTGraphStat.swift; sourceTree = "<group>"; };
 		8808BC971C764A5B00AD0D6B /* GTSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTSetting.swift; sourceTree = "<group>"; };
 		8808BC991C764C3C00AD0D6B /* api.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = api.png; sourceTree = "<group>"; };
 		8808BC9B1C764C5600AD0D6B /* api2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = api2.png; sourceTree = "<group>"; };
@@ -68,14 +64,8 @@
 		88AA18F31C6052E2009877C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		88E8C5BE1C78D3B600838C9C /* GTStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTStat.swift; sourceTree = "<group>"; };
 		88F0B7F11C6F3CF600B20796 /* GTDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTDBManager.swift; sourceTree = "<group>"; };
-		88F0CF5D1C91B80800114D44 /* MedalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedalView.swift; sourceTree = "<group>"; };
-		88F1E86B1C8951A100BCB6A5 /* BackGroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackGroundView.swift; sourceTree = "<group>"; };
-		88F4D7321C7F65070027E578 /* GTGrapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTGrapViewController.swift; sourceTree = "<group>"; };
 		88F5F2201C6D1F4500A9919B /* GTPersons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTPersons.swift; sourceTree = "<group>"; };
 		88F5F2221C6D1F5900A9919B /* GTSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTSites.swift; sourceTree = "<group>"; };
-		88F63FC71C84899E00FEB570 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
-		88F649301C84070000BE3810 /* PushButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushButtonView.swift; sourceTree = "<group>"; };
-		88F649331C8415FD00BE3810 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		88F7B1AD1C6A513D0096D96C /* user2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user2.png; sourceTree = "<group>"; };
 		88F7B1AF1C6A51540096D96C /* lock3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock3.png; sourceTree = "<group>"; };
 		88F7B1B11C6A51840096D96C /* user4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user4.png; sourceTree = "<group>"; };
@@ -181,7 +171,6 @@
 				88F7B1C51C6A79BB0096D96C /* GTSingInViewController.swift */,
 				88F7B1C71C6A7A020096D96C /* GTGeneralSettingViewController.swift */,
 				88F7B1C91C6A7A5F0096D96C /* GTSettingViewController.swift */,
-				88F4D7321C7F65070027E578 /* GTGrapViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -189,11 +178,7 @@
 		88F649321C84071100BE3810 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				88F649301C84070000BE3810 /* PushButtonView.swift */,
-				88F649331C8415FD00BE3810 /* ContainerView.swift */,
-				88F63FC71C84899E00FEB570 /* GraphView.swift */,
-				88F1E86B1C8951A100BCB6A5 /* BackGroundView.swift */,
-				88F0CF5D1C91B80800114D44 /* MedalView.swift */,
+				880097511C93E1AB00F31627 /* GTGraphStat.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -364,21 +349,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				88F7B1C61C6A79BB0096D96C /* GTSingInViewController.swift in Sources */,
-				88F4D7331C7F65070027E578 /* GTGrapViewController.swift in Sources */,
+				880097521C93E1AB00F31627 /* GTGraphStat.swift in Sources */,
 				88E8C5BF1C78D3B600838C9C /* GTStat.swift in Sources */,
-				88F0CF5E1C91B80800114D44 /* MedalView.swift in Sources */,
 				88F0B7F21C6F3CF600B20796 /* GTDBManager.swift in Sources */,
 				88F5F2211C6D1F4500A9919B /* GTPersons.swift in Sources */,
-				88F63FC81C84899E00FEB570 /* GraphView.swift in Sources */,
 				88F7B1CA1C6A7A5F0096D96C /* GTSettingViewController.swift in Sources */,
-				88F649311C84070000BE3810 /* PushButtonView.swift in Sources */,
 				88F5F2231C6D1F5900A9919B /* GTSites.swift in Sources */,
 				8808BC981C764A5B00AD0D6B /* GTSetting.swift in Sources */,
-				88F1E86C1C8951A100BCB6A5 /* BackGroundView.swift in Sources */,
 				88F7B1C81C6A7A020096D96C /* GTGeneralSettingViewController.swift in Sources */,
 				88AA18E41C604CFA009877C8 /* ViewController.swift in Sources */,
 				88AA18E21C604CFA009877C8 /* AppDelegate.swift in Sources */,
-				88F649341C8415FD00BE3810 /* ContainerView.swift in Sources */,
 				88F7B1CE1C6A86800096D96C /* GTStaticViewContrlor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,24 +1,42 @@
 //
-//  GraphView.swift
+//  GTGraphStat.swift
 //  Quantisk
 //
-//  Created by iMac on 29.02.16.
+//  Created by iMac on 12.03.16.
 //  Copyright © 2016 GeeksTricks. All rights reserved.
 //
 
 import UIKit
 
-@IBDesignable class GraphView: UIView {
+class GTGraphStat: UIView {
+
     
-    //1 - the properties for the gradient
-    @IBInspectable var startColor: UIColor = UIColor.orangeColor()
-    @IBInspectable var endColor: UIColor = UIColor.redColor()
+    //color for gradient
+    @IBInspectable var startColor: UIColor = UIColor.whiteColor()
+    @IBInspectable var endColor: UIColor = UIColor.grayColor()
     //Weekly sample data
-    var graphPoints:[Int] = [4, 2, 6, 4, 5, 8, 3]
+    var graphPoints:[String] {
+        get{
+          return   GTDBManager.sharedInstance.getTotalStatSubText(1)
+           
+         }
+        set{
+           
+           self.setNeedsDisplay()
+        }
+        
+    }
+
     
-   
+ 
     
     override func drawRect(rect: CGRect) {
+        
+        
+        if graphPoints.count == 0 {
+            return
+        }
+        
         let width = rect.width
         let height = rect.height
         
@@ -27,11 +45,7 @@ import UIKit
         
         
         
-        //set up background clipping area
-        var path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 8.0, height: 8.0))
-        path.addClip()
+
         
         //2 - get the current context
         let context = UIGraphicsGetCurrentContext()
@@ -60,7 +74,7 @@ import UIKit
         //calculate the x point
         
         let margin:CGFloat = 20.0
-        var columnXPoint = { (column:Int) -> CGFloat in
+        let columnXPoint = { (column:Int) -> CGFloat in
             //Calculate gap between points
             let spacer = (width - margin*2 - 4) /
                 CGFloat((self.graphPoints.count - 1))
@@ -70,50 +84,55 @@ import UIKit
         }
         // calculate the y point
         
-        let topBorder:CGFloat = 60
+        let topBorder:CGFloat = 120
         let bottomBorder:CGFloat = 50
         let graphHeight = height - topBorder - bottomBorder
         
-        let maxValue = graphPoints.maxElement()!
+        var maxValue = 0
+        if(graphPoints.maxElement() != nil){
+            
+         maxValue = Int(graphPoints.maxElement()!)!
+        }
+    
         
-        var columnYPoint = { (graphPoint:Int) -> CGFloat in
-            var y:CGFloat = CGFloat(graphPoint) /   CGFloat(maxValue) * graphHeight
+        
+        let columnYPoint = { (graphPoint:Int) -> CGFloat in
+            var y:CGFloat = CGFloat(graphPoint) /   CGFloat(Int(maxValue)) * graphHeight
             y = graphHeight + topBorder - y // Flip the graph
             return y
         }
         
         // draw the line graph
         
-        UIColor.whiteColor().setFill()
-        UIColor.whiteColor().setStroke()
+        UIColor.blackColor().setFill()
+        UIColor.blackColor().setStroke()
         
-   
+        
         
         
         
         //set up the points line
-        var graphPath = UIBezierPath()
+        let graphPath = UIBezierPath()
         //go to start of line
         graphPath.moveToPoint(CGPoint(x:columnXPoint(0),
-            y:columnYPoint(graphPoints[0])))
+            y:columnYPoint(Int(graphPoints[0])!)))
         
         //add points for each item in the graphPoints array
         //at the correct (x, y) for the point
         for i in 1..<graphPoints.count {
             let nextPoint = CGPoint(x:columnXPoint(i),
-                y:columnYPoint(graphPoints[i]))
+                y:columnYPoint(Int(graphPoints[i])!))
             graphPath.addLineToPoint(nextPoint)
         }
         
         graphPath.stroke()
         
-        //Create the clipping path for the graph gradient
         
         //1 - save the state of the context (commented out for now)
         CGContextSaveGState(context)
         
         //2 - make a copy of the path
-        var clippingPath = graphPath.copy() as! UIBezierPath
+        let clippingPath = graphPath.copy() as! UIBezierPath
         
         //3 - add lines to the copied path to complete the clip area
         clippingPath.addLineToPoint(CGPoint(
@@ -128,18 +147,18 @@ import UIKit
         clippingPath.addClip()
         
         //5 - check clipping path - temporary code
-        let highestYPoint = columnYPoint(maxValue)
+        let highestYPoint = columnYPoint(Int(maxValue))
         startPoint = CGPoint(x:margin, y: highestYPoint)
         endPoint = CGPoint(x:margin, y:self.bounds.height)
         
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-      CGContextRestoreGState(context)
+        CGContextRestoreGState(context)
         graphPath.lineWidth = 2.0
         graphPath.stroke()
         
         //Draw the circles on top of graph stroke
         for i in 0..<graphPoints.count {
-            var point = CGPoint(x:columnXPoint(i), y:columnYPoint(graphPoints[i]))
+            var point = CGPoint(x:columnXPoint(i), y:columnYPoint(Int(graphPoints[i])!))
             point.x -= 5.0/2
             point.y -= 5.0/2
             
@@ -149,7 +168,7 @@ import UIKit
             circle.fill()
         }
         
-        var linePath = UIBezierPath()
+        let linePath = UIBezierPath()
         
         //top line
         linePath.moveToPoint(CGPoint(x:margin, y: topBorder))
@@ -167,14 +186,16 @@ import UIKit
             y:height - bottomBorder))
         linePath.addLineToPoint(CGPoint(x:width - margin,
             y:height - bottomBorder))
-        let color = UIColor(white: 1.0, alpha: 0.3)
+        let color = UIColor(white: 0, alpha: 0.3)
         color.setStroke()
         
         linePath.lineWidth = 1.0
         linePath.stroke()
         
         //Draw horizontal graph lines on the top of everything
-       
+        
         
     }
+
+
 }
